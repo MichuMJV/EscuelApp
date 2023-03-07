@@ -1,0 +1,78 @@
+section{
+    display: flex;
+    gap: 1vh;
+}
+
+span{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:1vw;
+}
+
+button{
+    border-radius: 1vw;
+    padding: 2vw 2vh;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 6vh;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+section{
+    display: flex;
+    gap: 1vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url(../Assets/fondo.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 0px 0px;
+    margin-top: 12vh;
+    width:100vw;
+    height: 76vh;
+}
+
+
+button:hover{
+    box-shadow: 0 0.5vw rgb(182, 182, 182);
+}
+
+button:active{
+    background-color: #3e8e41;
+    box-shadow: 0 0.5vw rgb(0, 0, 0);
+    transform: translateY(4px);
+}
+
+#input-button1{
+    background-color: #4CAF50;
+    color: white;
+}
+
+#input-button2{
+    background-color: #af744c;
+    color: white;
+}
+
+#input-button3{
+    background-color: #4c6baf;
+    color: white;
+}
+
+#input-button4{
+    background-color: #964caf;
+    color: white;
+}
+
+#input-button5{
+    background-color: #a0af4c;
+    color: white;
+}
+
+#input-button6{
+    background-color: #634caf;
+    color: white;
+}

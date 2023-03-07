@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EscuelaApp🎓</title>
+    <link rel="stylesheet" href="../styles/HeadAndFoot.css">
+    <link rel="stylesheet" href="../styles/defaultform.css">
+</head>
+<body>
+    <header>
+        <div id="headerlogo">
+            <img src="../Assets/luzh47ih_400x400.png" alt="" class="logo_colegio">
+            <h1>EscuelaApp</h1>
+        </div>
+        <div>
+            <h2>@profesor</h2>
+        </div>
+    </header>
+    <section>
+        <div id="formu_father">
+            <div id="Fatherbutton">
+                <button onclick="goBack()" id="sonbutton"></button>
+            </div>
+            <h1 id="titulo-form">Nuevo Salon</h1>
+            <form action="">    
+                <span>
+                    <label for="Idprofe">ID profesor</label>
+                    <input class="inputtext" type="text" name="Idprofe" id="Idprofe">
+                </span>
+                <span>
+                    <label for="Grado">Grado</label>
+                    <input class="inputtext" type="text" name="Grado" id="Grado">
+                </span>
+                <span>
+                    <label for="fecha">fecha</label>
+                    <input class="inputtext" type="text" name="fecha" id="fecha">
+                </span>
+                <span>
+                    <label for="clave">clave</label>
+                    <input class="inputtext" type="text" name="clave" id="clave">
+                </span>
+                <span>
+                    <label for="clave2">clave2</label>
+                    <input class="inputtext" type="text" name="clave2" id="clave2">
+                </span>
+                <span>
+                    <label for="logo_link">logo link</label>
+                    <input class="inputtext" type="text" name="logo_link" id="logo_link">
+                </span>
+                <span>
+                    <label for="cupo">cantidad maxima</label>
+                    <input class="inputtext" type="number" name="cupo" id="cupo">
+                </span>
+                <input type="button" id="buttsubmit" value="Enviar">
+            </form>
+        </div>
+    </span>
+    <footer>
+        <h2>CONTACTENOS</h1>
+        <h2>Avenida Universidad Tecnológica de Panamá,
+            Vía Puente Centenario, Campus Metropolitano
+            Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.</h2>
+        <h2>Telefono: (507) 317-2000</h2>
+    </footer>
+    <script>
+        function goBack() {
+          window.history.back();
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="..\styles\boton.js"></script>
+</body>
+</html>

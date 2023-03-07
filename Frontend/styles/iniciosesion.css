@@ -1,0 +1,152 @@
+
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: .5vh;
+    width: 40vw;   
+    height: 40vh;
+    overflow: auto;
+}
+
+section{
+    display: flex;
+    gap: 1vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url(../Assets/fondo.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 0px 0px;
+    margin-top: 12vh;
+    width:100vw;
+    height: 76vh;
+}
+
+#input-contain{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4vh;
+    width: 40vw;   
+    height: 15vh;
+}
+
+/*INICIO ESTILOS INPUTS*/
+
+.input-contain{
+    position: relative;
+    display: flex;
+    align-items: center;
+
+}
+input{
+    height: 5vh;
+    width: 30vw;
+    border: 0.1vw solid black;
+    border-radius: 1vh;
+}
+
+.placeholder-text{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: 1vh solid transparent;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+}
+
+.placeholder-text{
+    pointer-events: none;
+}
+
+.text{
+    font-size: 2vh;
+    padding: 0 0.5rem;
+    background-color: transparent;
+    color: black;
+}
+
+input, .placeholder-text{
+    font-size: 2vh;
+    padding: 0 1.2rem;
+}
+
+input:focus{
+    outline: none;
+    border-color: blueviolet;
+}
+
+input:focus + .placeholder-text .text{
+    background-color: white;
+    font-size: 1.1rem;
+    color: black;
+    transform: translate(0, -170%);
+    border-color: blueviolet;
+    color: blueviolet;
+}
+
+.text{
+    transform: translate(0);
+    transition: transform 0.15s ease-out, font-size 0.15s ease-out, background-color 0.2s ease-out, color 0.15s ease-out;
+}
+
+input:focus + .placeholder-text .text, :not(input[value=""]) + .placeholder-text .text{
+    background-color: white;
+    font-size: 1.7vh;
+    color: black;
+    transform: translate(0, -170%);
+}
+
+input:focus + .placeholder-text .text{
+    border-color: blueviolet;
+    color: blueviolet;
+}
+
+/*FINAL ESTILOS INPUTS*/
+
+#buttsubmit{
+    height: 5vh;
+    width: 20vw;
+    text-align: center;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 1vh;
+}
+
+#buttsubmit:hover{
+    box-shadow: inset 0px 4px 4px rgb(255, 255, 255);
+}
+
+#buttsubmit:active{
+    background: #007EF1;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    color: azure;
+}
+
+
+.clear{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1vh;
+    width: 40vw;   
+    height: 40vh;
+
+    /* glass */
+
+    background: rgba(255, 255, 255, 0.6);
+    /* sombra glass2 */
+
+    box-shadow: 4vw 5vw 6vw rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(2vh);
+    /* Note: backdrop-filter has minimal browser support */
+
+    border-radius: 3vh;
+}

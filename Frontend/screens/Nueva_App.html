@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EscuelaApp🎓</title>
+    <link rel="stylesheet" href="../styles/HeadAndFoot.css">
+    <link rel="stylesheet" href="../styles/defaultform.css">
+</head>
+<body>
+    <header>
+        <div id="headerlogo">
+            <img src="../Assets/luzh47ih_400x400.png" alt="" class="logo_colegio">
+            <h1>EscuelaApp</h1>
+        </div>
+        <div>
+            <h2>@profesor</h2>
+        </div>
+    </header>
+    <section id="sectionapp">
+        <div id="formu_father">
+            <div id="Fatherbutton">
+                <button onclick="goBack()" id="sonbutton"></button>
+            </div>
+            <h1 id="titulo-form">Aplicaciones</h1>
+            <form action="">    
+                <span>
+                    <label for="nombre">Nombre de la App</label>
+                    <input class="inputtext" type="text" name="nombre" id="nombre">
+                </span>
+                <span>
+                    <label for="logo">Logo link</label>
+                    <input class="inputtext" type="text" name="logo" id="logo">
+                </span>
+                <span>
+                    <label for="Link">Link de acceso</label>
+                    <input class="inputtext" type="text" name="Link" id="Link">
+                </span>
+                <input type="button" id="buttsubmit" value="guardar">
+            </form> 
+        </div>
+    </span>
+    <footer>
+        <h2>CONTACTENOS</h1>
+        <h2>Avenida Universidad Tecnológica de Panamá,
+            Vía Puente Centenario, Campus Metropolitano
+            Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.</h2>
+        <h2>Telefono: (507) 317-2000</h2>
+    </footer>
+    <script>
+        function goBack() {
+          window.history.back();
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="..\styles\boton.js"></script>
+</body>
+</html>
