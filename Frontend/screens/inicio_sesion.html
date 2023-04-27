@@ -20,24 +20,26 @@
     </header>
     <section>
         <span class="clear">
-            <form action="POST" id="form_inicio_de_sesion">
+            <div id="form_inicio_de_sesion">
                 <h3>Acceda a su cuenta</h3>
                 <span id="input-contain">
                     <div class="input-contain">
-                        <input type="text" id="fname" name="fname" autocomplete="off" value="" aria-labelledby="placeholder-fname">
-                        <label class="placeholder-text" for="fname" id="placeholder-fname">
+                        <input type="text" id="Uname" name="Uname" autocomplete="off" value="" aria-labelledby="placeholder-Uname">
+                        <label class="placeholder-text" for="Uname" id="placeholder-Uname">
                            <div class="text">Usuario</div>
                         </label>
                     </div>
                     <div class="input-contain">
-                        <input type="password" id="fname" name="fname" autocomplete="off" value="" aria-labelledby="placeholder-fname">
-                        <label class="placeholder-text" for="fname" id="placeholder-fname">
+                        <input type="password" id="Password" name="Password" autocomplete="off" value="" aria-labelledby="placeholder-Password">
+                        <label class="placeholder-text" for="Password" id="placeholder-Password">
                            <div class="text">Contraseña</div>
                         </label>
                       </div>
                 </span>
-                <input id="buttsubmit" type="submit" value="Acceder">
-            </form>
+                <button id="buttsubmit"> Acceder
+                </div>
+
+
         </span>
     </section>
     <footer>
@@ -48,5 +50,6 @@
         <h2>Telefono: (507) 317-2000</h2>
     </footer>
     <script src="../styles/inputs.js"></script>
+    <script src="../middleware/iniciodesesion.js"></script>
 </body>
 </html>

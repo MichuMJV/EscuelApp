@@ -4,10 +4,9 @@ module.exports= async function NewApp(request,response){
     let body=request.body
     
     request.app=await Apps.find({nombre:body.nombre})
-
     let AppData={nombre:body.nombre,imagen:body.imagen,link:body.link}
 
-    if(request.app!==[]) 
+    if(!request.app===[]) 
         return response.json({success:false,message:"Esta aplicación ya existe"})
 
     try{

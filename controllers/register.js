@@ -14,7 +14,7 @@ module.exports= async function NewUser(request,response){
         nombre: body.nombre
     })
 
-    if(request.user){
+    if(!request.user===[]){
         return response.json({success:false,message:"Este usuario ya existe"})
     }
     
