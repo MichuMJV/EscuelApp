@@ -9,3 +9,7 @@ button.addEventListener("click", function() {
         $("#my-list").fadeOut().then(()=>list.style.display = "none")
     }
 });
+
+function redirigirPagina() {
+    window.location.href = "./Nueva_tarea.html";
+}

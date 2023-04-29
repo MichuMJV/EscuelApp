@@ -1,0 +1,162 @@
+#contenido{
+    position: fixed;
+    top: 16vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 3vh;
+    height: 72vh;
+    width: 100vw;
+    overflow-y: scroll;
+    overflow-x: none;
+}
+
+#link_tarea{
+    display: flex;
+    flex-direction: row;
+}
+
+#botondashboard,#botonaddtarea{
+    border-radius: 1vw;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 6vh;
+    cursor: pointer;
+}
+
+#botondashboard:hover,#botonaddtarea:hover{
+    box-shadow: 0 0.5vw rgb(182, 182, 182);
+}
+
+#botondashboard:active,#botonaddtarea:active{
+    background: linear-gradient(0deg, #66A6FF 0%, #ADCFFF 100%);;
+    box-shadow: 0 0.5vw rgb(0, 0, 0);
+    transform: translateY(4px);
+}
+
+#botonaddtarea{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: #000000;
+    border: 0.2vw;
+    height: 5vh;
+    background: linear-gradient(90deg, #66A6FF 0%, #ADCFFF 100%);
+    color: white;
+}
+
+#botondashboard{
+    width: 90vw;
+    background: linear-gradient(90deg, #66A6FF 0%, #ADCFFF 100%);
+    color: white;
+}
+
+.tareaindiv{
+    /* Auto layout */
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    gap: 10px;
+
+    width: 1336px;
+    height: 96px;
+
+    /* sombra buena */
+
+    filter: drop-shadow(-1px 5px 20px rgba(0, 0, 0, 0.4));
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.tareaindiv #link_tarea{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 90vw;
+    height: 10vh;
+    background: #FFFFFF;
+    border-radius: 10px;
+    padding: 0px 20px;
+}
+
+#imagen{
+    display: flex;
+    width: 131px;
+    height: 131px;
+
+    /* Materia */
+
+    background: url(image.png);
+    filter: drop-shadow(-63px 42px 30px rgba(0, 0, 0, 0.01)) drop-shadow(-35px 23px 25px rgba(0, 0, 0, 0.05)) drop-shadow(-16px 10px 19px rgba(0, 0, 0, 0.09)) drop-shadow(-4px 3px 10px rgba(0, 0, 0, 0.1)) drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.1));
+    border-radius: 360px;
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+
+#headingmateria{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2vh;
+    width: 90vw;
+    justify-content: space-between;
+}
+
+
+.container_tareas{
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    padding-bottom: 2vh;
+}
+
+.contenedor_vencimiento{
+    display: flex;
+    flex-direction: row;
+    gap: 1vh;
+    align-items: center;
+    justify-content: center;   
+}
+
+h4{
+    font-family: 'Avenir Next LT Pro', sans-serif;
+    font-size: 1.5vw;
+    font-weight: 400;
+    color: #000000;
+    margin: 0;
+}
+
+#boton_atras_home{
+    display: flex;
+    justify-content: center;
+    border: 0px;
+    padding: 0px;
+    border-radius: 50vw;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#boton_atras_home:hover{
+    box-shadow: 0 0.5vw #6ac8ff;
+    transform: translateY(3px);
+}
+
+#boton_atras_home:active{
+    background: linear-gradient(0deg, #66A6FF 0%, #ADCFFF 100%);;
+    box-shadow: 0 0.5vw rgb(0, 0, 0);
+    transform: translatey(5px);
+}
