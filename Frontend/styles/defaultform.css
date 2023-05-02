@@ -92,14 +92,15 @@ span{
     color: rgb(0, 0, 0);
 }
 
-.inputtext{
+.inputtext,select{
     border-width: 0.005vw;
     display: flex;
     border-radius: 1vh;
     width: 15vw;
-    height: 3vh;
+    height: 4vh;
     font-size: 3vh;
     text-align: center;
+    justify-content: center;
     padding: 0vh;
 }
 

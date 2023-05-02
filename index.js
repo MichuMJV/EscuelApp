@@ -31,6 +31,7 @@ const ReturnSalonsByCodSalon=require("./controllers/ReturnSalonsByCodSalon.js")
 const ReturnSalonsByGrado=require("./controllers/ReturnSalonsByGrado.js")
 const ReturnSalonsByProfessor=require("./controllers/ReturnSalonsByProfessor.js")
 const startSesion=require("./controllers/startSesion.js")
+const NuevoRol=require("./controllers/UpdateRol.js")
 
 app.use(express.json())
 app.use(cors())
@@ -41,6 +42,7 @@ app.delete("/Escuelapp/DeleteApp",DeleteApp)
 
 app.put("/Escuelapp/modificarMatricula",modificarMatricula)
 app.put("/Escuelapp/NotaTarea",NotaTarea)
+app.put("/Escuelapp/nuevoRol",NuevoRol)
 
 app.post("/Escuelapp/inicio_sesion",startSesion)
 app.post("/Escuelapp/EstudianteEntregaTarea",EstudianteEntregaTarea)

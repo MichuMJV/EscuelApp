@@ -21,26 +21,26 @@
     <section>
         <span>
             <div>
-                <button id="input-button1">Editar Salones</button>
+                <button id="input-button1">Editar Salones</button> <!--tabla de salones-->
             </div>
             <div>
-                <button id="input-button2">Nuevo salon</button>
-            </div>
-        </span>
-        <span>
-            <div>
-                <button id="input-button3">Asignar rol a usuario</button>
-            </div>
-            <div>
-                <button id="input-button4">Notas Estudiantes</button>
+                <button id="input-button2" onclick="AbrirNuevoSalon()">Nuevo salon</button>
             </div>
         </span>
         <span>
             <div>
-                <button id="input-button5">Matricular Estudiantes</button>
+                <button id="input-button3" onclick="Nuevo_rol()">Asignar rol a usuario</button>
             </div>
             <div>
-                <button id="input-button6">Agregar Apps</button>
+                <button id="input-button4">Notas Estudiantes</button><!--tabla de estudiantes-->
+            </div>
+        </span>
+        <span>
+            <div>
+                <button id="input-button5" onclick="abrirNuevoUsuario()">Agregar Nuevos usuarios</button>
+            </div>
+            <div>
+                <button id="input-button6" onclick="AbrirNuevaApp()">Agregar Apps</button>
             </div>
         </span>
     </section>
@@ -51,7 +51,7 @@
             Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.</h2>
         <h2>Telefono: (507) 317-2000</h2>
     </footer>
-    <!--<script src="../styles/inputs.js"></script>-->
+    <script src="..\styles\boton.js"></script>
     <script src="..\middleware\pantallaprincipal.js"></script>
 </body>
 </html>

@@ -11,11 +11,15 @@ module.exports= async function NewUser(request,response){
     }
     
     request.user=await Usuario.findOne({
-        nombre: body.nombre
+        cedula: body.cedula
     })
 
-    if(!request.user===[]){
+    if(request.user!==null){
         return response.json({success:false,message:"Este usuario ya existe"})
+    }
+
+    if(body.nombre ==="" || body.rol==="" || body.cedula === "" || body.contrasena==="" ){
+        return response.json({success:false, message:"no debe dejar vacío ningun campo"})
     }
     
     try{

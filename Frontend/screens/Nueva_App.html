@@ -24,7 +24,7 @@
                 <button onclick="goBack()" id="sonbutton"></button>
             </div>
             <h1 id="titulo-form">Aplicaciones</h1>
-            <form action="">    
+            <form action="">
                 <span>
                     <label for="nombre">Nombre de la App</label>
                     <input class="inputtext" type="text" name="nombre" id="nombre">
@@ -35,9 +35,9 @@
                 </span>
                 <span>
                     <label for="Link">Link de acceso</label>
-                    <input class="inputtext" type="text" name="Link" id="Link">
+                    <input class="inputtext" type="text" name="Link" id="link">
                 </span>
-                <input type="button" id="buttsubmit" value="guardar">
+                <input type="button" id="buttsubmit" value="guardar" onclick="NuevaApp()">
             </form> 
         </div>
     </span>
@@ -54,6 +54,6 @@
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="..\styles\boton.js"></script>
+    <script src="../middleware/nuevaApp.js"></script>
 </body>
 </html>

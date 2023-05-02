@@ -20,9 +20,14 @@
     border-radius: 1vw;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-size: 6vh;
     cursor: pointer;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(90deg, #66A6FF 0%, #ADCFFF 100%);
+    color: white;
 }
 
 #botondashboard:hover,#botonaddtarea:hover{
@@ -35,21 +40,9 @@
     transform: translateY(4px);
 }
 
-#botonaddtarea{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: #000000;
-    border: 0.2vw;
-    height: 5vh;
-    background: linear-gradient(90deg, #66A6FF 0%, #ADCFFF 100%);
-    color: white;
-}
 
 #botondashboard{
     width: 90vw;
-    background: linear-gradient(90deg, #66A6FF 0%, #ADCFFF 100%);
-    color: white;
 }
 
 .tareaindiv{
@@ -158,5 +151,5 @@ h4{
 #boton_atras_home:active{
     background: linear-gradient(0deg, #66A6FF 0%, #ADCFFF 100%);;
     box-shadow: 0 0.5vw rgb(0, 0, 0);
-    transform: translatey(5px);
+    transform: translateY(5px);
 }

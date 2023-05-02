@@ -6,6 +6,10 @@ body{
     justify-items: space-between;
 }
 
+a{
+    text-decoration: none;
+}
+
 header{
     position: fixed;
     top: 0;
@@ -66,6 +70,7 @@ footer{
 
 h1{
     padding: 1vw;
+    text-decoration: none;
     font-family: 'Arial';
     font-style: normal;
     font-weight: 400;
