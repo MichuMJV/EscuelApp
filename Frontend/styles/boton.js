@@ -6,7 +6,7 @@ button.addEventListener("click", function() {
         $("#my-list").fadeIn();
         list.style.display = "flex";
     } else {
-        $("#my-list").fadeOut().then(()=>list.style.display = "none")
+        ($("#my-list").fadeOut()).then(()=>list.style.display = "none")
     }
 });
 

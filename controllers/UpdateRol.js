@@ -1,5 +1,4 @@
 const {Usuario}=require("../models/Models.js")
-const {Apps}=require("../models/Models.js")
 
 module.exports= async function ActualizarRol(request,response){
     const cedula = request.body.cedula

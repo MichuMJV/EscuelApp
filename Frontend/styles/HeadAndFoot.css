@@ -111,4 +111,5 @@ p{
 
 .no-text-decoration{
     text-decoration: none;
+    height: fit-content;
 }

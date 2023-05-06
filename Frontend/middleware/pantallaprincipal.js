@@ -2,7 +2,6 @@
 const sessionData = localStorage.getItem('sesionEscuelApp');
 // Comprobar si los datos existen en localStorage
 const usuariojson = JSON.parse(sessionData);
-console.log(usuariojson)
 if (sessionData && usuariojson.rol) {
   // Los datos de la sesión existen, se pueden usar
   document.getElementById("username").innerText=usuariojson.nombre
