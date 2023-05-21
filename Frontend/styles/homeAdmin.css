@@ -76,3 +76,30 @@ button:active{
     background-color: #634caf;
     color: white;
 }
+
+#input-button7{
+    background-color: #af914c;
+    color: white;
+}
+
+#boton_atras_home{
+    display: flex;
+    justify-content: center;
+    border: 0px;
+    padding: 0px;
+    border-radius: 50vw;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#boton_atras_home:hover{
+    box-shadow: 0 0.5vw #6ac8ff;
+    transform: translateY(3px);
+}
+
+#boton_atras_home:active{
+    background: linear-gradient(0deg, #66A6FF 0%, #ADCFFF 100%);;
+    box-shadow: 0 0.5vw rgb(0, 0, 0);
+    transform: translateY(5px);
+}

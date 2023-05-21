@@ -11,7 +11,7 @@ module.exports= async function DeleteApp(request,response){
     }
     
     try{
-        const AppDelete=await Apps.deleteOne({_id:body.id});
+        const AppDelete=await Apps.deleteOne({nombre:body.nombre});
         response.json(AppDelete)
     }catch(error){
         console.log(error)

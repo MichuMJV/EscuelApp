@@ -10,3 +10,9 @@ if (sessionData && usuariojson.rol) {
   console.log('No se encontraron datos de sesión');
   window.location.href="http://127.0.0.1:5501/Frontend/screens/inicio_sesion.html"
 }
+
+
+function cerrarsesion(){
+  localStorage.removeItem('sesionEscuelApp');
+  window.location.href="http://127.0.0.1:5501/Frontend/screens/inicio_sesion.html"
+}

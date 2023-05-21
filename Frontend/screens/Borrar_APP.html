@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EscuelaApp🎓</title>
+    <link rel="stylesheet" href="../styles/HeadAndFoot.css">
+    <link rel="stylesheet" href="../styles/defaultform.css">
+</head>
+<body>
+    <header>
+        <div id="headerlogo">
+            <img src="../Assets/luzh47ih_400x400.png" alt="" class="logo_colegio">
+            <h1>EscuelaApp</h1>
+        </div>
+        <div>
+            <h2>@profesor</h2>
+        </div>
+    </header>
+    <section id="sectionapp">
+        <div id="formu_father">
+            <div id="Fatherbutton">
+                <button onclick="goBack()" id="sonbutton"></button>
+            </div>
+            <h1 id="titulo-form">Aplicacion que desea eliminar</h1>
+            <form action="">
+                <span>
+                    <label for="nombre">Nombre de la App que quiere eliminar</label>
+                    <input class="inputtext" type="text" name="nombre" id="nombre">
+                </span>
+                <input type="button" id="buttsubmit" value="Eliminar" onclick="delete_APP()">
+            </form> 
+            <div id="Aplicaciones">
+                
+            </div>
+        </div>
+    </span>
+    <footer>
+        <h2>CONTACTENOS</h1>
+        <h2>Avenida Universidad Tecnológica de Panamá,
+            Vía Puente Centenario, Campus Metropolitano
+            Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.</h2>
+        <h2>Telefono: (507) 317-2000</h2>
+    </footer>
+    <script>
+        function goBack() {
+          window.history.back();
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../middleware/BorrarApp.js"></script>
+    <script>
+        async function mostrarAplicaciones() {
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+          
+            let requestOptions = {
+              method: 'get',
+              headers: myHeaders,
+              redirect: 'follow'
+            };
+          
+            const response = await fetch("http://127.0.0.1:5000/Escuelapp/ReturnApps", requestOptions);
+            const data = await response.json();
+            console.log(data)
+          
+            let padre=document.getElementById("Aplicaciones")
+          
+            for (let i=0; i<data.length; i++){
+              padre.innerHTML +=`
+              <div id="Aplicaciones-child">
+                <p>${data[i].nombre} - ${data[i].link}</p>
+                <img id="img-app" src="${data[i].imagen}">
+              </div>
+              `
+            }
+          }
+          
+          mostrarAplicaciones();
+    </script>
+</body>
+</html>

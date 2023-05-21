@@ -124,3 +124,29 @@ span{
     box-shadow: inset 0px 1vh 1vh rgba(0, 0, 0, 0.25);
     color: azure;
 }
+
+#Aplicaciones{
+    padding-top: 1vh;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#Aplicaciones #Aplicaciones-child {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:center;
+    gap: 1vw;
+}
+
+#Aplicaciones #Aplicaciones-child p{
+    width: max-content;
+}
+
+#Aplicaciones #Aplicaciones-child img {
+    width: 3vw;
+    height:max-content;
+
+}
+  

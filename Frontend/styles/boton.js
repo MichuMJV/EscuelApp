@@ -46,6 +46,10 @@ function AbrirNuevaApp() {
     window.location.href = "../screens/Nueva_app.html";
 } 
 
+function Borrar_APP() {
+    window.location.href = "../screens/Borrar_APP.html";
+} 
+
 function AbrirNuevoSalon() {
     window.location.href = "../screens/Nuevo_salon.html";
 }
