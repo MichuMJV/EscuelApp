@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Usuarios</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+    }
+    
+    th {
+      background-color: #f2f2f2;
+    }
+    
+    td input {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    
+    td input:read-only {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <table id="usersTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>cedula</th>
+        <th>Contraseña</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+  <script>
+    // Función para cargar los usuarios en la tabla
+    function loadUsers(users) {
+        const tableBody = document.querySelector('#usersTable tbody');
+        tableBody.innerHTML = '';
+      
+        users.forEach(user => {
+          const row = document.createElement('tr');
+      
+          const idCell = document.createElement('td');
+          idCell.innerHTML = `<input id="${user._id}${user._id}" type="text" value="${user._id}" readonly>`;
+      
+          const nombreCell = document.createElement('td');
+          nombreCell.innerHTML = `<input id="${user._id}${user.nombre}" type="text" value="${user.nombre}">`;
+      
+          const cedulaCell = document.createElement('td');
+          cedulaCell.innerHTML = `<input id="${user._id}${user.cedula}" type="text" value="${user.cedula}">`;
+      
+          const contrasenaCell = document.createElement('td');
+          contrasenaCell.innerHTML = `<input id="${user._id}${user.contrasena}" type="text" value="${user.contrasena}">`;
+      
+          // Agregar evento de escucha a los inputs
+      
+          row.appendChild(idCell);
+          row.appendChild(nombreCell);
+          row.appendChild(cedulaCell);
+          row.appendChild(contrasenaCell);
+      
+          tableBody.appendChild(row);
+
+          const inputs = row.querySelectorAll('input');
+          inputs.forEach(input => {
+            input.addEventListener('input', saveChanges);
+          });
+        });
+      }
+      
+    // Cargar los usuarios al cargar la página
+    window.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:5000/Escuelapp/returnUser');
+        const data = await response.json();
+        loadUsers(data);
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+
+    async function saveChanges(event) {
+        const input = event.target;
+        const row = input.closest('tr');
+        const id = row.querySelector('td:first-child input').value;
+      
+        // Obtener los valores de nombre, cedula y contrasena desde las celdas correspondientes
+        const nombre = row.querySelector('td:nth-child(2) input').value;
+        const cedula = row.querySelector('td:nth-child(3) input').value;
+        const contrasena = row.querySelector('td:nth-child(4) input').value;
+      
+        try {
+          const response = await fetch('http://127.0.0.1:5000/Escuelapp/updateUser', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              id,
+              nombre,
+              cedula,
+              contrasena
+            })
+          });
+      
+          const data = await response.json();
+          console.log(data);
+          alert("Success");
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      
+      
+    </script>
+</body>
+</html>

@@ -28,7 +28,7 @@ async function iniciodesesion(){
     let url = "http://127.0.0.1:5501/" + link;
     window.location.href=url
   } catch (error) {
-    console.log('error', error);
+    alert("Error al iniciar sesión, revise sus credenciales o contacte al administrador")
   }
 }
 
