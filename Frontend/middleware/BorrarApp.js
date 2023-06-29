@@ -11,6 +11,7 @@ async function delete_APP(){
   myHeaders.append("Content-Type", "application/json");
 
   let id=usuariojson._id
+  //implementar eliminacion con verificacion de rol
   
   let raw = JSON.stringify({
     "nombre": Nombre.value
@@ -24,7 +25,7 @@ async function delete_APP(){
   };
   
   try {
-    const response = await fetch(`http://127.0.0.1:5000/Escuelapp/DeleteApp?id=${id}`, requestOptions)
+    const response = await fetch(`http://127.0.0.1:5000/Escuelapp/DeleteApp`, requestOptions)
     const data = await response.json()
     alert("Eliminado correctamente")
   } catch (error) {

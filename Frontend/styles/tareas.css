@@ -153,3 +153,16 @@ h4{
     box-shadow: 0 0.5vw rgb(0, 0, 0);
     transform: translateY(5px);
 }
+
+.datetime-input {
+    font-family: 'Avenir Next LT Pro', sans-serif;
+    font-size: 1.5vw;
+    font-weight: 400;
+    color: #000000;
+    margin: 0;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombras */
+    width: 20vw; /* Ancho relativo */
+    height: 5vh; /* Altura relativa */
+    border-radius: 10px; 
+  }
+  

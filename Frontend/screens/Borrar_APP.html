@@ -15,7 +15,7 @@
             <h1>EscuelaApp</h1>
         </div>
         <div>
-            <h2>@profesor</h2>
+            <h2 id="username"></h2>
         </div>
     </header>
     <section id="sectionapp">
@@ -70,13 +70,12 @@
             for (let i=0; i<data.length; i++){
               padre.innerHTML +=`
               <div id="Aplicaciones-child">
-                <p>${data[i].nombre} - ${data[i].link}</p>
+                <a href='${data[i].link}' class="AppABorrar">${data[i].nombre}</a>
                 <img id="img-app" src="${data[i].imagen}">
               </div>
               `
             }
           }
-          
           mostrarAplicaciones();
     </script>
     <script src="../middleware/pantallaprincipal.js"></script>

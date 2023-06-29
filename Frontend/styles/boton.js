@@ -1,17 +1,25 @@
 let button = document.getElementById("my-button");
 let list = document.getElementById("my-list");
 
-button.addEventListener("click", function() {
+try{
+    button.addEventListener("click", function() {
     if (list.style.display === "none") {
         $("#my-list").fadeIn();
         list.style.display = "flex";
     } else {
         ($("#my-list").fadeOut()).then(()=>list.style.display = "none")
     }
-});
+    });
+}catch(e){
+
+}
 
 function redirigirPaginaEstudiante() {
     window.location.href = "./homeEstudiante.html";
+}
+
+function VerUsuarios() {
+    window.location.href = "./UsuariosActuales.html";
 }
 
 function redirigirPaginaProfesor() {

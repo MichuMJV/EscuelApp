@@ -15,7 +15,7 @@
             <h1>EscuelaApp</h1>
         </div>
         <div>
-            <h2>@profesor</h2>
+            <h2 id="username"></h2>
         </div>
     </header>
     <section>
@@ -26,8 +26,8 @@
             <h1 id="titulo-form">Nuevo Salon</h1>
             <form action="">    
                 <span>
-                    <label for="Idprofe">ID profesor</label>
-                    <input class="inputtext" type="text" name="Idprofe" id="Idprofe">
+                    <label for="cedulaprofesor">ID profesor</label>
+                    <input class="inputtext" type="text" name="cedulaprofesor" id="cedulaprofesor">
                 </span>
                 <span>
                     <label for="Grado">Grado</label>
@@ -35,7 +35,7 @@
                 </span>
                 <span>
                     <label for="fecha">fecha</label>
-                    <input class="inputtext" type="text" name="fecha" id="fecha">
+                    <input class="inputtext" type="Date" name="fecha" id="fecha">
                 </span>
                 <span>
                     <label for="clave">clave</label>
@@ -46,14 +46,14 @@
                     <input class="inputtext" type="text" name="clave2" id="clave2">
                 </span>
                 <span>
-                    <label for="logo_link">logo link</label>
-                    <input class="inputtext" type="text" name="logo_link" id="logo_link">
+                    <label for="logo">logo link</label>
+                    <input class="inputtext" type="text" name="logo" id="logo">
                 </span>
                 <span>
                     <label for="cupo">cantidad maxima</label>
                     <input class="inputtext" type="number" name="cupo" id="cupo">
                 </span>
-                <input type="button" id="buttsubmit" value="Enviar">
+                <input type="button" id="buttsubmit" value="Enviar" onclick="sendData()">
             </form>
         </div>
     </span>
@@ -72,5 +72,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="..\styles\boton.js"></script>
     <script src="../middleware/pantallaprincipal.js"></script>
+    <script src="../middleware/nuevosalon.js"></script>
 </body>
 </html>

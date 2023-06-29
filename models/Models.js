@@ -8,7 +8,7 @@ const usuariosqueme= mongoose.Schema({
     contrasena: String})
 
 const salonSqueme= mongoose.Schema({
-    idprofesor: mongoose.Schema.ObjectId,
+    cedulaprofesor: String,
     codsalon: String,
     grado: String,
     materia: String,

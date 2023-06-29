@@ -16,6 +16,10 @@ section{
     background-image: url(../Assets/apps-google.png);
 }
 
+#tableapp{
+    background-color: aliceblue;
+}
+
 #Fatherbutton{
     padding-top: 0.5vh;
     padding-left: 0.5vw;
@@ -128,6 +132,7 @@ span{
 #Aplicaciones{
     padding-top: 1vh;
     display: flex;
+    align-items: center;
     flex-direction: column;
     width: 100%;
 }
@@ -136,12 +141,9 @@ span{
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content:center;
+    justify-content:space-between;
     gap: 1vw;
-}
-
-#Aplicaciones #Aplicaciones-child p{
-    width: max-content;
+    width: 20vw;
 }
 
 #Aplicaciones #Aplicaciones-child img {
@@ -149,4 +151,34 @@ span{
     height:max-content;
 
 }
+
+.AppABorrar{
+    font-family: 'Avenir Next LT Pro', sans-serif;
+    font-size: 1.5vw;
+    font-weight: 400;
+    color: #000000;
+    justify-self:left;
+}
   
+
+#boton_atras_home{
+    display: flex;
+    justify-content: center;
+    border: 0px;
+    padding: 0px;
+    border-radius: 50vw;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#boton_atras_home:hover{
+    box-shadow: 0 0.5vw #6ac8ff;
+    transform: translateY(3px);
+}
+
+#boton_atras_home:active{
+    background: linear-gradient(0deg, #66A6FF 0%, #ADCFFF 100%);;
+    box-shadow: 0 0.5vw rgb(0, 0, 0);
+    transform: translateY(5px);
+}
