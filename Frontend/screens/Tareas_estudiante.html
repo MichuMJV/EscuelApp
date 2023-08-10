@@ -7,6 +7,7 @@
     <title>EscuelaApp🎓</title>
     <link rel="stylesheet" href="../styles/HeadAndFoot.css">
     <link rel="stylesheet" href="../styles/tareas.css">
+    <link rel="stylesheet" href="../styles/tarea_especifica.css">
 </head>
 <body>
     <header>
@@ -36,54 +37,52 @@
         <div class="container_tareas">
 
 
-            <div class="tareaindiv" >
+            <button id="Open_Dialog" class="Tareas" >
                 <div id="link_tarea">
                     <h4>Tarea</h4>
                     <h4>Nota= 4.5</h4>
                     <div class="contenedor_vencimiento">
                         <p>Vence:</p>
-                        <input type="datetime-local" name="" id="" disabled>
+                        <input type="datetime-local" name="" id="" class="datetime-input" disabled>
                     </div>
                 </div>
-            </div>
+            </button>
 
 
-            <div class="tareaindiv" >
+            <a id="Open_Dialog2" class="Tareas" >
                 <div id="link_tarea">
                     <h4>Tarea</h4>
                     <h4>Nota= 4.5</h4>
                     <div class="contenedor_vencimiento">
                         <p>Vence:</p>
-                        <input type="datetime-local" name="" id="" disabled>
+                        <input type="datetime-local" name="" id="" class="datetime-input" disabled>
                     </div>
                 </div>
-            </div>
+            </a>
 
             
-            <div class="tareaindiv" >
+            <a id="Open_Dialog3" class="Tareas" >
                 <div id="link_tarea">
                     <h4>Tarea</h4>
                     <h4>Nota= 4.5</h4>
                     <div class="contenedor_vencimiento">
                         <p>Vence:</p>
-                        <input type="datetime-local" name="" id="" disabled>
+                        <input type="datetime-local" name="" id="" class="datetime-input" disabled>
                     </div>
                 </div>
-            </div>
+            </a>
 
 
-
-            <div class="tareaindiv" >
-                <div id="link_tarea">
-                    <h4>Tarea</h4>
-                    <h4>Nota= 4.5</h4>
-                    <div class="contenedor_vencimiento">
-                        <p>Vence:</p>
-                        <input type="datetime-local" name="" id="" disabled>
+            <a id="Open_Dialog4" class="Tareas" >
+                    <div id="link_tarea">
+                        <h4>Tarea</h4>
+                        <h4>Nota= 4.5</h4>
+                        <div class="contenedor_vencimiento">
+                            <p>Vence:</p>
+                            <input type="datetime-local" name="" id="" class="datetime-input" disabled>
+                        </div>
                     </div>
-                </div>
-            </div>
-
+            </a>
 
         </div>
 
@@ -91,6 +90,41 @@
 
     </section>
 
+
+
+
+    <!--Seccion de abrir dialogo-->
+
+
+    <dialog class="Modal" id="Modal2">
+        <span class="content">
+            <div class="task-header">
+                <div class="task-title">
+                    <h1>Modal 2</h1>
+                    <h2>Vence en 7 días y 4 horas</h2>
+                </div>
+                <div class="task-note">
+                    <h2>Nota:</h2>
+                </div>
+            </div>
+            <div class="task-details">
+                <div class="task-reference">
+                    <h3 id="h3"><a href="https://docs.google.com/document/d/1RglxfieB1eKB-9huhtv6NGTCla7eKusEr3vsJSQEQqU/edit">Material de referencia</a></h3>
+                </div>
+                <div class="task-attachment">
+                    <h3>Adjuntar respuesta</h3>
+                    <input class="attachment-box" type="text" value="https://docs.google.com/document/d/1RglxfieB1eKB-9huhtv6NGTClaljkhgvcEr3vsJSQEQqU/edit">
+                </div>
+            </div>
+            <button class="task-submit">Enviar</button>
+        </span>
+    </dialog>
+    
+
+    <script src="../middleware/modal.js"></script>
+
+
+    <!--Se cierra el dialogo-->
     <footer>
         <h2>CONTACTENOS</h1>
         <h2>Avenida Universidad Tecnológica de Panamá,

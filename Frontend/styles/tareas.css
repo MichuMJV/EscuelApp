@@ -45,7 +45,7 @@
     width: 90vw;
 }
 
-.tareaindiv{
+.Tareas{
     /* Auto layout */
 
     display: flex;
@@ -68,7 +68,7 @@
     flex-grow: 0;
 }
 
-.tareaindiv #link_tarea{
+.Tareas #link_tarea{
     display: flex;
     flex-direction: row;
     justify-content: space-between;

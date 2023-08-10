@@ -9,6 +9,9 @@ module.exports= async function NewApp(request,response){
     if(!request.app===[]) 
         return response.json({success:false,message:"Esta aplicación ya existe"})
 
+    if(length.nombre()>15)
+        return response.json({success:false,message:"El nombre de la aplicación es muy largo"})
+
     try{
         const App = new Apps(AppData);
         await App.save()

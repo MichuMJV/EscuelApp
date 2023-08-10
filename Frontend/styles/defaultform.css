@@ -57,6 +57,7 @@ section{
     width: 50vw;
     height: 65vh;
     overflow-y: scroll;
+    overflow-x: hidden;
     box-shadow: -53px 53px 106px rgba(209, 209, 209, 0.2), 53px -53px 106px rgba(209, 209, 209, 0.2), -53px -53px 106px rgba(255, 255, 255, 0.9), 53px 53px 133px rgba(209, 209, 209, 0.9);
     border-radius: 2vw;
 }
@@ -181,4 +182,14 @@ span{
     background: linear-gradient(0deg, #66A6FF 0%, #ADCFFF 100%);;
     box-shadow: 0 0.5vw rgb(0, 0, 0);
     transform: translateY(5px);
+}
+
+#contenido{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    gap: 2%;
+    margin: 0px;
 }

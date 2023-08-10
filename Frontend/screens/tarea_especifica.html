@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- CSS only -->
+    <link rel="stylesheet" href="../styles/tarea_especifica.css.css">
+</head>
+<body>
+    <Button id="Open_Dialog2">Abrir dialog</Button>
+    <dialog class="Modal" id="Modal2">
+        <span class="content">
+            <div class="task-header">
+                <div class="task-title">
+                    <h1>Modal 2</h1>
+                    <h2>Vence en 7 días y 4 horas</h2>
+                </div>
+                <div class="task-note">
+                    <h2>Nota:</h2>
+                </div>
+            </div>
+            <div class="task-details">
+                <div class="task-reference">
+                    <h3 id="h3"><a href="https://docs.google.com/document/d/1RglxfieB1eKB-9huhtv6NGTCla7eKusEr3vsJSQEQqU/edit">Material de referencia</a></h3>
+                </div>
+                <div class="task-attachment">
+                    <h3>Adjuntar respuesta</h3>
+                    <input class="attachment-box" type="text" value="https://docs.google.com/document/d/1RglxfieB1eKB-9huhtv6NGTClaljkhgvcEr3vsJSQEQqU/edit">
+                </div>
+            </div>
+            <button class="task-submit">Enviar</button>
+        </span>
+    </dialog>
+    
+
+    <script src="../middleware/modal.js"></script>
+
+    
+</body>
+</html>

@@ -1,0 +1,114 @@
+dialog.Modal {
+    border-radius: 3vh;
+    background-color: #f4f4f4;
+    padding: 4vw;
+    box-shadow: 2vh 2vh 4vh rgba(0, 0, 0, 0.2);
+    width: 80vw;
+    max-width: 90vw;
+}
+
+.task-attachment{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2vh;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.task-header,
+.task-note,
+.task-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.task-header {
+    margin-bottom: 2vh;
+}
+
+.task-title h1,
+.task-title h2,
+.task-note h2,
+.task-reference h3,
+.task-attachment h3 {
+    font-size: 2.5vh;
+    margin: 0;
+}
+
+.task-title h1 {
+    color: #e74c3c;
+}
+
+.task-note h2 {
+    color: #3498db;
+}
+
+.task-reference h3,
+.task-attachment h3 {
+    color: #27ae60;
+}
+
+.task-details {
+    margin-bottom: 2vh;
+}
+
+.attachment-box {
+    padding: 1vh;
+    background: #fff;
+    border-radius: 2vh;
+    border: 0.3vh solid #e67e22;
+    width: 100%;
+    max-width: 80vw;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 2vh;
+    border: 0.3vh solid #ccc;
+    border-radius: 2vh;
+    margin-bottom: 2vh;
+    font-size: 2vh;
+}
+
+.task-submit {
+    padding: 2vh 5vw;
+    background: #f39c12;
+    border-radius: 2vh;
+    border: none;
+    font-size: 2vh;
+    color: white;
+    cursor: pointer;
+    margin-top: 2vh;
+}
+
+.task-submit:hover {
+    background: #d35400;
+}
+
+@media (max-width: 768px) {
+    dialog.Modal {
+        width: 80vw;
+        padding: 5vw;
+    }
+
+    .task-title h1,
+    .task-title h2,
+    .task-note h2,
+    .task-reference h3,
+    .task-attachment h3 {
+        font-size: 4vh;
+    }
+}
