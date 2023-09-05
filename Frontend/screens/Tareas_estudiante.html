@@ -86,8 +86,6 @@
 
         </div>
 
-
-
     </section>
 
 
@@ -101,7 +99,11 @@
             <div class="task-header">
                 <div class="task-title">
                     <h1>Modal 2</h1>
-                    <h2>Vence en 7 días y 4 horas</h2>
+                    <span>
+                        <h2>Vencimiento: </h1>
+                        <input type="datetime-local" name="" id="" class="datetime-input" disabled>
+                    </span>
+                    
                 </div>
                 <div class="task-note">
                     <h2>Nota: 4.5</h2>
@@ -109,14 +111,15 @@
             </div>
             <div class="task-details">
                 <div class="task-reference">
-                    <h3 id="h3"><a href="https://docs.google.com/document/d/1RglxfieB1eKB-9huhtv6NGTCla7eKusEr3vsJSQEQqU/edit">Material de referencia</a></h3>
+                    <a id="h3" href="https://docs.google.com/document/u/2/d/1V3Ij58KP6UvF8RKNF0DTPIjMsIPMQqI6/edit?usp=docs_home&ths=true&rtpof=true">Material de referencia</a>
                 </div>
+                <br>
                 <div class="task-attachment">
-                    <h3>Adjuntar respuesta</h3>
-                    <input class="attachment-box" type="text" value="https://docs.google.com/document/d/1RglxfieB1eKB-9huhtv6NGTClaljkhgvcEr3vsJSQEQqU/edit">
+                    <h3>Adjuntar respuesta aquí</h3>
+                    <input class="attachment-box" type="text" value="https://docs.google.com/document/u/2/d/1V3Ij58KP6UvF8RKNF0DTPIjMsIPMQqI6/edit?usp=docs_home&ths=true&rtpof=true">
                 </div>
             </div>
-            <button class="task-submit">Enviar</button>
+            <button class="task-submit" onclick="enviarrespuesta()">Enviar</button>
         </span>
     </dialog>
     

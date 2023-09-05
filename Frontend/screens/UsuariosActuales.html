@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EscuelaApp🎓</title>
+    <link rel="stylesheet" href="../styles/HeadAndFoot.css">
+    <link rel="stylesheet" href="../styles/defaultform.css">
+</head>
+<body>
+    <header>
+        <div id="headerlogo">
+            <img src="../Assets/luzh47ih_400x400.png" alt="" class="logo_colegio">
+            <h1>EscuelaApp</h1>
+        </div>
+        <div>
+            <h2 id="username"></h2>
+        </div>
+    </header>
+    <section id="sectionuser">
+        <div id="formu_father">
+            <div id="Fatherbutton">
+                <button onclick="goBack()" id="sonbutton"></button>
+            </div>
+            <h1 id="titulo-form">Usuario que desea eliminar</h1>
+            <form action="">
+                <span>
+                    <label for="identificadorusser">Cedula del usuario a eliminar</label>
+                    <input class="inputtext" type="text" name="identificadorusser" id="identificadorusser">
+                </span>
+                <input type="button" id="buttsubmit" value="Eliminar" onclick="delete_User()">
+            </form> 
+            <div id="usuarios">
+                
+            </div>
+        </div>
+    </span>
+    <footer>
+        <h2>CONTACTENOS</h1>
+        <h2>Avenida Universidad Tecnológica de Panamá,
+            Vía Puente Centenario, Campus Metropolitano
+            Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.</h2>
+        <h2>Telefono: (507) 317-2000</h2>
+    </footer>
+    <script>
+        function goBack() {
+          window.history.back();
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../middleware/BorrarUser.js"></script>
+    <script>
+        async function mostrarUsuarios() {
+            let myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+          
+            let requestOptions = {
+              method: 'get',
+              headers: myHeaders,
+              redirect: 'follow'
+            };
+          
+            const response = await fetch("http://127.0.0.1:5000/Escuelapp/returnUser", requestOptions);
+            const data = await response.json();
+            console.log(data)
+          
+            let padre=document.getElementById("usuarios")
+          
+            for (let i=0; i<data.length; i++){
+              padre.innerHTML +=`
+              <div id="usuarios-child">
+                <p class="textousuario">${data[i].nombre}</p>
+                <p class="textousuario">${data[i].cedula}</p>
+                <p class="textousuario">${data[i].rol}</p>
+              </div>
+              `
+            }
+          }
+          mostrarUsuarios();
+    </script>
+    <script src="../middleware/pantallaprincipal.js"></script>
+</body>
+</html>

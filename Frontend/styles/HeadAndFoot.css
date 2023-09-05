@@ -68,6 +68,7 @@ footer{
     height: 109px;
 }
 
+
 h1{
     padding: 1vw;
     text-decoration: none;
@@ -83,7 +84,7 @@ h2{
     font-family: 'Arial';
     font-style: normal;
     font-weight: 400;
-    font-size: 2vh;
+    font-size: 2.5vh;
     line-height: 2vh;
     padding: 1vw;
     color: #000000;

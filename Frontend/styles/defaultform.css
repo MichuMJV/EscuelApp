@@ -16,6 +16,11 @@ section{
     background-image: url(../Assets/apps-google.png);
 }
 
+
+#sectionuser{
+    background-image: url(https://th.bing.com/th/id/R.c1e591ffa7c5ec252823c656a6a181b0?rik=PIMNwHKQLTwnCg&pid=ImgRaw&r=0);
+}
+
 #tableapp{
     background-color: aliceblue;
 }
@@ -107,24 +112,25 @@ span{
     text-align: center;
     justify-content: center;
     padding: 0vh;
-}
+}   
 
-#buttsubmit{
+#buttsubmit,#enviarforms{
     border-width: 0.005vw;
     font-size: 3vh;
+    color: #ffffff;
     height: 5vh;
     width: 20vw;
     text-align: center;
-    background-color: #ffffff;
+    background-color: #84b2fc;
     box-shadow: 0vh 1vh 1vh rgba(0, 0, 0, 0.25);
     border-radius: 1vh;
 }
 
-#buttsubmit:hover{
+#buttsubmit:hover,#enviarforms:hover{
     box-shadow: inset 0px 1vh 1vh rgb(255, 255, 255);
 }
 
-#buttsubmit:active{
+#buttsubmit:active,#enviarforms:active{
     background: #007EF1;
     box-shadow: inset 0px 1vh 1vh rgba(0, 0, 0, 0.25);
     color: azure;
@@ -139,6 +145,23 @@ span{
 }
 
 #Aplicaciones #Aplicaciones-child {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content:space-between;
+    gap: 1vw;
+    width: 20vw;
+}
+
+#usuarios{
+    padding-top: 1vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+#usuarios-child{
     display: flex;
     flex-direction: row;
     align-items: center;

@@ -24,18 +24,45 @@
                 <button onclick="goBack()" id="sonbutton"></button>
             </div>
             <h1 id="titulo-form">Nuevo Salon</h1>
-            <form action="">    
+            <form action="">
+
                 <span>
-                    <label for="cedulaprofesor">ID profesor</label>
-                    <input class="inputtext" type="text" name="cedulaprofesor" id="cedulaprofesor">
+                    <label for="profesores">Profesores</label>
+                    <select name="profesores" id="profesores">
+                    
+                    </select>  
                 </span>
+                
+                <span>
+                    <label for="Materia">Materia</label>
+                    <select name="Materia" id="Materia">
+                        <option value="Matematicas">Matematicas</option>
+                        <option value="Español">Español</option>
+                        <option value="Ingles">Ingles</option>
+                        <option value="Ciencias">Ciencias</option>
+                        <option value="Arte">Arte</option>
+                        <option value="Educacion Fisica">Educacion fisica</option>
+                        <option value="Musica">Musica</option>
+                        <option value="Tecnologia">Tecnologia</option>
+                        <option value="Religion">Religion</option>
+                        <option value="Filosofia">Filosofia</option>
+                        <option value="Geografia">Geografia</option>
+                        <option value="Historia">Historia</option>
+                        <option value="Quimica">Quimica</option>
+                        <option value="Fisica">Fisica</option>
+                        <option value="Biologia">Biologia</option>
+                        <option value="Economia">Economia</option>
+                        <option value="Administracion">Administracion</option>
+                        <option value="Programacion">Programacion</option>
+                        <option value="Dibujo">Dibujo</option>
+                        <option value="Literatura">Literatura</option>
+                        <option value="Comunicacion">Comunicacion</option>       
+                    </select>  
+                </span>     
+                
                 <span>
                     <label for="Grado">Grado</label>
-                    <input class="inputtext" type="text" name="Grado" id="Grado">
-                </span>
-                <span>
-                    <label for="fecha">fecha</label>
-                    <input class="inputtext" type="Date" name="fecha" id="fecha">
+                    <input class="inputtext" type="number" name="Grado" id="Grado" min="1" max="12">
                 </span>
                 <span>
                     <label for="clave">clave</label>
@@ -47,13 +74,13 @@
                 </span>
                 <span>
                     <label for="logo">logo link</label>
-                    <input class="inputtext" type="text" name="logo" id="logo">
+                    <input class="inputtext" type="url" name="logo" id="logo">
                 </span>
                 <span>
-                    <label for="cupo">cantidad maxima</label>
-                    <input class="inputtext" type="number" name="cupo" id="cupo">
+                    <label for="cupo">Cupos</label>
+                    <input class="inputtext" type="number" name="cupo" id="cupo" min="1" max="44">
                 </span>
-                <input type="button" id="buttsubmit" value="Enviar" onclick="sendData()">
+                <input type="submit" id="enviarforms" value="Enviar" onclick="crearnuevosalon()">
             </form>
         </div>
     </span>

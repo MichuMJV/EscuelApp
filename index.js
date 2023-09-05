@@ -10,6 +10,7 @@ const port=5000
 
 basededatos()
 
+const DeleteUser=require("./controllers/DeleteUser.js")
 const DeleteSalon=require("./controllers/DeleteSalon.js")
 const DeleteApp=require("./controllers/DeleteApp.js")
 const EstudianteEntregaTarea=require("./controllers/EstudianteEntregaTarea.js")
@@ -41,6 +42,7 @@ app.use(express.urlencoded({extended:true}))
 
 app.delete("/Escuelapp/DeleteSalon",DeleteSalon)
 app.delete("/Escuelapp/DeleteApp",DeleteApp)
+app.delete("/Escuelapp/DeleteUser",DeleteUser)
 
 app.put("/Escuelapp/modificarMatricula",modificarMatricula)
 app.put("/Escuelapp/NotaTarea",NotaTarea)

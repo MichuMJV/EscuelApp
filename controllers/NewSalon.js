@@ -1,21 +1,32 @@
 const {Salon}=require("../models/Models.js")
 const {Usuario}=require("../models/Models.js")
 
-const materiasAvaliables=["matematicas","español","ingles",
-"ciencias","arte","educacion fisica","musica","tecnologia",
-"religion","filosofia","geografia","historia","quimica",
-"fisica","biologia","economia","administracion","programacion",
-"dibujo","literatura","comunicacion"]
+
+function validarContraseña(clave, clave2) {
+    // Verificamos que los campos no estén vacíos
+    if (clave === "" || clave2 === "") {
+      return {success:false,message:"no puede dejar contraseñas vacías"};
+    }
+    
+    // Verificamos que las contraseñas coincidan
+    if (clave !== clave2) {
+      return {success:false,message:"Las contraseñas no coinciden"};
+    }
+  
+    // La contraseña es válida
+    return {success:true};
+  }
+  
+
+const materiasAvaliables=["Matematicas","Español","Ingles",
+"Ciencias","Arte","Educacion Fisica","Musica","Tecnologia",
+"Religion","Filosofia","Geografia","Historia","Quimica",
+"Fisica","Biologia","Economia","Administracion","Programacion",
+"Dibujo","Literatura","Comunicacion"]
 
 async function isThisProfesorExist(profesor){
-    let data=await Usuario.find({
-        cedula: profesor
-    })
+    let data=await Usuario.findById(profesor)
     return data.length!==0
-}
-
-function isThisClaveUsefull(clave){
-    return clave.length===6
 }
 
 function isValidMateria(materia){
@@ -29,17 +40,17 @@ function IsThisUserAbleToEdit(user){
 module.exports= async function NewSalon(request,response){
     let body=request.body
 
-    if(!isThisClaveUsefull(body.clave))
-        return response.json({success:false,message:"La clave debe tener 6 caracteres"})
+    if(!validarContraseña(body.clave, body.clave2).success)
+        return response.json({success:false,message:validarContraseña(body.clave, body.clave2).message})
 
     if(!isValidMateria(body.materia))
         return response.json({success:false,message:"La materia no es valida"})
 
-    if(!await isThisProfesorExist(body.cedulaprofesor))
+    if(!await isThisProfesorExist(body.idprofesor))
         return response.json({success:false,message:"El profesor no existe"})
 
     let data={
-        cedulaprofesor: body.cedulaprofesor,
+        idprofe:body.idprofesor ,
         grado: body.grado,
         materia: body.materia,
         fecha: new Date(),
@@ -51,9 +62,10 @@ module.exports= async function NewSalon(request,response){
     try{
         const materia = new Salon(data);
         await materia.save()
-        response.json(materia)
+        console.log("materia",materia)
+        return response.json({success:true,message:response})
     }catch(error){
-        console.log(error)
+        return response.json({success:false,message:error})
     }
 
 }

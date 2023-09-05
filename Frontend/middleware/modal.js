@@ -23,6 +23,11 @@ dialogo.addEventListener("click", e => {
     }
 });
 
+function enviarrespuesta(){
+  dialogo.close()
+  alert("Respuesta enviada")
+}
+
 
 
 /* El siguiente codigo funciona

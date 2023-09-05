@@ -7,6 +7,8 @@
     <title>EscuelaApp🎓</title>
     <link rel="stylesheet" href="../styles/HeadAndFoot.css">
     <link rel="stylesheet" href="../styles/tareas.css">
+    <link rel="stylesheet" href="../styles/tarea_especifica.css">
+
 </head>
 <body>
     <header>
@@ -46,48 +48,52 @@
         <div class="container_tareas">
 
 
-            <div class="tareaindiv">
+            <a id="Open_Dialog4" class="Tareas" >
                 <div id="link_tarea">
                     <h4>Tarea</h4>
+                    <h4 class="trim">Esta es otra Tarea más</h4>
                     <div class="contenedor_vencimiento">
                         <p>Vence:</p>
-                        <input type="datetime-local" name="" id="" class="datetime-input">
+                        <input type="datetime-local" name="" id="" class="datetime-input" disabled>
                     </div>
                 </div>
-            </div>
+        </a>
 
 
-            <div class="tareaindiv">
+            <a id="Open_Dialog4" class="Tareas" >
                 <div id="link_tarea">
                     <h4>Tarea</h4>
+                    <h4 class="trim">Esta es otra Tarea más de muchas</h4>
                     <div class="contenedor_vencimiento">
                         <p>Vence:</p>
-                        <input type="datetime-local" name="" id="" class="datetime-input">
+                        <input type="datetime-local" name="" id="" class="datetime-input" disabled>
                     </div>
                 </div>
-            </div>
+        </a>
 
 
-            <div class="tareaindiv">
+            <a id="Open_Dialog4" class="Tareas" >
                 <div id="link_tarea">
                     <h4>Tarea</h4>
+                    <h4 class="trim">Esta es otra Tarea más</h4>
                     <div class="contenedor_vencimiento">
                         <p>Vence:</p>
-                        <input type="datetime-local" name="" id="" class="datetime-input">
+                        <input type="datetime-local" name="" id="" class="datetime-input" disabled>
                     </div>
                 </div>
-            </div>
+            </a>
 
 
-            <div class="tareaindiv">
+            <a id="Open_Dialog4" class="Tareas" >
                 <div id="link_tarea">
                     <h4>Tarea</h4>
+                    <h4 class="trim">Esta es otra Tarea más</h4>
                     <div class="contenedor_vencimiento">
                         <p>Vence:</p>
-                        <input type="datetime-local" name="" id="" class="datetime-input">
+                        <input type="datetime-local" name="" id="" class="datetime-input" disabled>
                     </div>
                 </div>
-            </div>
+        </a>
 
 
         </div>
@@ -95,6 +101,62 @@
 
 
     </section>
+
+
+
+
+
+
+
+
+
+
+        <!--Seccion de abrir dialogo-->
+
+
+        <dialog class="Modal" id="dialogo">
+            <span class="content">
+                <div class="task-header">
+                    <div class="task-title">
+                        <input type="text" value="Tarea de matematicas">
+                        <span>
+                            <h2>Vencimiento: </h1>
+                            <input type="datetime-local" name="" id="" class="datetime-input" >
+                        </span>
+                        
+                    </div>
+                </div>
+                <div class="task-details">
+                    <div class="task-attachment">
+                        <h3>Agregar Detalles de la tarea aquí</h3>
+                        <input class="attachment-box" type="text" value="Esta tarea es una de muchas en camino">
+                    </div>
+                    <div class="task-attachment">
+                        <h3>Agregar Documento de referencia aquí</h3>
+                        <input class="attachment-box" type="text" value="https://docs.google.com/document/u/2/d/1V3Ij58KP6UvF8RKNF0DTPIjMsIPMQqI6/edit?usp=docs_home&ths=true&rtpof=true">
+                    </div>
+                </div>
+                <button class="task-submit" onclick="enviarrespuesta()">Actualizar</button>
+            </span>
+        </dialog>
+        
+    
+        <script src="../middleware/modal.js"></script>
+    
+    
+        <!--Se cierra el dialogo-->
+
+
+
+
+
+
+
+
+
+
+
+
 
     <footer>
         <h2>CONTACTENOS</h1>
