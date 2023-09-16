@@ -4,12 +4,13 @@ module.exports= async function NewApp(request,response){
     let body=request.body
     
     request.app=await Apps.find({nombre:body.nombre})
+
     let AppData={nombre:body.nombre,imagen:body.imagen,link:body.link}
 
-    if(!request.app===[]) 
+    if(!request.app.length == 0) 
         return response.json({success:false,message:"Esta aplicación ya existe"})
 
-    if(length.nombre()>15)
+    if(Object.keys(body.nombre).length > 15)
         return response.json({success:false,message:"El nombre de la aplicación es muy largo"})
 
     try{

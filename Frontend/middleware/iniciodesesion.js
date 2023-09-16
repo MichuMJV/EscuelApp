@@ -1,15 +1,12 @@
 let botondeacceso= document.getElementById("buttsubmit")
-let nombre= document.getElementById("Uname")
-let contrasena= document.getElementById("Password")
-
 
 async function iniciodesesion(){
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   
   let raw = JSON.stringify({
-    "nombre": nombre.value,
-    "contrasena": contrasena.value
+    "nombre": document.getElementById("Uname").value,
+    "contrasena": document.getElementById("Password").value
   });
   
   let requestOptions = {
@@ -33,5 +30,3 @@ async function iniciodesesion(){
 }
 
 botondeacceso.addEventListener("click", iniciodesesion);
-
-

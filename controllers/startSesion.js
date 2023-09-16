@@ -5,7 +5,7 @@ module.exports= async function NewSesion(request,response){
     try{
         request.user=await Usuario.find({nombre: body.nombre})
 
-        if(request.user===null || request.user===[])
+        if(request.user===null || request.user===undefined)
             return response.json({success:false,message:"Usuario no encontrado"})
 
         if(request.user[0].contrasena!=body.contrasena)
