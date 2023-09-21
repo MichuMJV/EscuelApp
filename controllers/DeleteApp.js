@@ -3,7 +3,7 @@ const {Apps}=require("../models/Models.js")
 
 module.exports= async function DeleteApp(request,response){
     let body=request.body
-/*
+    /*
     request.user=await Usuario.findOne({_id:request.query.id})
 
     if(request.user.rol!==3){
