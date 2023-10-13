@@ -2,6 +2,8 @@ let myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
 
+let formulario= document.getElementById("enviarmateria");
+
 function crearnuevosalon(){
   let clave= document.getElementById("clave").value;
   let clave2= document.getElementById("clave2").value;
@@ -27,7 +29,10 @@ function crearnuevosalon(){
   
   fetch("http://127.0.0.1:5000/Escuelapp/NewSalon", requestOptions)
   .then(response => response.json())
-  .then(result => alert(result.message))
+  .then(result => {
+      alert("Salon creado exitosamente")
+      formulario.reset()
+    })
   .catch(error => error);
 
   console.log(response)
