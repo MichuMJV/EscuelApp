@@ -163,3 +163,21 @@ li:hover{
 .text-app{
     font-size: 2vh;
 }
+
+#input-button2{
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border-radius: 1vw;
+    width: fit-content;
+    height: fit-content;
+    size: 10vw;
+}
+
+#input-button2:hover{
+    background-color: #97bff8;
+}
+
+#input-button2:active{
+    background-color: #006aff;
+    color: rgb(255, 255, 255);
+}
