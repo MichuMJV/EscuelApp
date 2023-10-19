@@ -2,7 +2,6 @@
 const sessionData = localStorage.getItem('sesionEscuelApp');
 // Comprobar si los datos existen en localStorage
 const usuariojson = JSON.parse(sessionData);
-console.log(usuariojson)
 if (sessionData === null) {
   // Los datos de la sesión no existen, se puede informar al usuario
   alert('No se encontraron datos de sesión');

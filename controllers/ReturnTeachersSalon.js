@@ -13,7 +13,7 @@ module.exports= async function ReturnByTeacher(request,response){
             return response.json({success:false,message:"no es profesor"})
 
         request.Salons=await salon.find({idprofesor:request.Teacher.id});
-        response.json(request.Salons)
+        return response.json(request.Salons)
 
     }catch(error){
         console.log(error)

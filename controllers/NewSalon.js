@@ -63,7 +63,7 @@ module.exports= async function NewSalon(request,response){
         const materia = new Salon(data);
         await materia.save()
         console.log("materia",materia)
-        return response.json({success:true,message:response})
+        return response.json({success:true,message:"materia creada"})
     }catch(error){
         return response.json({success:false,message:error})
     }
