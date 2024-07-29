@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Salón - EscuelaApp🎓</title>
+    <link rel="stylesheet" href="../styles/HeadAndFoot.css">
+    <link rel="stylesheet" href="../styles/defaultform.css">
+</head>
+<body>
+    <header>
+        <div id="headerlogo">
+            <img src="../Assets/luzh47ih_400x400.png" alt="" class="logo_colegio">
+            <h1>EscuelaApp</h1>
+        </div>
+        <div>
+            <h2 id="username"></h2>
+        </div>
+    </header>
+    <section>
+        <div id="formu_father">
+            <div id="Fatherbutton">
+                <button onclick="goBack()" id="sonbutton"></button>
+            </div>
+            <h1 id="titulo-form">Modificar Salón</h1>
+            <form id="modificarsalon">
+
+                <span>
+                    <label for="profesores">Profesores</label>
+                    <select name="profesores" id="profesores" onchange="loadSalones()">
+                        <!-- Los profesores se cargarán aquí dinámicamente -->
+                    </select>
+                </span>
+                
+                <span>
+                    <label for="salones">Salones</label>
+                    <select name="salones" id="salones" onchange="loadSalonDetails()">
+                        <!-- Los salones se cargarán aquí dinámicamente -->
+                    </select>
+                </span>
+                
+                <span>
+                    <label for="Materia">Materia</label>
+                    <select name="Materia" id="Materia">
+                        <!-- Las opciones de materia -->
+                        <option value="Matematicas">Matematicas</option>
+                        <option value="Español">Español</option>
+                        <option value="Ingles">Ingles</option>
+                        <option value="Ciencias">Ciencias</option>
+                        <option value="Arte">Arte</option>
+                        <option value="Educacion Fisica">Educacion fisica</option>
+                        <option value="Musica">Musica</option>
+                        <option value="Tecnologia">Tecnologia</option>
+                        <option value="Religion">Religion</option>
+                        <option value="Filosofia">Filosofia</option>
+                        <option value="Geografia">Geografia</option>
+                        <option value="Historia">Historia</option>
+                        <option value="Quimica">Quimica</option>
+                        <option value="Fisica">Fisica</option>
+                        <option value="Biologia">Biologia</option>
+                        <option value="Economia">Economia</option>
+                        <option value="Administracion">Administracion</option>
+                        <option value="Programacion">Programacion</option>
+                        <option value="Dibujo">Dibujo</option>
+                        <option value="Literatura">Literatura</option>
+                        <option value="Comunicacion">Comunicacion</option>       
+                    </select>  
+                </span>
+                
+                <span>
+                    <label for="Grado">Grado</label>
+                    <input class="inputtext" type="number" name="Grado" id="Grado" min="1" max="12">
+                </span>
+                <span>
+                    <label for="clave">Clave</label>
+                    <input class="inputtext" type="text" name="clave" id="clave">
+                </span>
+                <span>
+                    <label for="clave2">Repetir Clave</label>
+                    <input class="inputtext" type="text" name="clave2" id="clave2">
+                </span>
+                <span>
+                    <label for="logo">Logo Link</label>
+                    <input class="inputtext" type="url" name="logo" id="logo">
+                </span>
+                <span>
+                    <label for="cupo">Cupos</label>
+                    <input class="inputtext" type="number" name="cupo" id="cupo" min="1" max="44">
+                </span>
+                <input type="submit" id="enviarforms" value="Guardar Cambios" onclick="modificarSalon(event)">
+                <button type="button" onclick="goBack()">Cancelar</button>
+            </form>
+        </div>
+    </span>
+    <footer>
+        <h2>CONTACTENOS</h1>
+        <h2>Avenida Universidad Tecnológica de Panamá,
+            Vía Puente Centenario, Campus Metropolitano
+            Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.</h2>
+        <h2>Telefono: (507) 317-2000</h2>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="..\styles\boton.js"></script>
+    <script src="../middleware/pantallaprincipal.js"></script>
+    <script src="../middleware/modificarsalon.js"></script>
+</body>
+</html>

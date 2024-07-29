@@ -69,3 +69,7 @@ function abrirDashboardSalones() {
 function Nuevo_rol() {
     window.location.href = "../screens/Nuevo_rol.html";
 }
+
+function EditarSalones(){
+    window.location.href = "../screens/modificarSalon.html";
+}

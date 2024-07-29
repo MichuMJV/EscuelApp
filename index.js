@@ -10,6 +10,7 @@ const port=5000
 
 basededatos()
 
+const GetSalonDetails=require("./controllers/GetSalonDetails.js")
 const DeleteUser=require("./controllers/DeleteUser.js")
 const DeleteSalon=require("./controllers/DeleteSalon.js")
 const DeleteApp=require("./controllers/DeleteApp.js")
@@ -58,6 +59,7 @@ app.post("/Escuelapp/NewSalon",NewSalon)
 app.post("/Escuelapp/NewTarea",NewTarea)
 app.post("/Escuelapp/Register",register)
 
+app.get("/Escuelapp/GetSalonDetails",GetSalonDetails)
 app.get("/Escuelapp/ReturnApps",ReturnApps)
 app.get("/Escuelapp/AllSalones",ReturnAllSalons)
 app.get("/Escuelapp/returnEstudiantesDeGrupo",returnMatricula)
