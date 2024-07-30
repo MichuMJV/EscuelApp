@@ -114,7 +114,7 @@ span{
     padding: 0vh;
 }   
 
-#buttsubmit,#enviarforms{
+#buttsubmit,#enviarforms,#Cancelar{
     border-width: 0.005vw;
     font-size: 3vh;
     color: #ffffff;
@@ -126,11 +126,11 @@ span{
     border-radius: 1vh;
 }
 
-#buttsubmit:hover,#enviarforms:hover{
+#buttsubmit:hover,#enviarforms:hover,#Cancelar:hover{
     box-shadow: inset 0px 1vh 1vh rgb(255, 255, 255);
 }
 
-#buttsubmit:active,#enviarforms:active{
+#buttsubmit:active,#enviarforms:active,#Cancelar:active{
     background: #007EF1;
     box-shadow: inset 0px 1vh 1vh rgba(0, 0, 0, 0.25);
     color: azure;

@@ -32,13 +32,22 @@
                         <!-- Los profesores se cargarán aquí dinámicamente -->
                     </select>
                 </span>
-                
+
                 <span>
                     <label for="salones">Salones</label>
                     <select name="salones" id="salones" onchange="loadSalonDetails()">
                         <!-- Los salones se cargarán aquí dinámicamente -->
                     </select>
                 </span>
+
+                <span>
+                    <label for="Profesor Nuevo">Profesor Nuevo</label>
+                    <select name="Profesor Nuevo" id="profesoresnew">
+                        <!-- Los profesores se cargarán aquí dinámicamente -->
+                    </select>
+                </span>
+                
+
                 
                 <span>
                     <label for="Materia">Materia</label>
@@ -89,7 +98,7 @@
                     <input class="inputtext" type="number" name="cupo" id="cupo" min="1" max="44">
                 </span>
                 <input type="submit" id="enviarforms" value="Guardar Cambios" onclick="modificarSalon(event)">
-                <button type="button" onclick="goBack()">Cancelar</button>
+                <button id="Cancelar" type="button" onclick="goBack()">Cancelar</button>
             </form>
         </div>
     </span>

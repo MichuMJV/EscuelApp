@@ -4,15 +4,23 @@ function goBack() {
 
 async function loadProfesores() {
     try {
-        let response = await fetch('localhost:5000/Escuelapp/retornoUsers');
+        let response = await fetch('http://127.0.0.1:5000/Escuelapp/returnUser');
         let data = await response.json();
         let profesoresSelect = document.getElementById('profesores');
+        let profesoresSelectnuevo = document.getElementById('profesoresnew');
+        profesoresSelectnuevo.innerHTML = '<option value="">Seleccione un profesor diferente</option>';
         profesoresSelect.innerHTML = '<option value="">Seleccione un profesor</option>';
         data.forEach(profesor => {
             if (profesor.rol === 2) {
                 profesoresSelect.innerHTML += `<option value="${profesor._id}">${profesor.nombre}</option>`;
             }
         });
+        data.forEach(profesor => {
+            if (profesor.rol === 2) {
+                profesoresSelectnuevo.innerHTML += `<option value="${profesor._id}">${profesor.nombre}</option>`;
+            }
+        }
+        );
     } catch (error) {
         console.error("Error al cargar los profesores:", error);
     }
@@ -22,7 +30,7 @@ async function loadSalones() {
     let profesorId = document.getElementById('profesores').value;
     if (!profesorId) return;
     try {
-        let response = await fetch(`localhost:5000/Escuelapp/ReturnSalonsByProfessor?idprofesor=${profesorId}`);
+        let response = await fetch(`http://127.0.0.1:5000/Escuelapp/ReturnSalonsByProfessor?idprofesor=${profesorId}`);
         let data = await response.json();
         let salonesSelect = document.getElementById('salones');
         salonesSelect.innerHTML = '<option value="">Seleccione un salón</option>';
@@ -38,7 +46,7 @@ async function loadSalonDetails() {
     let salonId = document.getElementById('salones').value;
     if (!salonId) return;
     try {
-        let response = await fetch(`localhost:5000/Escuelapp/GetSalonDetails?id=${salonId}`);
+        let response = await fetch(`http://127.0.0.1:5000/Escuelapp/GetSalonDetails?id=${salonId}`);
         let salon = await response.json();
         document.getElementById('Materia').value = salon.materia;
         document.getElementById('Grado').value = salon.grado;
@@ -54,9 +62,12 @@ async function loadSalonDetails() {
 async function modificarSalon(event) {
     event.preventDefault();
     let salonId = document.getElementById('salones').value;
+    let profesorId = document.getElementById('profesoresnew').value;
+    if(document.getElementById('profesoresnew').value==="")
+        profesorId = document.getElementById('profesores').value;
     let data = {
         salonId: salonId,
-        idprofesor: document.getElementById('profesores').value,
+        idprofesor: profesorId,
         materia: document.getElementById('Materia').value,
         grado: document.getElementById('Grado').value,
         clave: document.getElementById('clave').value,
@@ -65,8 +76,8 @@ async function modificarSalon(event) {
         cupo: document.getElementById('cupo').value
     };
     try {
-        let response = await fetch(`localhost:5000/Escuelapp/UpdateSalon`, {
-            method: 'POST',
+        let response = await fetch('http://127.0.0.1:5000/Escuelapp/UpdateSalon', {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -75,7 +86,7 @@ async function modificarSalon(event) {
         let result = await response.json();
         alert(result.message);
         if (result.success) {
-            goBack();
+            goBack(); 
         }
     } catch (error) {
         console.error("Error al modificar el salón:", error);
