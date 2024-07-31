@@ -33,10 +33,6 @@ function isValidMateria(materia){
     return materiasAvaliables.includes(materia)
 }
 
-function IsThisUserAbleToEdit(user){
-    return user.rol===3
-}
-
 module.exports= async function NewSalon(request,response){
     let body=request.body
 
@@ -49,8 +45,12 @@ module.exports= async function NewSalon(request,response){
     if(!await isThisProfesorExist(body.idprofesor))
         return response.json({success:false,message:"El profesor no existe"})
 
+    let nombreconcat= body.grado+body.materia+"-"+new Date().getFullYear()
+
+
     let data={
         idprofe:body.idprofesor ,
+        nombre: nombreconcat,
         grado: body.grado,
         materia: body.materia,
         fecha: new Date(),

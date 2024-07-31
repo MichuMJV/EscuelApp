@@ -9,6 +9,7 @@ const usuariosqueme= mongoose.Schema({
 
 const salonSqueme= mongoose.Schema({
     idprofe: mongoose.Schema.ObjectId,
+    nombre: String,
     codsalon: String,
     grado: Number,
     materia: String,

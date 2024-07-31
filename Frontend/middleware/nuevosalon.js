@@ -1,7 +1,6 @@
 let myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
-
 let formulario= document.getElementById("enviarmateria");
 
 function crearnuevosalon(){
@@ -36,9 +35,7 @@ function crearnuevosalon(){
   .catch(error => error);
 
   console.log(response)
-  
 }
-
 
 async function getteachers(){
 
@@ -56,9 +53,17 @@ async function getteachers(){
 
   let teachers=[]
 
-  data.forEach(user => {
-    if(user.rol===2){
-      teachers.push(user)
+  const usuariojson = JSON.parse(localStorage.getItem('sesionEscuelApp'));
+
+  console.log(usuariojson)
+
+  data.forEach(user => {  
+    if(usuariojson.rol===2 && !teachers.includes(usuariojson)){
+      teachers.push(usuariojson)
+    }
+    if(usuariojson.rol===1){
+      if(user.rol===2)
+        teachers.push(user)
     }
   });
   
