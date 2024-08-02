@@ -47,6 +47,8 @@ module.exports= async function NewSalon(request,response){
 
     let nombreconcat= body.grado+body.materia+"-"+new Date().getFullYear()
 
+    if (await Salon.findOne({nombre:nombreconcat}))
+        return response.json({success:false,message:"Ya existe un salon con ese nombre"})
 
     let data={
         idprofe:body.idprofesor ,

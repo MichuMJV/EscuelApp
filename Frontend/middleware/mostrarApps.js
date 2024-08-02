@@ -1,3 +1,5 @@
+localStorage.removeItem('salonelegido');
+
 async function newFunction() {
   let myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");

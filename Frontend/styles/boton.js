@@ -14,6 +14,13 @@ try{
 
 }
 
+function redirigirPaginaProfesor(){
+    if(JSON.parse(localStorage.getItem('sesionEscuelApp')).rol===2)
+        window.location.href = "./homeProfesor.html";
+    window.location.href = "./homeAdmin.html";
+    localStorage.removeItem('salonelegido')
+}
+
 function redirigirPaginaEstudiante() {
     window.location.href = "./homeEstudiante.html";
 }
