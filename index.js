@@ -73,4 +73,4 @@ app.get("/Escuelapp/ReturnSalonsByCodSalon",ReturnSalonsByCodSalon)
 app.get("/Escuelapp/ReturnSalonsByGrado",ReturnSalonsByGrado)
 app.get("/Escuelapp/ReturnSalonsByProfessor",ReturnSalonsByProfessor)
 
-app.listen(port, ()=> console.log(`exampl app listening on port ${port}! the link is  http://127.0.0.1:5501/Frontend/screens/inicio_sesion.html `))
+app.listen(port, ()=> console.log(`exampl app listening on port ${port}! the link is  http://127.0.0.1:${port}/Frontend/screens/inicio_sesion.html`))
