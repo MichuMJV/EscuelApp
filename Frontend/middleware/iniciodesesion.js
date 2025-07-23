@@ -22,10 +22,10 @@ async function iniciodesesion(){
     localStorage.setItem('sesionEscuelApp', JSON.stringify(data.User[0]));
     console.log(data)
     let link = data.redirect;
-    let url = "http://127.0.0.1:5501/" + link;
+    let url = "http://127.0.0.1:5000/" + link;
     window.location.href=url
   } catch (error) {
-    alert("Error al iniciar sesión, revise sus credenciales o contacte al administrador")
+    alert("Error al iniciar sesión, revise sus credenciales o contacte al administrador ",error);
   }
 }
 
