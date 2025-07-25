@@ -2,7 +2,6 @@ const {Salon}=require("../models/Models.js")
 const {Usuario}=require("../models/Models.js")
 const {SalonEstudiante}=require("../models/Models.js")
 
-
 module.exports= async function Matricular(request,response){
     let body=request.body
 

@@ -69,7 +69,7 @@ form{
     gap: 2vw;
 }
 
-#inputbuscar{
+.inputbuscar{
     display: flex;
     justify-content: center;
     text-align: center;
@@ -86,7 +86,7 @@ form{
     justify-content: center;
     align-items: center;
     color: rgb(255, 255, 255);
-    width: 5vw;
+    width: fit-content;
     height: 5vh;
     border-radius: 1vw;
     border: 1vw;

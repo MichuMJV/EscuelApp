@@ -12,6 +12,7 @@ basededatos();
 // --- Controller Imports ---
 const GetSalonDetails = require("./controllers/GetSalonDetails.js");
 const GetTareasPorSalon = require('./controllers/GetTareasPorSalon.js');
+const getSalonesEstudiante = require("./controllers/getSalonesEstudiante.js");
 const GetTareaById = require('./controllers/GetTareaById.js');
 const GetTareasParaEstudiante = require('./controllers/GetTareasParaEstudiante.js');
 const DeleteUser = require("./controllers/DeleteUser.js");
@@ -82,6 +83,7 @@ app.post("/Escuelapp/Register", register);
 // GET Routes
 app.get("/Escuelapp/GetSalonDetails", GetSalonDetails);
 app.get('/Escuelapp/tareas', GetTareasPorSalon);
+app.get("/Escuelapp/salones-estudiante", getSalonesEstudiante);
 app.get("/Escuelapp/tarea_unica", GetTareaById);
 app.get("/Escuelapp/tareasestudiante", GetTareasParaEstudiante);
 app.get("/Escuelapp/ReturnApps", ReturnApps);
