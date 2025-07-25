@@ -24,7 +24,8 @@ const tareaSqueme= mongoose.Schema({
     Nombre: String,
     descripcion: String,
     doctarea:String,
-    fecha: Date
+    fecha: Date,
+    fechavencimiento: Date,
 })
 
 const tareaEstudianteSqueme= mongoose.Schema({

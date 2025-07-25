@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EscuelaApp🎓</title>
+    <title>EscuelaApp🎓 - Nueva Tarea</title>
     <link rel="stylesheet" href="../styles/HeadAndFoot.css">
     <link rel="stylesheet" href="../styles/defaultform.css">
 </head>
@@ -21,43 +21,51 @@
     <section>
         <div id="formu_father">
             <div id="Fatherbutton">
-                <button onclick="goBack()" id="sonbutton"></button>
+                <button onclick="goBack()" id="sonbutton" title="Volver a la página anterior"></button>
             </div>
             <h1 id="titulo-form">Nueva Tarea</h1>
-            <form action="">    
-                <span>
-                    <label for="ID_grupo">ID del grupo</label>
-                    <input class="inputtext" type="text" name="ID_grupo" id="ID_grupo">
+            <form id="nuevaTareaForm">
+                <span Style="display: none;">
+                    <label for="idGrupo">ID del grupo</label>
+                    <input class="inputtext" type="text" name="idGrupo" id="idGrupo" readonly>
                 </span>
                 
                 <span>
-                    <label for="Nombretarea">Nombre de la tarea</label>
-                    <input class="inputtext" type="text" name="Nombretarea" id="Nombretarea">
-                </span>              
-                <span>
-                    <label for="Descripcion">Descripción</label>
-                    <input class="inputtext" type="text" name="Descripcion" id="Descripcion">
+                    <label for="nombreTarea">Nombre de la tarea</label>
+                    <input class="inputtext" type="text" name="nombreTarea" id="nombreTarea" placeholder="Ej: Resumen del Capítulo 5">
                 </span>
+                
                 <span>
-                    <label for="Documento_de_referencia">Documento de referencia</label>
-                    <input class="inputtext" type="text" name="Documento_de_referencia" id="Documento_de_referencia">
-                </span> 
-                <input type="button" id="buttsubmit" value="Enviar">
+                    <label for="descripcion">Descripción</label>
+                    <input class="inputtext" type="text" name="descripcion" id="descripcion" placeholder="Ej: Realizar un mapa conceptual de una página">
+                </span>
+
+                <span>
+                    <label for="documentoReferencia">Documento de referencia (URL)</label>
+                    <input class="inputtext" type="text" name="documentoReferencia" id="documentoReferencia" placeholder="Ej: https://docs.google.com/document/...">
+                </span>
+
+                <span>
+                    <label for="fechavencimiento">Fecha de vencimiento</label>
+                    <input class="inputtext" type="datetime-local" name="fechavencimiento" id="fechavencimiento">
+                </span>
+
+                <input type="button" id="buttsubmit" value="Crear Tarea">
             </form>
         </div>
-    </span>
+    </section>
+    
     <footer>
-        <h2>CONTACTENOS</h1>
-        <h2>Avenida Universidad Tecnológica de Panamá,
-            Vía Puente Centenario, Campus Metropolitano
-            Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.</h2>
-        <h2>Telefono: (507) 317-2000</h2>
+        <h2>CONTÁCTENOS</h2>
+        <h2>Avenida Universidad Tecnológica de Panamá, Vía Puente Centenario...</h2>
+        <h2>Teléfono: (507) 317-2000</h2>
     </footer>
     <script>
         function goBack() {
-          window.history.back();
+            window.history.back();
         }
     </script>
+    <script src="../middleware/nuevatarea.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="..\styles\boton.js"></script>
     <script src="../middleware/pantallaprincipal.js"></script>

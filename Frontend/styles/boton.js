@@ -37,10 +37,6 @@ function redirigirPaginaAdmin() {
     window.location.href = "./homeAdmin.html";
 }
 
-function NuevaTarea() {
-    window.location.href = "./Nueva_tarea.html";
-}
-
 function abrirTareasProfe() {
     window.location.href = "./Tareas_profesor.html";
 }
