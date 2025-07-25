@@ -21,7 +21,7 @@ const salonSqueme= mongoose.Schema({
 
 const tareaSqueme= mongoose.Schema({
     idgrupo: mongoose.Schema.ObjectId,
-    Nombre: String,
+    nombre: String,
     descripcion: String,
     doctarea:String,
     fecha: Date,

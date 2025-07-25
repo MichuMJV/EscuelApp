@@ -12,6 +12,7 @@ basededatos();
 // --- Controller Imports ---
 const GetSalonDetails = require("./controllers/GetSalonDetails.js");
 const GetTareasPorSalon = require('./controllers/GetTareasPorSalon.js');
+const GetTareaById = require('./controllers/GetTareaById.js');
 const GetTareasParaEstudiante = require('./controllers/GetTareasParaEstudiante.js');
 const DeleteUser = require("./controllers/DeleteUser.js");
 const DeleteSalon = require("./controllers/DeleteSalon.js");
@@ -22,6 +23,7 @@ const Matricular = require("./controllers/Matricular.js");
 const modificarMatricula = require("./controllers/modificarMatricula.js");
 const NewApp = require("./controllers/NewApp.js");
 const UpdateApp = require("./controllers/UpdateApp.js");
+const UpdateTarea = require('./controllers/UpdateTarea.js');
 const NewSalon = require("./controllers/NewSalon.js");
 const NewTarea = require("./controllers/NewTarea.js");
 const register = require("./controllers/register.js");
@@ -61,6 +63,7 @@ app.delete("/Escuelapp/DeleteUser", DeleteUser);
 
 // PUT Routes
 app.put("/Escuelapp/modificarMatricula", modificarMatricula);
+app.put("/Escuelapp/UpdateTarea", UpdateTarea);
 app.put("/Escuelapp/NotaTarea", NotaTarea);
 app.put("/Escuelapp/nuevoRol", NuevoRol);
 app.put("/Escuelapp/UpdateApp", UpdateApp);
@@ -79,6 +82,7 @@ app.post("/Escuelapp/Register", register);
 // GET Routes
 app.get("/Escuelapp/GetSalonDetails", GetSalonDetails);
 app.get('/Escuelapp/tareas', GetTareasPorSalon);
+app.get("/Escuelapp/tarea_unica", GetTareaById);
 app.get("/Escuelapp/tareasestudiante", GetTareasParaEstudiante);
 app.get("/Escuelapp/ReturnApps", ReturnApps);
 app.get("/Escuelapp/AllSalones", ReturnAllSalons);

@@ -44,29 +44,31 @@
 
     </section>
 
+
     <dialog class="Modal" id="dialogo">
-        <span class="content">
+        <button class="close-button" onclick="document.getElementById('dialogo').close()">X</button>
+        <div class="content">
             <div class="task-header">
                 <div class="task-title">
-                    <input type="text" value="Tarea de matematicas">
+                    <input type="text" id="dialog_task_title">
                     <span>
-                        <h2>Vencimiento: </h2>
-                        <input type="datetime-local" name="" id="" class="datetime-input">
+                        <h2>Vencimiento:</h2>
+                        <input type="datetime-local" id="dialog_task_due_date" class="datetime-input">
                     </span>
                 </div>
             </div>
             <div class="task-details">
                 <div class="task-attachment">
-                    <h3>Agregar Detalles de la tarea aquí</h3>
-                    <input class="attachment-box" type="text" value="Esta tarea es una de muchas en camino">
+                    <h3>Descripción de la tarea</h3>
+                    <input class="attachment-box" type="text" id="dialog_task_description">
                 </div>
                 <div class="task-attachment">
-                    <h3>Agregar Documento de referencia aquí</h3>
-                    <input class="attachment-box" type="text" value="https://docs.google.com/document/u/2/d/1V3Ij58KP6UvF8RKNF0DTPIjMsIPMQqI6/edit?usp=docs_home&ths=true&rtpof=true">
+                    <h3>Documento de referencia (URL)</h3>
+                    <input class="attachment-box" type="text" id="dialog_task_reference">
                 </div>
             </div>
-            <button class="task-submit" onclick="enviarrespuesta()">Actualizar</button>
-        </span>
+            <button class="task-submit" onclick="actualizarTarea()">Actualizar</button>
+        </div>
     </dialog>
     
     <footer>

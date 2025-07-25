@@ -1,8 +1,9 @@
 // --- Inicia el proceso cuando la página se carga ---
 document.addEventListener('DOMContentLoaded', () => {
     loadSalonDetails();
+    const container = document.querySelector('.container_tareas');
+    container.addEventListener('click', handleTaskClick);
 });
-
 
 // --- Carga los detalles del encabezado del Salón/Materia ---
 async function loadSalonDetails() {
@@ -63,7 +64,7 @@ async function cargarTareas(idSalon) {
             const tareaHTML = `
                 <a class="Tareas" data-task-id="${tarea._id}">
                     <div id="link_tarea">
-                        <h4>Tarea</h4>
+                        <h4>${tarea.nombre}</h4>
                         <h4 class="trim">${tarea.descripcion}</h4>
                         <div class="contenedor_vencimiento">
                             <p>Vence:</p>
@@ -108,5 +109,82 @@ function NuevaTarea() {
     } else {
         // Si no hay ID, notificar al usuario que algo anda mal
         alert('Error: No se pudo identificar la materia para crear la tarea.');
+    }
+}
+
+async function handleTaskClick(event) {
+    const taskCard = event.target.closest('.Tareas');
+    if (!taskCard) return;
+
+    const taskId = taskCard.dataset.taskId;
+    const dialog = document.getElementById('dialogo');
+
+    try {
+        // Usamos el endpoint para buscar los detalles de la tarea
+        const response = await fetch(`http://127.0.0.1:5000/Escuelapp/tarea_unica?id=${taskId}`);
+        const data = await response.json();
+        if (!data.success) throw new Error(data.message);
+        
+        const tarea = data.tarea;
+
+        // LLENAMOS EL DIÁLOGO CON LA INFORMACIÓN OBTENIDA USANDO LOS NUEVOS IDs
+        document.getElementById('dialog_task_title').value = tarea.nombre;
+        document.getElementById('dialog_task_description').value = tarea.descripcion;
+        document.getElementById('dialog_task_reference').value = tarea.doctarea;
+        document.getElementById('dialog_task_due_date').value = formatISODateToInput(tarea.fechavencimiento);
+
+        // Guardamos el ID de la tarea actual en el diálogo para usarlo al actualizar   
+        dialog.dataset.currentTaskId = taskId;
+        
+        // MUESTRA EL DIÁLOGO
+        dialog.showModal();
+
+    } catch (error) {
+        console.error('Error al abrir la tarea:', error);
+        alert('No se pudieron cargar los detalles de la tarea.');
+    }
+}
+
+
+// --- NUEVA FUNCIÓN PARA EL BOTÓN "ACTUALIZAR" ---
+async function actualizarTarea() {
+    const dialog = document.getElementById('dialogo');
+    const taskId = dialog.dataset.currentTaskId;
+
+    if (!taskId) {
+        alert("Error: No se puede identificar la tarea a actualizar.");
+        return;
+    }
+
+    // Recolectamos los datos actualizados desde los campos del diálogo
+    const datosActualizados = {
+        nombre: document.getElementById('dialog_task_title').value,
+        descripcion: document.getElementById('dialog_task_description').value,
+        doctarea: document.getElementById('dialog_task_reference').value,
+        fechavencimiento: document.getElementById('dialog_task_due_date').value
+    };
+
+    try {
+        const response = await fetch(`http://127.0.0.1:5000/Escuelapp/UpdateTarea?id=${taskId}`, {
+            method: 'PUT', // Usamos el método PUT para actualizar
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datosActualizados)
+        });
+
+        const result = await response.json();
+
+        if (!result.success) throw new Error(result.message);
+
+        alert('¡Tarea actualizada correctamente!');
+        dialog.close(); // Cerramos el diálogo
+
+        // Refrescamos la lista de tareas para ver los cambios sin recargar la página
+        const urlParams = new URLSearchParams(window.location.search);
+        const idSalon = urlParams.get('id');
+        cargarTareas(idSalon);
+
+    } catch (error) {
+        console.error('Error al actualizar la tarea:', error);
+        alert('No se pudo actualizar la tarea.');
     }
 }
