@@ -21,15 +21,18 @@ const salonSqueme= mongoose.Schema({
 
 const tareaSqueme= mongoose.Schema({
     idgrupo: mongoose.Schema.ObjectId,
+    Nombre: String,
     descripcion: String,
-    doctarea:String
+    doctarea:String,
+    fecha: Date
 })
 
 const tareaEstudianteSqueme= mongoose.Schema({
     idtarea: mongoose.Schema.ObjectId,
     idestudiante: mongoose.Schema.ObjectId,
     nota: String,
-    docentrega:String
+    docentrega:String,
+    fechaentrega: Date
 })
 
 const salonEstudianteSqueme= mongoose.Schema({
