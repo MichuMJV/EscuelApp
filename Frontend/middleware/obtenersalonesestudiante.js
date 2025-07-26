@@ -4,35 +4,39 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function cargarSalones() {
-    // Obtenemos los datos del usuario logueado desde localStorage
-    const usuario = JSON.parse(localStorage.getItem('usuario'));
-    if (!usuario || !usuario._id) {
-        console.error("No se encontró información del estudiante.");
+    // Usamos la clave correcta que me confirmaste: 'sesionEscuelApp'
+    const sesion = JSON.parse(localStorage.getItem('sesionEscuelApp'));
+    
+    // Verificamos que la sesión y el _id existan
+    if (!sesion || !sesion._id) {
+        console.error("Error: No se encontró información de la sesión del estudiante en localStorage con la clave 'sesionEscuelApp'.");
         return;
     }
 
-    const idEstudiante = usuario._id;
+    const idEstudiante = sesion._id;
     const wrapper = document.querySelector('.wrapper');
-    wrapper.innerHTML = '<p>Cargando tus materias...</p>'; // Mensaje de carga
+    wrapper.innerHTML = '<p>Cargando tus materias...</p>';
 
     try {
         const response = await fetch(`/Escuelapp/salones-estudiante?idestudiante=${idEstudiante}`);
+
         const data = await response.json();
 
         if (!data.success) {
             throw new Error(data.message);
         }
 
-        wrapper.innerHTML = ''; // Limpiamos el contenedor
-
         if (data.salones.length === 0) {
             wrapper.innerHTML = '<p>No estás matriculado en ninguna materia.</p>';
             return;
         }
 
+        // --- LÓGICA DE RENDERIZADO MEJORADA ---
+        let salonesHTML = ''; // 1. Creamos una cadena vacía
+        
         data.salones.forEach(salon => {
-            // Creamos la tarjeta del salón dinámicamente
-            const salonHTML = `
+            // 2. Llenamos la cadena con el HTML de cada salón
+            salonesHTML += `
                 <a href="./Tareas_estudiante.html?id=${salon._id}" class="no-text-decoration">
                     <div class="contenedor_materia">
                         <img src="${salon.logo || '../Assets/materia.png'}" class="logo_materia" alt="Logo de la materia">
@@ -40,8 +44,10 @@ async function cargarSalones() {
                     </div>
                 </a>
             `;
-            wrapper.innerHTML += salonHTML;
         });
+        
+        // 3. Actualizamos el HTML del contenedor UNA SOLA VEZ al final del bucle
+        wrapper.innerHTML = salonesHTML;
 
     } catch (error) {
         console.error('Error al cargar los salones:', error);

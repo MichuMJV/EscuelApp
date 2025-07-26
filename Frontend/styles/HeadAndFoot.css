@@ -105,7 +105,7 @@ p{
     font-style: bold;
     font-weight: 400;
     font-size: 3.5vh;
-    line-height: 1vh;
+    line-height: fit-content;
     padding: 0.2vw;
     color: #000000;
 }

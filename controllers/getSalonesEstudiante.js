@@ -1,4 +1,6 @@
 // controllers/getSalonesEstudiante.js
+
+// 1. CORRECCIÓN: Importamos el modelo 'Salon', no el nombre de la colección.
 const { SalonEstudiante, Salon } = require("../models/Models.js");
 const mongoose = require("mongoose");
 
@@ -13,29 +15,24 @@ module.exports = async function getSalonesEstudiante(request, response) {
     }
 
     try {
-        // Usamos aggregate para "unir" las matrículas con los detalles del salón
         const salones = await SalonEstudiante.aggregate([
-            // 1. Encontrar todas las matrículas del estudiante
             {
                 $match: {
-                    idestudiante: new mongoose.Types.ObjectId(idestudiante),
-                    status: "Matriculado" // Opcional: solo mostrar salones donde esté activo
+                    idestudiante: new mongoose.Types.ObjectId(idestudiante)
                 }
             },
-            // 2. Unir con la colección 'salones' para obtener los detalles
             {
                 $lookup: {
-                    from: "salonesescuela", // Nombre de la colección de salones en la BD
+                    // 2. CORRECCIÓN: El nombre de la colección debe ser EXACTO, en minúsculas.
+                    from: "salonesescuela",
                     localField: "idgrupo",
                     foreignField: "_id",
                     as: "salonDetails"
                 }
             },
-            // 3. Descomprimir el array resultante de 'salonDetails'
             {
                 $unwind: "$salonDetails"
             },
-            // 4. Reemplazar la raíz del documento para devolver solo los detalles del salón
             {
                 $replaceRoot: { newRoot: "$salonDetails" }
             }
