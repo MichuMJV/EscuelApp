@@ -1,8 +1,4 @@
-// controllers/getSalonesEstudiante.js
-
-// 1. CORRECCIÓN: Importamos el modelo 'Salon', no el nombre de la colección.
 const { SalonEstudiante, Salon } = require("../models/Models.js");
-const mongoose = require("mongoose");
 
 module.exports = async function getSalonesEstudiante(request, response) {
     const { idestudiante } = request.query;
@@ -14,30 +10,35 @@ module.exports = async function getSalonesEstudiante(request, response) {
         });
     }
 
-    try {
-        const salones = await SalonEstudiante.aggregate([
-            {
-                $match: {
-                    idestudiante: new mongoose.Types.ObjectId(idestudiante)
-                }
-            },
-            {
-                $lookup: {
-                    // 2. CORRECCIÓN: El nombre de la colección debe ser EXACTO, en minúsculas.
-                    from: "salonesescuela",
-                    localField: "idgrupo",
-                    foreignField: "_id",
-                    as: "salonDetails"
-                }
-            },
-            {
-                $unwind: "$salonDetails"
-            },
-            {
-                $replaceRoot: { newRoot: "$salonDetails" }
-            }
-        ]);
+    console.log(`\n--- Iniciando búsqueda para estudiante: ${idestudiante} ---`);
 
+    try {
+        // PASO 1: Buscar en SalonEstudiante todos los salones a los que pertenece el estudiante.
+        const matriculas = await SalonEstudiante.find({ idestudiante: idestudiante }).lean();
+        
+        console.log("Paso 1: Matrículas encontradas:", matriculas);
+
+        // Si no se encuentra ninguna matrícula, detenemos el proceso aquí.
+        if (!matriculas || matriculas.length === 0) {
+            console.log("--> Conclusión: No se encontraron matrículas. El proceso termina aquí.");
+            return response.json({ success: true, salones: [] });
+        }
+
+        // PASO 2: Con el ID de grupo de esas matrículas...
+        // Extraemos solo los IDs de los grupos en un nuevo arreglo.
+        const idGrupos = matriculas.map(m => m.idgrupo);
+        
+        console.log("Paso 2: IDs de grupo extraídos:", idGrupos);
+
+        // PASO 3: ...busque dentro de la tabla salonesEscuela la información de los salones específicos.
+        const salones = await Salon.find({
+            '_id': { $in: idGrupos }
+        });
+
+        console.log("Paso 3: Detalles de salones encontrados:", salones);
+        console.log("--- Búsqueda finalizada. ---\n");
+
+        // PASO 4: Devolver esa información.
         return response.status(200).json({
             success: true,
             salones: salones
