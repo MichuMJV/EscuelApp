@@ -1,203 +1,225 @@
-#contenido{
-    position: fixed;
-    top: 16vh;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: 3vh;
-    height: 72vh;
-    width: 100vw;
-    overflow-y: scroll;
-    overflow-x: none;
+#contenido{ 
+    position: fixed; 
+    top: 16vh; 
+    display: flex; 
+    align-items: center; 
+    flex-direction: column; 
+    gap: 3vh; 
+    height: 72vh; 
+    width: 100vw; 
+    overflow-y: scroll; 
+    overflow-x: none; 
+} 
+
+#link_tarea{ 
+    display: flex; 
+    flex-direction: row; 
+} 
+
+#botondashboard,#botonaddtarea{ 
+    border-radius: 1vw; 
+    text-align: center; 
+    text-decoration: none; 
+    font-size: 6vh; 
+    cursor: pointer; 
+    height: fit-content; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    background: linear-gradient(90deg, #66A6FF 0%, #ADCFFF 100%); 
+    color: white; 
+} 
+
+#botondashboard:hover,#botonaddtarea:hover{ 
+    box-shadow: 0 0.5vw rgb(182, 182, 182); 
+} 
+
+#botondashboard:active,#botonaddtarea:active{ 
+    background: linear-gradient(0deg, #66A6FF 0%, #ADCFFF 100%);; 
+    box-shadow: 0 0.5vw rgb(0, 0, 0); 
+    transform: translateY(4px); 
+} 
+
+
+#botondashboard{ 
+    width: 90vw; 
+} 
+
+.Tareas { 
+    /* Auto layout */ 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    padding: 0; 
+    gap: 1.5vw; 
+    border-radius: 2.5vw;
+
+    width: 90vw; 
+    height: 10vh; 
+
+    /* Sombra buena */ 
+    filter: drop-shadow(-0.75vw 1.5vh 1.5vw rgba(0, 0, 0, 0.4)); 
+
+    /* Inside auto layout */ 
+    flex: none; 
+    order: 0; 
+    flex-grow: 0; 
+} 
+
+.Tareas #link_tarea { 
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-between; 
+    align-items: center; 
+    width: 90vw; 
+    height: 10vh; 
+    background: #FFFFFF; 
+    border-radius: 2.5vw; 
+    padding: 0 2vw; 
+} 
+
+#imagen { 
+    display: flex; 
+    width: 18.75vw; 
+    height: 18.75vw; 
+
+    /* Materia */ 
+    filter: drop-shadow(-3.75vw 2.5vw 2.5vw rgba(0, 0, 0, 0.01)) drop-shadow(-2.1vw 1.4vw 1.75vw rgba(0, 0, 0, 0.05)) drop-shadow(-0.96vw 0.6vw 1.425vw rgba(0, 0, 0, 0.09)) drop-shadow(-0.24vw 0.18vw 0.625vw rgba(0, 0, 0, 0.1)) drop-shadow(0 0 0 rgba(0, 0, 0, 0.1)); 
+    border-radius: 50%; 
+
+    /* Inside auto layout */ 
+    flex: none; 
+    order: 0; 
+    flex-grow: 0; 
+} 
+
+/* Media queries para dispositivos móviles */ 
+@media (max-width: 768px) { 
+    .Tareas { 
+        width: 90vw; 
+        height: 15vh; 
+        gap: 2vw; 
+    } 
+
+    .Tareas #link_tarea { 
+        width: 90vw; 
+        height: 15vh; 
+        border-radius: 3vw; 
+        padding: 0 4vw; 
+    } 
+
+    #imagen { 
+        width: 25vw; 
+        height: 25vw; 
+        border-radius: 50%; 
+    } 
+} 
+
+
+
+#headingmateria{ 
+    display: flex; 
+    flex-direction: row; 
+    align-items: center; 
+    gap: 2vh; 
+    width: 90vw; 
+    justify-content: space-between; 
+} 
+
+#headingmateria h1{ 
+    font-family:Arial, Helvetica, sans-serif; 
+    font-size: 3vw; 
+    font-weight: 900; 
+    color: #000000; 
+    margin: 0; 
+} 
+
+#headingmateria h2{ 
+    font-family:Arial, Helvetica, sans-serif; 
+    font-size: 2vw; 
+    font-weight: 900; 
+    color: #000e2b; 
+    margin: 0; 
+} 
+
+
+.container_tareas{ 
+    display: flex; 
+    flex-direction: column; 
+    gap: 2vw; 
+    padding-bottom: 2vw; 
+} 
+
+.contenedor_vencimiento{ 
+    display: flex; 
+    flex-direction: row; 
+    gap: 1vh; 
+    align-items: center; 
+    justify-content: center;   
+} 
+
+h4{ 
+    font-family: 'Avenir Next LT Pro', sans-serif; 
+    font-size: 1.5vw; 
+    font-weight: 400; 
+    color: #000000; 
+    margin: 0; 
+} 
+
+#boton_atras_home{ 
+    display: flex; 
+    justify-content: center; 
+    border: 0px; 
+    padding: 0px; 
+    border-radius: 50vw; 
+    text-align: center; 
+    text-decoration: none; 
+    cursor: pointer; 
+} 
+
+#boton_atras_home:hover{ 
+    box-shadow: 0 0.5vw #6ac8ff; 
+    transform: translateY(3px); 
+} 
+
+#boton_atras_home:active{ 
+    background: linear-gradient(0deg, #66A6FF 0%, #ADCFFF 100%);; 
+    box-shadow: 0 0.5vw rgb(0, 0, 0); 
+    transform: translateY(5px); 
+} 
+
+.datetime-input { 
+    font-family: 'Avenir Next LT Pro', sans-serif; 
+    font-size: 1.5vw; 
+    font-weight: 400; 
+    color: #000000; 
+    margin: 0; 
+    box-shadow: 0.15vw 0.15vw 0.3vw 0.05vw rgba(0, 0, 0, 0.3); 
+    width: 20vw; /* Ancho relativo */ 
+    height: 5vh; /* Altura relativa */ 
+    border-radius: 3vw; 
+    border: 0; 
+  }
+
+.Tareas.completada { 
+    box-shadow: -11px 0 0 0 #28a745; /* Verde */
+}
+.Tareas.vencida { 
+    box-shadow: -11px 0 0 0 #dc3545; /* Rojo */
+}
+.Tareas.pendiente { 
+    box-shadow: -11px 0 0 0 #f0f0f0; /* Blanco/Gris */
 }
 
-#link_tarea{
-    display: flex;
-    flex-direction: row;
-}
-
-#botondashboard,#botonaddtarea{
-    border-radius: 1vw;
-    text-align: center;
-    text-decoration: none;
-    font-size: 6vh;
-    cursor: pointer;
-    height: fit-content;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(90deg, #66A6FF 0%, #ADCFFF 100%);
-    color: white;
-}
-
-#botondashboard:hover,#botonaddtarea:hover{
-    box-shadow: 0 0.5vw rgb(182, 182, 182);
-}
-
-#botondashboard:active,#botonaddtarea:active{
-    background: linear-gradient(0deg, #66A6FF 0%, #ADCFFF 100%);;
-    box-shadow: 0 0.5vw rgb(0, 0, 0);
-    transform: translateY(4px);
-}
-
-
-#botondashboard{
-    width: 90vw;
-}
-
-.Tareas {
-    /* Auto layout */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0;
-    gap: 1.5vw;
-
-    width: 90vw;
-    height: 10vh;
-
-    /* Sombra buena */
-    filter: drop-shadow(-0.75vw 1.5vh 1.5vw rgba(0, 0, 0, 0.4));
-
-    /* Inside auto layout */
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-}
-
-.Tareas #link_tarea {
+.Tareas .link_tarea {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 90vw;
-    height: 10vh;
+    width: 100%;
+    height: 100%;
     background: #FFFFFF;
     border-radius: 2.5vw;
     padding: 0 2vw;
+    box-sizing: border-box; /* Importante para que el padding no desborde */
 }
-
-#imagen {
-    display: flex;
-    width: 18.75vw;
-    height: 18.75vw;
-
-    /* Materia */
-    background: url(image.png);
-    filter: drop-shadow(-3.75vw 2.5vw 2.5vw rgba(0, 0, 0, 0.01)) drop-shadow(-2.1vw 1.4vw 1.75vw rgba(0, 0, 0, 0.05)) drop-shadow(-0.96vw 0.6vw 1.425vw rgba(0, 0, 0, 0.09)) drop-shadow(-0.24vw 0.18vw 0.625vw rgba(0, 0, 0, 0.1)) drop-shadow(0 0 0 rgba(0, 0, 0, 0.1));
-    border-radius: 50%;
-
-    /* Inside auto layout */
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-}
-
-/* Media queries para dispositivos móviles */
-@media (max-width: 768px) {
-    .Tareas {
-        width: 90vw;
-        height: 15vh;
-        gap: 2vw;
-    }
-
-    .Tareas #link_tarea {
-        width: 90vw;
-        height: 15vh;
-        border-radius: 3vw;
-        padding: 0 4vw;
-    }
-
-    #imagen {
-        width: 25vw;
-        height: 25vw;
-        border-radius: 50%;
-    }
-}
-
-
-
-#headingmateria{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 2vh;
-    width: 90vw;
-    justify-content: space-between;
-}
-
-#headingmateria h1{
-    font-family:Arial, Helvetica, sans-serif;
-    font-size: 3vw;
-    font-weight: 900;
-    color: #000000;
-    margin: 0;
-}
-
-#headingmateria h2{
-    font-family:Arial, Helvetica, sans-serif;
-    font-size: 2vw;
-    font-weight: 900;
-    color: #000e2b;
-    margin: 0;
-}
-
-
-.container_tareas{
-    display: flex;
-    flex-direction: column;
-    gap: 2vw;
-    padding-bottom: 2vw;
-}
-
-.contenedor_vencimiento{
-    display: flex;
-    flex-direction: row;
-    gap: 1vh;
-    align-items: center;
-    justify-content: center;   
-}
-
-h4{
-    font-family: 'Avenir Next LT Pro', sans-serif;
-    font-size: 1.5vw;
-    font-weight: 400;
-    color: #000000;
-    margin: 0;
-}
-
-#boton_atras_home{
-    display: flex;
-    justify-content: center;
-    border: 0px;
-    padding: 0px;
-    border-radius: 50vw;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-#boton_atras_home:hover{
-    box-shadow: 0 0.5vw #6ac8ff;
-    transform: translateY(3px);
-}
-
-#boton_atras_home:active{
-    background: linear-gradient(0deg, #66A6FF 0%, #ADCFFF 100%);;
-    box-shadow: 0 0.5vw rgb(0, 0, 0);
-    transform: translateY(5px);
-}
-
-.datetime-input {
-    font-family: 'Avenir Next LT Pro', sans-serif;
-    font-size: 1.5vw;
-    font-weight: 400;
-    color: #000000;
-    margin: 0;
-    box-shadow: 0.15vw 0.15vw 0.3vw 0.05vw rgba(0, 0, 0, 0.3);
-    width: 20vw; /* Ancho relativo */
-    height: 5vh; /* Altura relativa */
-    border-radius: 3vw; 
-    border: 0;
-  }
-  

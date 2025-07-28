@@ -1,35 +1,37 @@
-const {TareaEstudiante}=require("../models/Models.js")
-const {Usuario}=require("../models/Models.js")
+// controllers/EstudianteEntregaTarea.js
+const { TareaEstudiante } = require("../models/Models.js");
 
-module.exports= async function EstudianteEntregaTarea(request,response){
-    let body=request.body
+module.exports = async function EstudianteEntregaTarea(request, response) {
+    const { idtarea, idestudiante, docentrega } = request.body;
 
-    request.tarea=await Tarea.findOne({_id:request.query.tarea})
-
-    request.Estudiante=await Usuario.findOne({_id:request.query.Estudiante})
-
-    if(!request.grupo)
-        return response.json({success:false,message:"Este grupo no existe"})
-
-    if(!request.Estudiante)
-        return response.json({success:false,message:"Este Estudiante no existe"})
-
-    if(body.docentrega===undefined)
-        return response.json({success:false,message:"Debe subir el link del archivo"})
-
-    let data={
-        idtarea: request.tarea._id,
-        idestudiante: request.Estudiante._id,
-        nota: null,
-        docentrega:body.docentrega
+    if (!idtarea || !idestudiante || !docentrega) {
+        return response.status(400).json({ success: false, message: "Faltan datos para la entrega." });
     }
 
-    try{
-        const tareaData = new TareaEstudiante(data);
-        await tareaData.save()
-        return response.json({success:true,message:"Tarea guardada"})
-    }catch(error){
-        console.log(error)
-    }
+    try {
+        // Busca una entrega para esta tarea/estudiante. Si existe, la actualiza. Si no, la crea.
+        const entrega = await TareaEstudiante.findOneAndUpdate(
+            { idtarea: idtarea, idestudiante: idestudiante }, // El filtro para buscar
+            { 
+                $set: { 
+                    docentrega: docentrega,
+                    fechaentrega: new Date()
+                } 
+            }, // Los datos a actualizar o insertar
+            { 
+                new: true,    // Devuelve el documento ya actualizado
+                upsert: true  // Opción clave: Crea el documento si no existe
+            }
+        );
 
-}
+        return response.status(200).json({
+            success: true,
+            message: "Tarea entregada exitosamente.",
+            entrega: entrega
+        });
+
+    } catch (error) {
+        console.error("Error al entregar la tarea:", error);
+        return response.status(500).json({ success: false, message: "Error en el servidor." });
+    }
+};
