@@ -1,41 +1,214 @@
+/* --- Estilo Base del Modal --- */
 dialog.Modal {
-    border-radius: 3vh;
-    background-color: #f4f4f4;
-    padding: 4vw;
-    box-shadow: 2vh 2vh 4vh rgba(0, 0, 0, 0.2);
-    width: 80vw;
-    max-width: 90vw;
+    border-radius: 16px; /* Unidades fijas se ven mejor que relativas para bordes */
+    background-color: #ffffff;
+    padding: 2rem; /* Usamos rem para un espaciado consistente */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 90vw;
+    max-width: 600px; /* Un ancho máximo para pantallas grandes */
+    border: none;
+    position: relative; /* Necesario para posicionar el botón de cierre */
 }
 
+.Modal::backdrop {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px); /* Efecto moderno de desenfoque */
+}
+
+/* Botón para cerrar el modal */
+.close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background-color: #e9ecef;
+    color: #495057;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.close-button:hover {
+    background-color: #dee2e6;
+}
+
+/* --- Contenido Interno del Modal --- */
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Estira los elementos para que ocupen el ancho */
+    gap: 1.5rem; /* Espaciado consistente entre secciones */
+    /* gap: 3vh; */
+}
+
+/* --- Cabecera: Título y Nota --- */
+.task-header {
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos se apilen en pantallas pequeñas */
+    justify-content: space-between;
+    align-items: baseline; /* Alinea por la base del texto */
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 1rem;
+    gap: 1rem;
+    /* margin-bottom: 2vh; */
+    /* flex-direction: row; */
+    /* gap: 30vw; */
+}
+
+.task-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    /* align-items: center; */
+    /* justify-content: center; */
+    /* width: max-content; */
+    /* gap: 3vh; */
+    /* margin-bottom: 2vh; */
+}
+
+.task-title span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6c757d;
+}
+
+/* --- Detalles: Referencia y Entrega --- */
+.task-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    /* align-items: center; */
+    /* justify-content: center ; */
+    /* width: 100%; */
+    /* gap: 2vh; */
+}
+
+.task-reference, .task-attachment, .task-note {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+
+/* --- Tipografía Grande y Clara --- */
+/* Comentamos las reglas anteriores para unificarlas */
+/*
+.task-title h1, .task-note h2, .task-title h2, .task-attachment h3 {
+    display: flex;
+    justify-content: center;
+    font-size: 5vh;
+    margin: 0;
+}
+*/
+
+#dialog_task_title {
+    font-size: 2rem; /* Tamaño grande y fijo para el título */
+    color: #212529;
+    margin: 0;
+    line-height: 1.2;
+}
+
+#dialog_task_grade {
+    font-size: 1.8rem; /* Tamaño grande para la nota */
+    color: #007bff; /* Un azul primario */
+    margin: 0;
+    font-weight: bold;
+    text-align: right;
+}
+
+.task-title h2, .task-attachment h3 {
+    font-size: 1rem; /* Etiquetas más pequeñas pero legibles */
+    color: #6c757d; /* Un gris sutil para las etiquetas */
+    margin: 0;
+    font-weight: normal;
+}
+
+#dialog_reference_link {
+    font-size: 1.1rem;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+#dialog_reference_link:hover {
+    text-decoration: underline;
+}
+
+/* --- Campos de Entrada y Botón de Envío --- */
+.attachment-box {
+    padding: 0.8rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    width: 100%;
+    box-sizing: border-box; /* Importante */
+    font-size: 1.1rem;
+}
+
+.attachment-box:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.task-submit {
+    padding: 0.8rem 1.5rem;
+    background: #007bff;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    align-self: flex-end; /* Alinea el botón a la derecha */
+    transition: background-color 0.2s;
+    /* margin-top: 2vh; */
+}
+
+.task-submit:hover {
+    background: #0056b3;
+}
+
+
+/* --- Media Query para Móviles --- */
+@media (max-width: 768px) {
+    dialog.Modal {
+        width: 90vw;
+        padding: 1.5rem;
+    }
+
+    .task-header {
+        flex-direction: column; /* Apila el título y la nota */
+        align-items: flex-start; /* Alinea todo a la izquierda */
+        gap: 0.5rem;
+    }
+
+    #dialog_task_grade {
+        text-align: left; /* Alinea la nota a la izquierda en móvil */
+    }
+
+    .task-submit {
+        align-self: stretch; /* El botón ocupa todo el ancho */
+    }
+}
+
+
+/* --- Estilos no utilizados o redundantes (comentados como pediste) --- */
+/*
 .trim {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 25ch; /* Número máximo de caracteres permitidos */
-  }
-  
-
-.task-attachment{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 0.8vh;
+    max-width: 25ch;
 }
-
-.content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3vh;
-}
-
-.Modal::backdrop {
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.task-note,
-.task-details {
+.task-note {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,50 +216,8 @@ dialog.Modal {
     width: 100%;
     gap: 2vh;
 }
-
-.task-header {
-    display: flex;
-    margin-bottom: 2vh;
-    flex-direction: row;
-    gap: 30vw;
-}
-
-.task-title{
-    overflow: visible;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: max-content;
-    gap: 3vh;
-    margin-bottom: 2vh;
-}
-
-.task-title span{
-    display: flex;
-    flex-direction: row;
-}
-
-.task-title h1 {
-    color: #e74c3c;
-}
-
-
-.task-note h2 {
-    color: #3498db;
-    font-size: 7vh;
-}
-
-.task-title h1,
-.task-note h2,
-.task-title h2,
-.task-attachment h3 {
-    display: flex;
-    justify-content: center;
-    font-size: 5vh;
-    margin: 0;
-}
-
+.task-title h1 { color: #e74c3c; }
+.task-note h2 { color: #3498db; font-size: 7vh; }
 .task-reference #h3{
     display: flex;
     justify-content: center;
@@ -95,28 +226,8 @@ dialog.Modal {
     margin-bottom: 2vh;
     text-decoration-line: underline;
 }
-
-
-
-.task-attachment h3, .task-attachment h3 {
-    color: #27ae60;
-}
-
-.task-details {
-    margin-bottom: 4vh;
-}
-
-.attachment-box {
-    padding: 1vh;
-    background: #fff;
-    border-radius: 2vh;
-    border: 0.3vh solid #e67e22;
-    width: 100%;
-    max-width: 80vw;
-}
-
-input[type="text"],
-textarea {
+.task-attachment h3, .task-attachment h3 { color: #27ae60; }
+input[type="text"], textarea {
     width: 100%;
     padding: 2vh;
     border: 0.3vh solid #ccc;
@@ -124,33 +235,4 @@ textarea {
     margin-bottom: 2vh;
     font-size: 4vh;
 }
-
-.task-submit {
-    padding: 2vh 5vw;
-    background: #f39c12;
-    border-radius: 2vh;
-    border: none;
-    font-size: 4vh;
-    color: white;
-    cursor: pointer;
-    margin-top: 2vh;
-}
-
-.task-submit:hover {
-    background: #d35400;
-}
-
-@media (max-width: 768px) {
-    dialog.Modal {
-        width: 80vw;
-        padding: 5vw;
-    }
-
-    .task-title h1,
-    .task-title h2,
-    .task-note h2,
-    .task-reference h3,
-    .task-attachment h3 {
-        font-size: 4vh;
-    }
-}
+*/
