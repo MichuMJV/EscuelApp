@@ -1,69 +1,48 @@
-const { Tarea, Salon } = require("../models/Models.js");
-const mongoose = require("mongoose"); // Necesitamos mongoose para convertir strings a ObjectId
+const { Tarea, TareaEstudiante } = require("../models/Models.js");
+const mongoose = require("mongoose");
 
 module.exports = async function GetTareasParaEstudiante(request, response) {
-    // Obtenemos el ID del salón Y el ID del estudiante
     const { idgrupo, idestudiante } = request.query;
 
-    // Verificamos que se hayan enviado ambos IDs
     if (!idgrupo || !idestudiante) {
         return response.status(400).json({
             success: false,
-            message: "Se requiere el ID del salón y del estudiante."
+            message: "Se requiere el ID del salón y del estudiante.",
         });
     }
 
     try {
-        // Verificamos que el salón exista
-        const salonExiste = await Salon.findById(idgrupo);
-        if (!salonExiste) {
-            return response.status(404).json({ success: false, message: "El salón no fue encontrado." });
+        // PASO 1: Buscar todas las tareas que pertenecen al salón.
+        const tareasDelSalon = await Tarea.find({ idgrupo: idgrupo }).lean();
+
+        if (tareasDelSalon.length === 0) {
+            return response.json({ success: true, tareas: [] });
         }
 
-        // AGGREGATION: La magia para unir las colecciones
-        const tareasConNotas = await Tarea.aggregate([
-            // 1. Encontrar todas las tareas que pertenecen al salón (idgrupo)
-            {
-                $match: {
-                    idgrupo: new mongoose.Types.ObjectId(idgrupo)
-                }
-            },
-            // 2. Unir (lookup) con la colección TareaEstudiante
-            {
-                $lookup: {
-                    from: "tareasestudianteescuela", // Nombre de la colección en la DB
-                    let: { tarea_id: "$_id" }, // Variable local para el id de la tarea actual
-                    pipeline: [
-                        {
-                            // Buscamos una coincidencia donde el id de la tarea Y el id del estudiante sean correctos
-                            $match: {
-                                $expr: {
-                                    $and: [
-                                        { $eq: ["$idtarea", "$$tarea_id"] },
-                                        { $eq: ["$idestudiante", new mongoose.Types.ObjectId(idestudiante)] }
-                                    ]
-                                }
-                            }
-                        }
-                    ],
-                    as: "miAsignacion" // El resultado de la unión se guardará aquí
-                }
-            },
-            // 3. Aplanar el resultado para que sea más fácil de usar en el frontend
-            {
-                $addFields: {
-                    miAsignacion: { $arrayElemAt: ["$miAsignacion", 0] }
-                }
-            }
-        ]);
+        const resultadoFinal = [];
+
+        // PASO 2: Usar un bucle simple para procesar cada tarea secuencialmente.
+        for (const tarea of tareasDelSalon) {
+            
+
+            // PASO 3: Por cada tarea, hacer una búsqueda simple de su entrega.
+            const asignacion = await TareaEstudiante.findOne({
+                idtarea: tarea._id,
+                idestudiante: idestudiante
+            }).lean();
+
+
+            // PASO 4: Unir la tarea con su asignación (que será 'null' si no se encontró).
+            tarea.miAsignacion = asignacion;
+            resultadoFinal.push(tarea);
+        }
 
         return response.status(200).json({
             success: true,
-            tareas: tareasConNotas
+            tareas: resultadoFinal
         });
 
     } catch (error) {
-        console.error("Error al obtener las tareas para el estudiante:", error);
         return response.status(500).json({
             success: false,
             message: "Ocurrió un error en el servidor."

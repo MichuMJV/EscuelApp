@@ -36,7 +36,7 @@ async function cargarMisTareas(idSalon, idEstudiante) {
     container.innerHTML = '<h4>Cargando tareas...</h4>';
 
     try {
-        const response = await fetch(`/Escuelapp/tareasestudiante?idgrupo=${idSalon}&idestudiante=${idEstudiante}`);
+        const response = await fetch(`/Escuelapp/GetTareasParaEstudiante?idgrupo=${idSalon}&idestudiante=${idEstudiante}`);
         const data = await response.json();
         if (!data.success) throw new Error(data.message);
 

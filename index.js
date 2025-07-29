@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const path = require("path"); // Import the 'path' module
+const path = require("path");
 
 const basededatos = require("./config/db.js");
 const port = 5000;
@@ -47,13 +47,7 @@ const UpdateSalon = require("./controllers/UpdateSalon.js");
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
-
-// --- FIX: Serve Static Files ---
-// This line tells Express to serve any files from the 'Frontend' directory.
-// The 'path.join' is used to create a reliable path regardless of the operating system.
-// This assumes your 'Frontend' folder is in the same directory as this server file.
 app.use(express.static(path.join(__dirname, 'Frontend')));
-
 
 // --- API Routes ---
 
@@ -85,7 +79,7 @@ app.get("/Escuelapp/GetSalonDetails", GetSalonDetails);
 app.get('/Escuelapp/tareas', GetTareasPorSalon);
 app.get("/Escuelapp/salones-estudiante", getSalonesEstudiante);
 app.get("/Escuelapp/tarea_unica", GetTareaById);
-app.get("/Escuelapp/tareasestudiante", GetTareasParaEstudiante);
+app.get("/Escuelapp/GetTareasParaEstudiante", GetTareasParaEstudiante);
 app.get("/Escuelapp/ReturnApps", ReturnApps);
 app.get("/Escuelapp/AllSalones", ReturnAllSalons);
 app.get("/Escuelapp/returnEstudiantesDeGrupo", returnMatricula);
@@ -97,9 +91,7 @@ app.get("/Escuelapp/ReturnSalonsByCodSalon", ReturnSalonsByCodSalon);
 app.get("/Escuelapp/ReturnSalonsByGrado", ReturnSalonsByGrado);
 app.get("/Escuelapp/ReturnSalonsByProfessor", ReturnSalonsByProfessor);
 
-
 // --- Start Server ---
 app.listen(port, () => {
-    // The URL is now corrected. Because 'Frontend' is the static root, you don't include it in the path.
-    console.log(`Server listening on port ${port}! The link is http://127.0.0.1:${port}/screens/inicio_sesion.html`);
+    console.log(`http://127.0.0.1:${port}/screens/inicio_sesion.html`);
 });
