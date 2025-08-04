@@ -25,6 +25,10 @@ function redirigirPaginaEstudiante() {
     window.location.href = "./homeEstudiante.html";
 }
 
+function abrirdashboardadmin() {
+    window.location.href = "./admin-dashboard.html";
+}
+
 function VerUsuarios() {
     window.location.href = "./UsuariosActuales.html";
 }

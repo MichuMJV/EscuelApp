@@ -10,6 +10,7 @@ const port = 5000;
 basededatos();
 
 // --- Controller Imports ---
+const getAdminDashboardData = require("./controllers/getAdminDashboardData.js");
 const getDashboardData = require("./controllers/getDashboardData.js");
 const updateNota = require("./controllers/updateNota.js");
 const GetSalonDetails = require("./controllers/GetSalonDetails.js");
@@ -30,7 +31,6 @@ const UpdateTarea = require('./controllers/UpdateTarea.js');
 const NewSalon = require("./controllers/NewSalon.js");
 const NewTarea = require("./controllers/NewTarea.js");
 const register = require("./controllers/register.js");
-const NotaTarea = require("./controllers/NotaTarea.js");
 const returnMatricula = require("./controllers/returnMatricula.js");
 const returnStudentClasses = require("./controllers/returnStudentClasses.js");
 const returnTeachersSalon = require("./controllers/returnTeachersSalon.js");
@@ -62,7 +62,6 @@ app.delete("/Escuelapp/DeleteUser", DeleteUser);
 app.put("/Escuelapp/update-nota", updateNota);
 app.put("/Escuelapp/modificarMatricula", modificarMatricula);
 app.put("/Escuelapp/UpdateTarea", UpdateTarea);
-app.put("/Escuelapp/NotaTarea", NotaTarea);
 app.put("/Escuelapp/nuevoRol", NuevoRol);
 app.put("/Escuelapp/UpdateApp", UpdateApp);
 app.put("/Escuelapp/UpdateUsers", UpdateUsers);
@@ -78,6 +77,7 @@ app.post("/Escuelapp/NewTarea", NewTarea);
 app.post("/Escuelapp/Register", register);
 
 // GET Routes
+app.get("/Escuelapp/admin-dashboard-data", getAdminDashboardData);
 app.get("/Escuelapp/dashboard-data", getDashboardData);
 app.get("/Escuelapp/GetSalonDetails", GetSalonDetails);
 app.get('/Escuelapp/tareas', GetTareasPorSalon);

@@ -68,35 +68,53 @@ document.addEventListener('DOMContentLoaded', () => {
     filterStudent.addEventListener('keyup', applyFilters);
     filterTask.addEventListener('keyup', applyFilters);
 
-    // --- LÓGICA PARA GUARDAR NOTA (CON DELEGACIÓN DE EVENTOS) ---
-    tbody.addEventListener('click', async (event) => {
-        if (event.target.classList.contains('save-button')) {
-            const button = event.target;
-            const idEntrega = button.dataset.id;
-            const input = document.querySelector(`.nota-input[data-id="${idEntrega}"]`);
-            const nuevaNota = input.value;
-            
-            try {
-                const response = await fetch(`/Escuelapp/update-nota`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ idEntrega, nuevaNota })
-                });
-                const result = await response.json();
-                if (!result.success) throw new Error(result.message);
-
-                alert(result.message);
-                button.innerText = "Guardado ✓";
-                setTimeout(() => { button.innerText = "Guardar"; }, 2000);
-            } catch (error) {
-                console.error("Error al guardar la nota:", error);
-                alert("No se pudo guardar la nota.");
-            }
+// --- LÓGICA PARA GUARDAR NOTA (CORREGIDA) ---
+tbody.addEventListener('click', async (event) => {
+    // Solo reacciona si se hizo clic en un botón de 'Guardar'
+    if (event.target.classList.contains('save-button')) {
+        const button = event.target;
+        const idEntrega = button.dataset.id;
+        const input = document.querySelector(`.nota-input[data-id="${idEntrega}"]`);
+        const nuevaNota = input.value;
+        
+        // --- INICIO DE LA CORRECCIÓN ---
+        
+        // 1. Obtenemos la información del usuario actual (el calificador) desde localStorage
+        const sesion = JSON.parse(localStorage.getItem('sesionEscuelApp'));
+        
+        // 2. Verificamos que la sesión sea válida antes de continuar
+        if (!sesion || !sesion._id) {
+            alert("Error: Sesión de usuario no encontrada. Por favor, inicie sesión de nuevo.");
+            return;
         }
-    });
+        const idCalificador = sesion._id;
 
-    // Carga inicial de datos
-    cargarDashboard();
+        // --- FIN DE LA CORRECCIÓN ---
+        
+        try {
+            // Usamos la ruta correcta, que según tu index.js podría ser '/Escuelapp/NotaTarea'
+            const response = await fetch(`/Escuelapp/update-nota`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                // 3. Añadimos el 'idCalificador' al cuerpo de la petición
+                body: JSON.stringify({ idEntrega, nuevaNota, idCalificador })
+            });
+            const result = await response.json();
+            if (!result.success) throw new Error(result.message);
+
+            alert(result.message);
+            button.innerText = "Guardado ✓";
+            setTimeout(() => { button.innerText = "Guardar"; }, 2000);
+
+        } catch (error) {
+            console.error("Error al guardar la nota:", error);
+            alert(`No se pudo guardar la nota: ${error.message}`);
+        }
+    }
+});
+
+// Carga inicial de datos
+cargarDashboard();
 });
 
 // Finalmente, en tu middleware/Tareasprofesor.js, haz que el botón del dashboard funcione:
