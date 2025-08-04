@@ -1,41 +1,59 @@
 const { Usuario } = require("../models/Models.js");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-module.exports = async function NewSesion(request, response) {
-    let body = request.body;
+module.exports = async function startSesion(request, response) {
+    const { cedula, contrasena } = request.body;
+
+    if (!cedula || !contrasena) {
+        return response.status(400).json({ success: false, message: "Se requiere cédula y contraseña." });
+    }
+
     try {
-        // Busca al usuario en la base de datos
-        request.user = await Usuario.find({ nombre: body.nombre });
+        // 1. BUSCAR AL USUARIO POR CÉDULA (es un identificador único, mejor que el nombre)
+        const user = await Usuario.findOne({ cedula: cedula });
 
-        // Comprueba si el usuario existe
-        if (request.user === null || request.user === undefined || request.user.length === 0) {
-            return response.status(404).json({ success: false, message: "Usuario no encontrado" });
+        // 2. USAR UN MENSAJE DE ERROR GENÉRICO para no revelar si el usuario existe o no
+        if (!user) {
+            return response.status(401).json({ success: false, message: "Credenciales inválidas." });
         }
 
-        // Comprueba si la contraseña es correcta
-        if (request.user[0].contrasena != body.contrasena) {
-            return response.status(401).json({ success: false, message: "Contraseña incorrecta" });
+        // 3. COMPARAR LA CONTRASEÑA USANDO BCRYPT
+        // bcrypt.compare toma la contraseña que envía el usuario y la compara de forma segura con el hash guardado en la DB.
+        const isMatch = await bcrypt.compare(contrasena, user.contrasena);
+
+        if (!isMatch) {
+            return response.status(401).json({ success: false, message: "Credenciales inválidas." });
         }
 
-        // Redirige según el rol del usuario
-        // --- CORRECCIÓN: Se ha eliminado "Frontend/" de las rutas de redirección ---
-        if (request.user[0].rol === 1) {
-            return response.json({ success: true, rol: "admin", redirect: "screens/homeAdmin.html", User: request.user });
-        }
+        // 4. SI TODO ES CORRECTO, CREAR UN JSON WEB TOKEN (JWT)
+        // El token contiene información no sensible (ID y rol) y está firmado digitalmente.
+        const payload = {
+            id: user._id,
+            rol: user.rol,
+            nombre: user.nombre
+        };
 
-        if (request.user[0].rol === 2) {
-            return response.json({ success: true, rol: "profesor", redirect: "screens/homeProfesor.html", User: request.user });
-        }
+        // 'process.env.JWT_SECRET' debería ser una clave secreta guardada en un archivo .env
+        // Por ahora, usaremos un texto de ejemplo. ¡Cámbialo en producción!
+        const secretKey = "ESTA_ES_UNA_CLAVE_SECRETA_DE_EJEMPLO_CAMBIALA";
+        const token = jwt.sign(payload, secretKey, { expiresIn: '8h' }); // El token expira en 8 horas
 
-        if (request.user[0].rol === 3) {
-            return response.json({ success: true, rol: "alumno", redirect: "screens/homeEstudiante.html", User: request.user });
-        }
-
-        // Si el usuario no tiene un rol válido
-        return response.status(403).json({ success: false, message: "Rol de usuario no válido" });
+        // 5. ENVIAR SOLO EL TOKEN Y LA RUTA DE REDIRECCIÓN (NUNCA LA CONTRASEÑA)
+        let redirectUrl = "";
+        if (user.rol === 1) redirectUrl = "screens/homeAdmin.html";
+        if (user.rol === 2) redirectUrl = "screens/homeProfesor.html";
+        if (user.rol === 3) redirectUrl = "screens/homeEstudiante.html";
+        
+        return response.json({
+            success: true,
+            message: "Inicio de sesión exitoso.",
+            token: token,
+            redirect: redirectUrl
+        });
 
     } catch (error) {
         console.error("Error en el inicio de sesión:", error);
-        // Devuelve un error genérico del servidor
-        return response.status(500).json({ success: false, message: "Error interno del servidor" });
+        return response.status(500).json({ success: false, message: "Error interno del servidor." });
     }
 };

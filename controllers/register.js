@@ -1,33 +1,44 @@
-const {Usuario}=require("../models/Models.js")
+const { Usuario } = require("../models/Models.js");
+const bcrypt = require("bcrypt");
 
-module.exports= async function NewUser(request,response){
-    let body=request.body
-    
-    let data={
-        rol: body.rol,
-        nombre: body.nombre,
-        cedula:body.cedula,
-        contrasena: body.contrasena
-    }
-    
-    request.user=await Usuario.findOne({
-        cedula: body.cedula
-    })
+module.exports = async function register(request, response) {
+    const { rol, nombre, cedula, contrasena } = request.body;
 
-    if(request.user!==null){
-        return response.json({success:false,message:"Este usuario ya existe"})
+    // 1. Validación de campos al inicio para ser más eficiente.
+    if (!rol || !nombre || !cedula || !contrasena) {
+        return response.status(400).json({ success: false, message: "No debe dejar vacío ningún campo." });
     }
 
-    if(body.nombre ==="" || body.rol==="" || body.cedula === "" || body.contrasena==="" ){
-        return response.json({success:false, message:"no debe dejar vacío ningun campo"})
+    try {
+        // 2. Se mantiene tu lógica para buscar si la cédula ya existe.
+        const usuarioExistente = await Usuario.findOne({ cedula: cedula });
+
+        if (usuarioExistente) {
+            return response.status(400).json({ success: false, message: "Este usuario ya existe." });
+        }
+
+        // 3. (EL CAMBIO MÁS IMPORTANTE) Se encripta la contraseña antes de guardarla.
+        const salt = await bcrypt.genSalt(10);
+        const contrasenaHasheada = await bcrypt.hash(contrasena, salt);
+
+        // 4. Se crea el nuevo usuario con la contraseña ya encriptada (hasheada).
+        const nuevoUsuario = new Usuario({
+            rol: rol,
+            nombre: nombre,
+            cedula: cedula,
+            contrasena: contrasenaHasheada // Se guarda el hash, no la contraseña original.
+        });
+
+        await nuevoUsuario.save();
+
+        // 5. Se envía una respuesta segura sin devolver información sensible.
+        return response.status(201).json({ 
+            success: true, 
+            message: "Usuario registrado exitosamente." 
+        });
+
+    } catch (error) {
+        console.error("Error en el registro:", error);
+        return response.status(500).json({ success: false, message: "Error interno del servidor." });
     }
-    
-    try{
-        const User = new Usuario(data);
-        await User.save()
-        response.json(User)
-    }catch(error){
-        console.log(error)
-    }
-    
-}
+};
