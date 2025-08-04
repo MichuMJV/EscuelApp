@@ -29,6 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- RENDERIZADO DE LA TABLA ---
     function renderTable(data) {
         tbody.innerHTML = '';
+
+        window.currentDashboardData = data;
+
         if (data.length === 0) {
             tbody.innerHTML = `<tr><td colspan="8">No se encontraron registros.</td></tr>`;
             return;
@@ -48,6 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             tbody.appendChild(row);
         });
+
+        
+        
     }
 
     // --- LÓGICA DE FILTROS ---

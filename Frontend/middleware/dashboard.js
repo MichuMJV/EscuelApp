@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- FUNCIÓN PARA "DIBUJAR" LA TABLA ---
     function renderTable(data) {
         tbody.innerHTML = '';
+
+        window.currentDashboardData = data;
+
         if (data.length === 0) {
             tbody.innerHTML = `<tr><td colspan="6">No se encontraron entregas.</td></tr>`;
             return;

@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard de Administrador</title>
     <link rel="stylesheet" href="../styles/HeadAndFoot.css">
-    <link rel="stylesheet" href="../styles/dashboard.css"> </head>
+    <link rel="stylesheet" href="../styles/tareas.css">
+    <link rel="stylesheet" href="../styles/dashboard.css">
+</head>
 <body>
     <header>
         <div id="headerlogo">
@@ -17,37 +19,47 @@
         <div><h2 id="username"></h2></div>
     </header>
 
-    <main class="dashboard-container">
-        <h1>Dashboard de Administrador</h1>
-        
-        <div class="filters">
-            <input type="text" id="filter-student" class="inputbuscar" placeholder="Filtrar por estudiante...">
-            <input type="text" id="filter-salon" class="inputbuscar" placeholder="Filtrar por salón...">
-            <input type="text" id="filter-materia" class="inputbuscar" placeholder="Filtrar por materia...">
-            <input type="text" id="filter-task" class="inputbuscar" placeholder="Filtrar por tarea...">
-        </div>
+    <section id="contenido">
+        <div class="dashboard-container">
+            <h1 id="dashboard-title">Dashboard de Administrador</h1>
+            
+            <div class="filters">
+                <input type="text" id="filter-student" class="inputbuscar" placeholder="Filtrar por estudiante...">
+                <input type="text" id="filter-salon" class="inputbuscar" placeholder="Filtrar por salón...">
+                <input type="text" id="filter-materia" class="inputbuscar" placeholder="Filtrar por materia...">
+                <input type="text" id="filter-task" class="inputbuscar" placeholder="Filtrar por tarea...">
+                <button id="download-button" class="save-button">Descargar</button>
+            </div>
 
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Estudiante</th>
-                        <th>Salón</th>
-                        <th>Materia</th>
-                        <th>Tarea</th>
-                        <th>Entrega</th>
-                        <th>Fecha de Entrega</th>
-                        <th>Calificación</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-                <tbody id="admin-dashboard-body">
-                    <tr><td colspan="8">Cargando datos...</td></tr>
-                </tbody>
-            </table>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Estudiante</th>
+                            <th>Salón</th>
+                            <th>Materia</th>
+                            <th>Tarea</th>
+                            <th>Entrega</th>
+                            <th>Fecha de Entrega</th>
+                            <th>Calificación</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-dashboard-body">
+                        <tr><td colspan="8">Cargando datos...</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </main>
+    </section>
     
+    <footer>
+        <h2>CONTÁCTENOS</h2>
+        <p>Avenida Universidad Tecnológica de Panamá, Vía Puente Centenario...</p>
+        <p>Teléfono: (507) 317-2000</p>
+    </footer>
+
     <script src="../middleware/admin-dashboard.js"></script>
+    <script src="../Assets/printresults.js"></script>
 </body>
 </html>
