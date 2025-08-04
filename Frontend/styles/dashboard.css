@@ -1,0 +1,102 @@
+/* --- Contenedor Principal del Dashboard --- */
+/* Este contenedor añade un poco de espacio dentro del layout de #contenido */
+.dashboard-container {
+    width: 90vw;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem 0;
+}
+
+#dashboard-title {
+    color: #002241;
+    font-size: 2.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #66A6FF;
+    margin: 0;
+}
+
+/* --- Filtros --- */
+.filters {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Reutilizamos y adaptamos el estilo .inputbuscar que ya tienes */
+.filters .inputbuscar {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+/* --- Estilo de la Tabla --- */
+.table-wrapper {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead tr {
+    /* Reutilizamos el gradiente del header para la cabecera de la tabla */
+    background: linear-gradient(90deg, #66A6FF 0%, #ADCFFF 100%);
+    color: #ffffff;
+}
+
+th, td {
+    padding: 0.8rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+td a {
+    color: #007bff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+td a:hover {
+    text-decoration: underline;
+}
+
+/* --- Elementos Interactivos en la Tabla --- */
+.nota-input {
+    width: 70px;
+    padding: 0.5rem;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.save-button {
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #28a745; /* Verde para 'Guardar' */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* --- Responsividad para Móviles --- */
+@media (max-width: 768px) {
+    .filters {
+        flex-direction: column;
+    }
+    
+    /* Permite que la tabla se deslice horizontalmente sin romper la página */
+    .table-wrapper {
+        overflow-x: auto;
+    }
+}

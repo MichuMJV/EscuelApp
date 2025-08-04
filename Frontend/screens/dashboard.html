@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Calificaciones</title>
+    <link rel="stylesheet" href="../styles/HeadAndFoot.css">
+    <link rel="stylesheet" href="../styles/tareas.css">
+    <link rel="stylesheet" href="../styles/dashboard.css">
+</head>
+<body>
+    <header>
+        <div id="headerlogo">
+            <button id="boton_atras_home" onclick="history.back()">
+                <img src="../Assets/luzh47ih_400x400.png" alt="" class="logo_colegio">
+            </button>
+            <h1>EscuelaApp</h1>
+        </div>
+        <div><h2 id="username"></h2></div>
+    </header>
+
+    <section id="contenido">
+        <div class="dashboard-container">
+            <h1 id="dashboard-title">Dashboard de Calificaciones</h1>
+            
+            <div class="filters">
+                <input type="text" id="filter-student" class="inputbuscar" placeholder="Filtrar por estudiante...">
+                <input type="text" id="filter-task" class="inputbuscar" placeholder="Filtrar por tarea...">
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Estudiante</th>
+                            <th>Tarea</th>
+                            <th>Documento Entregado</th>
+                            <th>Fecha de Entrega</th>
+                            <th>Calificación</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dashboard-body">
+                        <tr><td colspan="6">Cargando datos...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    
+    <script src="../middleware/dashboard.js"></script>
+</body>
+</html>

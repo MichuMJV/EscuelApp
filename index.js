@@ -10,6 +10,8 @@ const port = 5000;
 basededatos();
 
 // --- Controller Imports ---
+const getDashboardData = require("./controllers/getDashboardData.js");
+const updateNota = require("./controllers/updateNota.js");
 const GetSalonDetails = require("./controllers/GetSalonDetails.js");
 const GetTareasPorSalon = require('./controllers/GetTareasPorSalon.js');
 const getSalonesEstudiante = require("./controllers/getSalonesEstudiante.js");
@@ -57,6 +59,7 @@ app.delete("/Escuelapp/DeleteApp", DeleteApp);
 app.delete("/Escuelapp/DeleteUser", DeleteUser);
 
 // PUT Routes
+app.put("/Escuelapp/update-nota", updateNota);
 app.put("/Escuelapp/modificarMatricula", modificarMatricula);
 app.put("/Escuelapp/UpdateTarea", UpdateTarea);
 app.put("/Escuelapp/NotaTarea", NotaTarea);
@@ -75,6 +78,7 @@ app.post("/Escuelapp/NewTarea", NewTarea);
 app.post("/Escuelapp/Register", register);
 
 // GET Routes
+app.get("/Escuelapp/dashboard-data", getDashboardData);
 app.get("/Escuelapp/GetSalonDetails", GetSalonDetails);
 app.get('/Escuelapp/tareas', GetTareasPorSalon);
 app.get("/Escuelapp/salones-estudiante", getSalonesEstudiante);
