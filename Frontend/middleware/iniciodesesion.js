@@ -27,12 +27,15 @@ async function iniciodesesion() {
             throw new Error(data.message);
         }
 
+        console.log("Inicio de sesión exitoso:", data);
+
         // 2. GUARDAMOS SOLO EL TOKEN EN LOCALSTORAGE. Es más seguro.
         localStorage.setItem('token', data.token);
 
         // 3. Opcional pero recomendado: decodificar el token para guardar info no sensible.
         // Esto evita tener que pedir los datos del usuario de nuevo.
         const payload = JSON.parse(atob(data.token.split('.')[1]));
+
         localStorage.setItem('sesionEscuelApp', JSON.stringify(payload));
         
         // 4. Redirigimos usando la ruta relativa

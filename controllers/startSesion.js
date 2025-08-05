@@ -29,7 +29,7 @@ module.exports = async function startSesion(request, response) {
         // 4. SI TODO ES CORRECTO, CREAR UN JSON WEB TOKEN (JWT)
         // El token contiene información no sensible (ID y rol) y está firmado digitalmente.
         const payload = {
-            id: user._id,
+            _id: user._id,
             rol: user.rol,
             nombre: user.nombre
         };
