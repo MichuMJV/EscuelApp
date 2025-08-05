@@ -85,13 +85,27 @@ async function cargarTareas(idSalon) {
     }
 }
 
-// --- FUNCIÓN UTILITARIA: Para formatear la fecha de la base de datos ---
+/**
+ * Toma un string de fecha ISO (desde MongoDB en UTC) y lo convierte
+ * al formato 'YYYY-MM-DDTHH:MM' en la ZONA HORARIA LOCAL del navegador,
+ * que es el formato requerido por los inputs de tipo 'datetime-local'.
+ */
 function formatISODateToInput(isoDate) {
     if (!isoDate) return '';
-    // La fecha de MongoDB (ISO) se corta para que coincida con el formato YYYY-MM-DDTHH:MM
-    return isoDate.slice(0, 16);
-}
 
+    // 1. Creamos un objeto Date. JavaScript lo convierte automáticamente a la zona horaria local.
+    const date = new Date(isoDate);
+
+    // 2. Extraemos cada componente de la fecha ya en hora local.
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Se suma 1 porque los meses son de 0 a 11
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    // 3. Unimos los componentes en el formato correcto.
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
 // ... (todo el código que ya tienes en Tareasprofesor.js) ...
 
 // --- FUNCIÓN PARA IR A LA PÁGINA DE CREAR NUEVA TAREA ---

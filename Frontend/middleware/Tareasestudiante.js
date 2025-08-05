@@ -50,7 +50,7 @@ async function cargarMisTareas(idSalon, idEstudiante) {
 
         data.tareas.forEach(tarea => {
             let statusClass = 'pendiente'; // Estado por defecto
-            const fechaVencimiento = new Date(tarea.fechavencimiento);
+            const fechaVencimiento = formatISODateToInput(tarea.fechavencimiento);
 
             // Lógica para determinar el color
             if (tarea.miAsignacion && tarea.miAsignacion.docentrega) {
@@ -66,7 +66,7 @@ async function cargarMisTareas(idSalon, idEstudiante) {
                         <h4>Nota: ${tarea.miAsignacion ? (tarea.miAsignacion.nota || 'Sin calificar') : 'Sin calificar'}</h4>
                         <div class="contenedor_vencimiento">
                             <p>Vence:</p>
-                            <input type="datetime-local" value="${tarea.fechavencimiento.slice(0, 16)}" class="datetime-input" disabled>
+                            <input type="datetime-local" value="${fechaVencimiento}" class="datetime-input" disabled>
                         </div>
                     </div>
                 </a>
@@ -77,6 +77,28 @@ async function cargarMisTareas(idSalon, idEstudiante) {
         console.error("Error al cargar tareas:", error);
         container.innerHTML = '<h2>Ocurrió un error al cargar las tareas.</h2>';
     }
+}
+
+/**
+ * Toma un string de fecha ISO (desde MongoDB en UTC) y lo convierte
+ * al formato 'YYYY-MM-DDTHH:MM' en la ZONA HORARIA LOCAL del navegador,
+ * que es el formato requerido por los inputs de tipo 'datetime-local'.
+ */
+function formatISODateToInput(isoDate) {
+    if (!isoDate) return '';
+
+    // 1. Creamos un objeto Date. JavaScript lo convierte automáticamente a la zona horaria local.
+    const date = new Date(isoDate);
+
+    // 2. Extraemos cada componente de la fecha ya en hora local.
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Se suma 1 porque los meses son de 0 a 11
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+
+    // 3. Unimos los componentes en el formato correcto.
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
 function handleTaskClick(event) {
