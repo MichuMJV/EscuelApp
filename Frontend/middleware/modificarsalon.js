@@ -93,4 +93,57 @@ async function modificarSalon(event) {
     }
 }
 
+async function borrarsalon() {
+    // 1. Pedimos confirmación al usuario antes de una acción destructiva.
+    const confirmacion = confirm(
+        "¿Estás seguro de que quieres eliminar este salón?\n\n" +
+        "Esta acción es IRREVERSIBLE y borrará también:\n" +
+        "- Todas las tareas creadas en este salón.\n" +
+        "- Todas las matrículas de los estudiantes.\n" +
+        "- Todas las entregas y notas de esas tareas."
+    );
+
+    if (!confirmacion) {
+        return; // Si el usuario cancela, no hacemos nada.
+    }
+
+    // 2. Obtenemos los IDs necesarios
+    const idSalon = document.getElementById('salones').value;
+    const sesion = JSON.parse(localStorage.getItem('sesionEscuelApp'));
+
+    if (!idSalon) {
+        alert("Por favor, selecciona un salón para eliminar.");
+        return;
+    }
+
+    if (!sesion || !sesion._id) {
+        alert("No se pudo verificar tu identidad. Por favor, inicia sesión de nuevo.");
+        return;
+    }
+    const idAdmin = sesion._id; // El ID del usuario que está logueado
+
+    try {
+        const response = await fetch('/Escuelapp/DeleteSalon', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            // 3. Enviamos ambos IDs en el body, como espera el nuevo controlador
+            body: JSON.stringify({ idSalon, idAdmin })
+        });
+
+        const result = await response.json();
+        alert(result.message); // Muestra el mensaje de éxito o error del backend
+
+        if (result.success) {
+            // Si se borró con éxito, redirigimos a la página principal del profesor
+            window.location.href = './homeProfesor.html';
+        }
+
+    } catch (error) {
+        console.error("Error al intentar eliminar el salón:", error);
+        alert("Ocurrió un error de conexión al intentar eliminar el salón.");
+    }
+}
+
 document.addEventListener('DOMContentLoaded', loadProfesores);
