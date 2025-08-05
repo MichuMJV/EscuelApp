@@ -83,6 +83,7 @@ form{
     align-items: center;
     height: fit-content;
     gap: 1vh;
+    padding: 1vh;
 }
 
 label{
@@ -114,7 +115,7 @@ span{
     padding: 0vh;
 }   
 
-#buttsubmit,#enviarforms,#Cancelar{
+#buttsubmit,#enviarforms,#Cancelar,#delsalon{
     border-width: 0.005vw;
     font-size: 3vh;
     color: #ffffff;
@@ -126,11 +127,11 @@ span{
     border-radius: 1vh;
 }
 
-#buttsubmit:hover,#enviarforms:hover,#Cancelar:hover{
+#buttsubmit:hover,#enviarforms:hover,#Cancelar:hover,#delsalon:hover{
     box-shadow: inset 0px 1vh 1vh rgb(255, 255, 255);
 }
 
-#buttsubmit:active,#enviarforms:active,#Cancelar:active{
+#buttsubmit:active,#enviarforms:active,#Cancelar:active,#delsalon:active{
     background: #007EF1;
     box-shadow: inset 0px 1vh 1vh rgba(0, 0, 0, 0.25);
     color: azure;

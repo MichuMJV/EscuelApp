@@ -16,5 +16,4 @@ module.exports= async function DeleteApp(request,response){
     }catch(error){
         console.log(error)
     }
-    
 }
