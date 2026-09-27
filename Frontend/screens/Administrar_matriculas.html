@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EscuelaApp 🎓 | Administrar matrículas</title>
+
+    <link rel="stylesheet" href="../styles/HeadAndFoot.css">
+    <link rel="stylesheet" href="../styles/administrarMatriculas.css">
+</head>
+
+<body>
+    <header>
+        <div id="headerlogo">
+            <button
+                id="boton_atras_home"
+                type="button"
+                onclick="volverPanelAdministrativo()"
+                aria-label="Volver al panel administrativo"
+                title="Volver al panel administrativo"
+            >
+            <img src="../Assets/luzh47ih_400x400.png" alt="" class="logo_colegio">
+
+            </button>
+
+            <h1>EscuelaApp</h1>
+        </div>
+
+        <div class="datos-usuario">
+            <span class="etiqueta-usuario">
+                Administrador
+            </span>
+
+            <h2 id="username"></h2>
+        </div>
+    </header>
+
+    <main id="administracion-matriculas">
+        <section
+            class="contenedor-matriculas"
+            aria-labelledby="titulo-administrar-matriculas"
+        >
+            <div class="encabezado-matriculas">
+                <div>
+                    <p class="subtitulo-matriculas">
+                        Gestión académica
+                    </p>
+
+                    <h2 id="titulo-administrar-matriculas">
+                        Administrar matrículas
+                    </h2>
+
+                    <p class="descripcion-matriculas">
+                        Selecciona un salón para matricular, reactivar o
+                        retirar estudiantes individualmente o mediante un
+                        archivo Excel.
+                    </p>
+                </div>
+
+                <button
+                    id="boton-recargar-datos"
+                    class="boton-secundario"
+                    type="button"
+                >
+                    Actualizar información
+                </button>
+            </div>
+
+            <section
+                class="panel-seleccion-salon"
+                aria-labelledby="titulo-seleccion-salon"
+            >
+                <div class="encabezado-seccion">
+                    <span
+                        class="numero-paso"
+                        aria-hidden="true"
+                    >
+                        1
+                    </span>
+
+                    <div>
+                        <h3 id="titulo-seleccion-salon">
+                            Selecciona un salón
+                        </h3>
+
+                        <p>
+                            Todas las operaciones se aplicarán al salón
+                            seleccionado.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="campo-salon">
+                    <label for="selector-salon">
+                        Salón
+                    </label>
+
+                    <select
+                        id="selector-salon"
+                        name="selector-salon"
+                    >
+                        <option value="">
+                            Cargando salones...
+                        </option>
+                    </select>
+                </div>
+
+                <div
+                    id="informacion-salon"
+                    class="informacion-salon"
+                    hidden
+                >
+                    <article class="dato-salon">
+                        <span class="dato-salon-etiqueta">
+                            Salón
+                        </span>
+
+                        <strong id="salon-nombre">
+                            No seleccionado
+                        </strong>
+                    </article>
+
+                    <article class="dato-salon">
+                        <span class="dato-salon-etiqueta">
+                            Materia
+                        </span>
+
+                        <strong id="salon-materia">
+                            No disponible
+                        </strong>
+                    </article>
+
+                    <article class="dato-salon">
+                        <span class="dato-salon-etiqueta">
+                            Grado
+                        </span>
+
+                        <strong id="salon-grado">
+                            No disponible
+                        </strong>
+                    </article>
+
+                    <article class="dato-salon">
+                        <span class="dato-salon-etiqueta">
+                            Cupos disponibles
+                        </span>
+
+                        <strong id="salon-cupo">
+                            No disponible
+                        </strong>
+                    </article>
+
+                    <article class="dato-salon">
+                        <span class="dato-salon-etiqueta">
+                            Estudiantes activos
+                        </span>
+
+                        <strong id="salon-matriculados">
+                            0
+                        </strong>
+                    </article>
+                </div>
+            </section>
+
+            <section
+                class="panel-metodos"
+                aria-labelledby="titulo-metodo-matricula"
+            >
+                <div class="encabezado-seccion">
+                    <span
+                        class="numero-paso"
+                        aria-hidden="true"
+                    >
+                        2
+                    </span>
+
+                    <div>
+                        <h3 id="titulo-metodo-matricula">
+                            Elige el método de gestión
+                        </h3>
+
+                        <p>
+                            Puedes procesar un estudiante individualmente
+                            o utilizar un archivo Excel.
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    class="selector-metodos"
+                    role="tablist"
+                    aria-label="Métodos de administración de matrículas"
+                >
+                    <button
+                        id="tab-individual"
+                        class="boton-metodo metodo-activo"
+                        type="button"
+                        role="tab"
+                        aria-selected="true"
+                        aria-controls="panel-individual"
+                        data-panel="panel-individual"
+                    >
+                        <span
+                            class="icono-metodo"
+                            aria-hidden="true"
+                        >
+                            👤
+                        </span>
+
+                        <span>
+                            <strong>Gestión individual</strong>
+                            <small>
+                                Procesar un estudiante a la vez
+                            </small>
+                        </span>
+                    </button>
+
+                    <button
+                        id="tab-excel"
+                        class="boton-metodo"
+                        type="button"
+                        role="tab"
+                        aria-selected="false"
+                        aria-controls="panel-excel"
+                        data-panel="panel-excel"
+                    >
+                        <span
+                            class="icono-metodo"
+                            aria-hidden="true"
+                        >
+                            📊
+                        </span>
+
+                        <span>
+                            <strong>Carga por Excel</strong>
+                            <small>
+                                Procesar múltiples estudiantes
+                            </small>
+                        </span>
+                    </button>
+                </div>
+            </section>
+
+            <section
+                id="panel-individual"
+                class="panel-operacion"
+                role="tabpanel"
+                aria-labelledby="tab-individual"
+            >
+                <div class="encabezado-operacion">
+                    <div>
+                        <h3>Gestión individual</h3>
+
+                        <p>
+                            Busca una cuenta existente por nombre o cédula.
+                            Si la cédula no existe, podrás crear una cuenta
+                            nueva al matricular.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="busqueda-estudiante">
+                    <label for="buscador-estudiante">
+                        Buscar estudiante existente
+                    </label>
+
+                    <div class="fila-busqueda">
+                        <input
+                            type="search"
+                            id="buscador-estudiante"
+                            placeholder="Nombre o cédula del estudiante"
+                            autocomplete="off"
+                        >
+
+                        <button
+                            id="boton-buscar-estudiante"
+                            class="boton-principal"
+                            type="button"
+                        >
+                            Buscar
+                        </button>
+                    </div>
+                </div>
+
+                <div
+                    id="resultados-busqueda"
+                    class="resultados-busqueda"
+                    aria-live="polite"
+                >
+                    <p class="mensaje-vacio">
+                        Selecciona un salón y busca un estudiante para comenzar.
+                    </p>
+                </div>
+
+                <div class="separador-formulario">
+                    <span>o procesa los datos manualmente</span>
+                </div>
+
+                <form
+                    id="form-matricula-individual"
+                    class="form-matricula-individual"
+                >
+                    <input
+                        type="hidden"
+                        id="id-estudiante-seleccionado"
+                        value=""
+                    >
+
+                    <div class="rejilla-formulario">
+                        <div class="campo-formulario">
+                            <label for="nombre-estudiante">
+                                Nombre completo
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nombre-estudiante"
+                                maxlength="120"
+                                autocomplete="off"
+                                placeholder="Ej: Ana Pérez"
+                            >
+
+                            <small>
+                                Obligatorio si la cuenta todavía no existe.
+                            </small>
+                        </div>
+
+                        <div class="campo-formulario">
+                            <label for="cedula-estudiante">
+                                Cédula
+                            </label>
+
+                            <input
+                                type="text"
+                                id="cedula-estudiante"
+                                maxlength="40"
+                                autocomplete="off"
+                                placeholder="Ej: 8-123-456"
+                                required
+                            >
+                        </div>
+
+                        <div class="campo-formulario">
+                            <label for="accion-individual">
+                                Acción
+                            </label>
+
+                            <select
+                                id="accion-individual"
+                                required
+                            >
+                                <option value="MATRICULAR">
+                                    Matricular o reactivar
+                                </option>
+
+                                <option value="RETIRAR">
+                                    Retirar del salón
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div
+                        id="mensaje-individual"
+                        class="mensaje-operacion"
+                        role="status"
+                        aria-live="polite"
+                        hidden
+                    ></div>
+
+                    <div class="acciones-formulario">
+                        <button
+                            id="boton-limpiar-individual"
+                            class="boton-secundario"
+                            type="button"
+                        >
+                            Limpiar
+                        </button>
+
+                        <button
+                            id="boton-procesar-individual"
+                            class="boton-principal"
+                            type="submit"
+                        >
+                            Procesar estudiante
+                        </button>
+                    </div>
+                </form>
+
+                <section
+                    id="resultado-usuario-nuevo"
+                    class="resultado-usuario-nuevo"
+                    aria-labelledby="titulo-credenciales-temporales"
+                    hidden
+                >
+                    <div class="alerta-credenciales">
+                        <span
+                            class="icono-alerta"
+                            aria-hidden="true"
+                        >
+                            🔑
+                        </span>
+
+                        <div>
+                            <h3 id="titulo-credenciales-temporales">
+                                Cuenta nueva creada
+                            </h3>
+
+                            <p>
+                                Guarda estas credenciales y entrégalas al
+                                estudiante. La contraseña solo se muestra
+                                durante esta operación.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="credenciales-generadas">
+                        <div>
+                            <span>Cédula</span>
+                            <strong id="credencial-cedula"></strong>
+                        </div>
+
+                        <div>
+                            <span>Contraseña temporal</span>
+                            <strong id="credencial-contrasena"></strong>
+                        </div>
+                    </div>
+
+                    <button
+                        id="boton-copiar-credenciales"
+                        class="boton-secundario"
+                        type="button"
+                    >
+                        Copiar credenciales
+                    </button>
+                </section>
+            </section>
+
+            <section
+                id="panel-excel"
+                class="panel-operacion"
+                role="tabpanel"
+                aria-labelledby="tab-excel"
+                hidden
+            >
+                <div class="encabezado-operacion">
+                    <div>
+                        <h3>Carga masiva mediante Excel</h3>
+
+                        <p>
+                            Descarga la plantilla, completa las filas y sube
+                            el archivo para procesar las matrículas.
+                        </p>
+                    </div>
+
+                    <button
+                        id="boton-descargar-plantilla"
+                        class="boton-descarga"
+                        type="button"
+                    >
+                        Descargar plantilla
+                    </button>
+                </div>
+
+                <div class="instrucciones-excel">
+                    <h4>Formato requerido</h4>
+
+                    <div class="encabezados-excel">
+                        <code>nombre</code>
+                        <code>cedula</code>
+                        <code>accion</code>
+                    </div>
+
+                    <ul>
+                        <li>
+                            La acción debe ser
+                            <strong>MATRICULAR</strong> o
+                            <strong>RETIRAR</strong>.
+                        </li>
+
+                        <li>
+                            Si una cédula no existe y la acción es
+                            MATRICULAR, se creará una cuenta de estudiante.
+                        </li>
+
+                        <li>
+                            Las cuentas nuevas recibirán una contraseña
+                            temporal única.
+                        </li>
+
+                        <li>
+                            El archivo de resultados incluirá las
+                            contraseñas temporales de las cuentas creadas.
+                        </li>
+
+                        <li>
+                            El límite por archivo es de 1,000 filas y 5 MB.
+                        </li>
+                    </ul>
+                </div>
+
+                <form
+                    id="form-carga-excel"
+                    class="form-carga-excel"
+                    enctype="multipart/form-data"
+                >
+                    <label
+                        class="zona-archivo"
+                        id="zona-archivo"
+                        for="archivo-matriculas"
+                    >
+                        <span
+                            class="icono-archivo"
+                            aria-hidden="true"
+                        >
+                            📄
+                        </span>
+
+                        <strong>
+                            Selecciona o arrastra un archivo Excel
+                        </strong>
+
+                        <span>
+                            Formatos permitidos: .xlsx y .xls
+                        </span>
+
+                        <input
+                            type="file"
+                            id="archivo-matriculas"
+                            name="archivo"
+                            accept=".xlsx,.xls"
+                            required
+                        >
+                    </label>
+
+                    <div
+                        id="archivo-seleccionado"
+                        class="archivo-seleccionado"
+                        hidden
+                    >
+                        <div>
+                            <strong id="nombre-archivo-seleccionado"></strong>
+                            <span id="tamano-archivo-seleccionado"></span>
+                        </div>
+
+                        <button
+                            id="boton-quitar-archivo"
+                            class="boton-quitar-archivo"
+                            type="button"
+                            aria-label="Quitar archivo seleccionado"
+                            title="Quitar archivo"
+                        >
+                            &times;
+                        </button>
+                    </div>
+
+                    <div
+                        id="mensaje-excel"
+                        class="mensaje-operacion"
+                        role="status"
+                        aria-live="polite"
+                        hidden
+                    ></div>
+
+                    <div class="acciones-formulario">
+                        <button
+                            id="boton-procesar-excel"
+                            class="boton-principal"
+                            type="submit"
+                        >
+                            Procesar archivo y descargar resultados
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <section
+                class="panel-estudiantes-salon"
+                aria-labelledby="titulo-estudiantes-salon"
+            >
+                <div class="encabezado-operacion">
+                    <div>
+                        <h3 id="titulo-estudiantes-salon">
+                            Estudiantes del salón
+                        </h3>
+
+                        <p>
+                            Consulta el estado actual de las matrículas del
+                            salón seleccionado.
+                        </p>
+                    </div>
+
+                    <label class="control-retirados">
+                        <input
+                            type="checkbox"
+                            id="mostrar-retirados"
+                        >
+
+                        <span>Mostrar retirados</span>
+                    </label>
+                </div>
+
+                <div class="tabla-matriculas-wrapper">
+                    <table class="tabla-matriculas">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    Estudiante
+                                </th>
+
+                                <th scope="col">
+                                    Cédula
+                                </th>
+
+                                <th scope="col">
+                                    Estado
+                                </th>
+
+                                <th scope="col">
+                                    Fecha de matrícula
+                                </th>
+
+                                <th scope="col">
+                                    Nota final
+                                </th>
+
+                                <th scope="col">
+                                    Acción
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tabla-matriculas-body">
+                            <tr>
+                                <td
+                                    colspan="6"
+                                    class="mensaje-tabla"
+                                >
+                                    Selecciona un salón para consultar sus
+                                    matrículas.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <footer>
+        <h2>CONTÁCTENOS</h2>
+
+        <h2>
+            Avenida Universidad Tecnológica de Panamá,
+            Vía Puente Centenario, Campus Metropolitano
+            Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.
+        </h2>
+
+        <h2>Teléfono: (507) 317-2000</h2>
+    </footer>
+
+    <script src="../middleware/administrarMatriculas.js"></script>
+    <script src="../middleware/pantallaprincipal.js"></script>
+</body>
+</html>

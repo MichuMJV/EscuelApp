@@ -1,44 +1,198 @@
-const { Usuario } = require("../models/Models.js");
 const bcrypt = require("bcrypt");
 
-module.exports = async function register(request, response) {
-    const { rol, nombre, cedula, contrasena } = request.body;
+const {
+    Usuario
+} = require("../models/Models.js");
 
-    // 1. Validación de campos al inicio para ser más eficiente.
-    if (!rol || !nombre || !cedula || !contrasena) {
-        return response.status(400).json({ success: false, message: "No debe dejar vacío ningún campo." });
+module.exports = async function register(request, response) {
+    const {
+        rol,
+        nombre,
+        cedula,
+        contrasena
+    } = request.body;
+
+    const rolNormalizado = Number(rol);
+    const nombreNormalizado = normalizarTexto(nombre);
+    const cedulaNormalizada = normalizarCedula(cedula);
+
+    const contrasenaNormalizada =
+        typeof contrasena === "string"
+            ? contrasena.trim()
+            : "";
+
+    if (
+        !rolNormalizado ||
+        !nombreNormalizado ||
+        !cedulaNormalizada ||
+        !contrasenaNormalizada
+    ) {
+        return response.status(400).json({
+            success: false,
+            message:
+                "No debe dejar vacío ningún campo."
+        });
+    }
+
+    if (
+        !Number.isInteger(rolNormalizado) ||
+        ![1, 2, 3].includes(rolNormalizado)
+    ) {
+        return response.status(400).json({
+            success: false,
+            message:
+                "El rol proporcionado no es válido."
+        });
+    }
+
+    if (nombreNormalizado.length < 2) {
+        return response.status(400).json({
+            success: false,
+            message:
+                "El nombre debe tener al menos 2 caracteres."
+        });
+    }
+
+    if (nombreNormalizado.length > 120) {
+        return response.status(400).json({
+            success: false,
+            message:
+                "El nombre no puede exceder los 120 caracteres."
+        });
+    }
+
+    if (cedulaNormalizada.length < 3) {
+        return response.status(400).json({
+            success: false,
+            message:
+                "La cédula proporcionada no es válida."
+        });
+    }
+
+    if (cedulaNormalizada.length > 40) {
+        return response.status(400).json({
+            success: false,
+            message:
+                "La cédula no puede exceder los 40 caracteres."
+        });
+    }
+
+    if (contrasenaNormalizada.length < 8) {
+        return response.status(400).json({
+            success: false,
+            message:
+                "La contraseña debe tener al menos 8 caracteres."
+        });
+    }
+
+    if (contrasenaNormalizada.length > 128) {
+        return response.status(400).json({
+            success: false,
+            message:
+                "La contraseña no puede exceder los 128 caracteres."
+        });
     }
 
     try {
-        // 2. Se mantiene tu lógica para buscar si la cédula ya existe.
-        const usuarioExistente = await Usuario.findOne({ cedula: cedula });
+        const usuarioExistente = await Usuario.findOne({
+            cedula: cedulaNormalizada
+        })
+            .select("_id cedula")
+            .lean();
 
         if (usuarioExistente) {
-            return response.status(400).json({ success: false, message: "Este usuario ya existe." });
+            return response.status(409).json({
+                success: false,
+                message:
+                    "Ya existe un usuario registrado con esta cédula."
+            });
         }
 
-        // 3. (EL CAMBIO MÁS IMPORTANTE) Se encripta la contraseña antes de guardarla.
-        const salt = await bcrypt.genSalt(10);
-        const contrasenaHasheada = await bcrypt.hash(contrasena, salt);
+        const contrasenaHasheada = await bcrypt.hash(
+            contrasenaNormalizada,
+            10
+        );
 
-        // 4. Se crea el nuevo usuario con la contraseña ya encriptada (hasheada).
-        const nuevoUsuario = new Usuario({
-            rol: rol,
-            nombre: nombre,
-            cedula: cedula,
-            contrasena: contrasenaHasheada // Se guarda el hash, no la contraseña original.
+        const nuevoUsuario = await Usuario.create({
+            rol: rolNormalizado,
+            nombre: nombreNormalizado,
+            cedula: cedulaNormalizada,
+            contrasena: contrasenaHasheada,
+            debeCambiarContrasena: false,
+            fechaCambioContrasena: null,
+            fechaCreacion: new Date()
         });
 
-        await nuevoUsuario.save();
+        return response.status(201).json({
+            success: true,
+            message:
+                "Usuario registrado exitosamente.",
 
-        // 5. Se envía una respuesta segura sin devolver información sensible.
-        return response.status(201).json({ 
-            success: true, 
-            message: "Usuario registrado exitosamente." 
+            usuario: {
+                _id: nuevoUsuario._id,
+                rol: nuevoUsuario.rol,
+                nombre: nuevoUsuario.nombre,
+                cedula: nuevoUsuario.cedula,
+                debeCambiarContrasena:
+                    nuevoUsuario.debeCambiarContrasena
+            }
         });
-
     } catch (error) {
-        console.error("Error en el registro:", error);
-        return response.status(500).json({ success: false, message: "Error interno del servidor." });
+        console.error(
+            "Error en el registro del usuario:",
+            error
+        );
+
+        if (
+            error &&
+            error.code === 11000
+        ) {
+            return response.status(409).json({
+                success: false,
+                message:
+                    "Ya existe un usuario registrado con esta cédula."
+            });
+        }
+
+        if (
+            error &&
+            error.name === "ValidationError"
+        ) {
+            return response.status(400).json({
+                success: false,
+                message:
+                    "Los datos proporcionados para el usuario no son válidos."
+            });
+        }
+
+        return response.status(500).json({
+            success: false,
+            message:
+                "Ocurrió un error interno al registrar el usuario."
+        });
     }
 };
+
+function normalizarTexto(valor) {
+    if (typeof valor !== "string") {
+        return "";
+    }
+
+    return valor
+        .trim()
+        .replace(/\s+/g, " ");
+}
+
+function normalizarCedula(valor) {
+    if (
+        typeof valor !== "string" &&
+        typeof valor !== "number"
+    ) {
+        return "";
+    }
+
+    return String(valor)
+        .trim()
+        .replace(/\s+/g, "")
+        .toUpperCase();
+}

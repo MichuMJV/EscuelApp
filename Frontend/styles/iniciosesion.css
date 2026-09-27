@@ -1,95 +1,687 @@
+/* =========================================================
+   CONTENIDO PRINCIPAL
+   ========================================================= */
 
-#form_inicio_de_sesion{
+section {
+    box-sizing: border-box;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    gap: .5vh;
-    width: 40vw;   
-    height: 40vh;
-    overflow: auto;
-}
-
-section{
-    display: flex;
-    gap: 1vh;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-image: url(../Assets/fondo.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding: 0px 0px;
+
+    width: 100vw;
+    min-height: 76vh;
     margin-top: 12vh;
-    width:100vw;
-    height: 76vh;
-}
-
-.input-contain{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3vh;
-    width: 40vw;   
-    height: 15vh;
-}
-
-.input{
-    text-align: center;
-    border-radius: 2vw;
-    border: 0.1vw solid #838383;
-    width: 20vw;
-    height: 4vh;
-    background: #FFF;
-}
-
-#buttsubmit{
-    height: 5vh;
-    width: 20vw;
-    text-align: center;
-    background-color: #ffffff;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 1vh;
-}
-
-#buttsubmit:hover{
-    box-shadow: inset 0px 4px 4px rgb(255, 255, 255);
-}
-
-#buttsubmit:active{
-    background: #007EF1;
-    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-    color: azure;
-}
-
-
-.clear{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin-bottom: 12vh;
+    padding: 3vh 4vw;
     gap: 1vh;
-    width: 40vw;   
-    height: 40vh;
 
-    /* glass */
+    background:
+        linear-gradient(
+            rgba(238, 246, 255, 0.42),
+            rgba(238, 246, 255, 0.52)
+        ),
+        url("../Assets/fondo.jpg");
 
-    background: rgba(255, 255, 255, 0.6);
-    /* sombra glass2 */
-
-    box-shadow: 4vw 5vw 6vw rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(2vh);
-    /* Note: backdrop-filter has minimal browser support */
-
-    border-radius: 3vh;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
-.text{
-    font-family: 'Roboto', sans-serif;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 2.5vh;
-    line-height: 3vh;
+
+/* =========================================================
+   TARJETA DE INICIO DE SESIÓN
+   ========================================================= */
+
+.clear {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: min(92vw, 520px);
+    min-height: 460px;
+    padding: 2rem;
+    gap: 1rem;
+
+    border: 1px solid rgba(255, 255, 255, 0.82);
+    border-radius: 24px;
+
+    background-color: rgba(255, 255, 255, 0.88);
+
+    box-shadow:
+        0 22px 50px rgba(20, 55, 90, 0.24);
+
+    backdrop-filter: blur(12px);
+}
+
+
+/* =========================================================
+   FORMULARIOS
+   ========================================================= */
+
+#form_inicio_de_sesion,
+.form-cambio-contrasena {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    gap: 1.35rem;
+}
+
+.encabezado-inicio-sesion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    gap: 0.55rem;
+
     text-align: center;
-    color: #000000;
+}
+
+.encabezado-inicio-sesion h3 {
+    margin: 0;
+    padding: 0;
+
+    color: #17324d;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.encabezado-inicio-sesion p {
+    max-width: 440px;
+    margin: 0;
+    padding: 0;
+
+    color: #60758a;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.92rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   CAMPOS
+   ========================================================= */
+
+.input-contain {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    width: 100%;
+    height: auto;
+    gap: 1rem;
+}
+
+.input-contained {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    gap: 0.4rem;
+}
+
+.etiqueta-campo-sesion {
+    color: #405a71;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.84rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.input {
+    box-sizing: border-box;
+
+    width: 100%;
+    min-height: 48px;
+    padding: 0.75rem 0.9rem;
+
+    border: 1px solid #adbece;
+    border-radius: 10px;
+
+    background-color: #ffffff;
+
+    color: #20384e;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    text-align: left;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.input:hover {
+    border-color: #7fa7cb;
+}
+
+.input:focus {
+    border-color: #2878d0;
+    outline: 0;
+
+    background-color: #ffffff;
+
+    box-shadow:
+        0 0 0 3px rgba(40, 120, 208, 0.17);
+}
+
+.input::placeholder {
+    color: #95a4b1;
+    opacity: 1;
+}
+
+.input:disabled {
+    background-color: #eef2f5;
+    color: #768694;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   CONTRASEÑAS
+   ========================================================= */
+
+.contenedor-contrasena {
+    box-sizing: border-box;
+    display: flex;
+    align-items: stretch;
+
+    width: 100%;
+}
+
+.contenedor-contrasena .input {
+    flex: 1;
+
+    min-width: 0;
+
+    border-radius: 10px 0 0 10px;
+}
+
+.boton-mostrar-contrasena {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+
+    min-width: 82px;
+    min-height: 48px;
+    margin: 0;
+    padding: 0.65rem 0.8rem;
+
+    border: 1px solid #adbece;
+    border-left: 0;
+    border-radius: 0 10px 10px 0;
+
+    background-color: #edf5ff;
+
+    color: #245d92;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.boton-mostrar-contrasena:hover {
+    background-color: #dcecff;
+    color: #174b7a;
+}
+
+.boton-mostrar-contrasena:active {
+    background-color: #c9e0f8;
+}
+
+.boton-mostrar-contrasena:focus-visible {
+    outline: 3px solid rgba(40, 120, 208, 0.32);
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   BOTÓN PRINCIPAL
+   ========================================================= */
+
+#buttsubmit,
+#boton-cambiar-contrasena {
+    box-sizing: border-box;
+
+    width: 100%;
+    min-height: 48px;
+    margin: 0;
+    padding: 0.75rem 1rem;
+
+    border: 1px solid #2878d0;
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #2878d0 0%,
+            #4c96e3 100%
+        );
+
+    color: #ffffff;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 16px rgba(40, 120, 208, 0.23);
+
+    transition:
+        background-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease,
+        filter 0.2s ease;
+}
+
+#buttsubmit:hover,
+#boton-cambiar-contrasena:hover {
+    filter: brightness(1.04);
+
+    box-shadow:
+        0 10px 20px rgba(40, 120, 208, 0.3);
+
+    transform: translateY(-1px);
+}
+
+#buttsubmit:active,
+#boton-cambiar-contrasena:active {
+    filter: brightness(0.94);
+
+    box-shadow:
+        0 4px 10px rgba(40, 120, 208, 0.22);
+
+    transform: translateY(1px);
+}
+
+#buttsubmit:focus-visible,
+#boton-cambiar-contrasena:focus-visible {
+    outline: 3px solid rgba(40, 120, 208, 0.35);
+    outline-offset: 3px;
+}
+
+#buttsubmit:disabled,
+#boton-cambiar-contrasena:disabled {
+    border-color: #91afd0;
+    background: #91afd0;
+
+    cursor: wait;
+
+    box-shadow: none;
+    filter: none;
+    transform: none;
+}
+
+
+/* =========================================================
+   BOTÓN SECUNDARIO
+   ========================================================= */
+
+.boton-secundario-sesion {
+    box-sizing: border-box;
+
+    width: 100%;
+    min-height: 45px;
+    margin: 0;
+    padding: 0.7rem 1rem;
+
+    border: 1px solid #aebbc7;
+    border-radius: 10px;
+
+    background-color: #ffffff;
+
+    color: #4b6074;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.boton-secundario-sesion:hover {
+    border-color: #8193a2;
+    background-color: #f1f4f6;
+}
+
+.boton-secundario-sesion:active {
+    background-color: #e5eaee;
+    transform: translateY(1px);
+}
+
+.boton-secundario-sesion:focus-visible {
+    outline: 3px solid rgba(40, 120, 208, 0.28);
+    outline-offset: 2px;
+}
+
+.boton-secundario-sesion:disabled {
+    background-color: #edf0f2;
+    color: #84919c;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   MENSAJES
+   ========================================================= */
+
+.mensaje-inicio-sesion {
+    box-sizing: border-box;
+
+    width: 100%;
+    padding: 0.8rem 1rem;
+
+    border: 1px solid transparent;
+    border-radius: 9px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1.4;
+    text-align: left;
+}
+
+.mensaje-inicio-sesion[hidden] {
+    display: none;
+}
+
+.mensaje-error {
+    border-color: #efb4b4;
+    background-color: #fdeaea;
+    color: #962b2b;
+}
+
+.mensaje-exito {
+    border-color: #abdfbc;
+    background-color: #e8f7ed;
+    color: #17683a;
+}
+
+.mensaje-informacion {
+    border-color: #b8d8f6;
+    background-color: #eaf5ff;
+    color: #185c96;
+}
+
+
+/* =========================================================
+   CAMBIO OBLIGATORIO DE CONTRASEÑA
+   ========================================================= */
+
+.contenedor-cambio-contrasena {
+    width: min(94vw, 620px);
+    min-height: auto;
+}
+
+.form-cambio-contrasena {
+    gap: 1.15rem;
+}
+
+.campos-cambio-contrasena {
+    gap: 0.9rem;
+}
+
+.icono-seguridad {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 58px;
+    height: 58px;
+
+    border-radius: 16px;
+
+    background-color: #e9f3ff;
+
+    font-size: 1.8rem;
+
+    box-shadow:
+        0 6px 14px rgba(40, 120, 208, 0.12);
+}
+
+.requisitos-contrasena {
+    box-sizing: border-box;
+
+    width: 100%;
+    padding: 0.9rem 1rem;
+
+    border: 1px solid #d8e4ef;
+    border-radius: 10px;
+
+    background-color: #f7faff;
+}
+
+.requisitos-contrasena strong {
+    color: #405a71;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.82rem;
+}
+
+.requisitos-contrasena ul {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    margin: 0.65rem 0 0;
+    padding: 0;
+
+    gap: 0.45rem 1rem;
+
+    list-style: none;
+}
+
+.requisitos-contrasena li {
+    position: relative;
+
+    padding-left: 1.35rem;
+
+    color: #6d7f8f;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.76rem;
+    line-height: 1.4;
+
+    transition: color 0.2s ease;
+}
+
+.requisitos-contrasena li::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    content: "○";
+
+    color: #8999a7;
+
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.requisitos-contrasena li.requisito-cumplido {
+    color: #247545;
+}
+
+.requisitos-contrasena li.requisito-cumplido::before {
+    content: "✓";
+
+    color: #2d9760;
+
+    font-weight: 700;
+}
+
+.requisitos-contrasena li.requisito-pendiente {
+    color: #6d7f8f;
+}
+
+
+/* =========================================================
+   INFORMACIÓN DEL USUARIO EN EL HEADER
+   ========================================================= */
+
+.datos-cambio-contrasena {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+
+    min-width: 190px;
+    padding-right: 2vw;
+}
+
+.etiqueta-cambio-contrasena {
+    color: #315d84;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+
+    text-transform: uppercase;
+}
+
+.datos-cambio-contrasena #username {
+    margin: 0.25rem 0 0;
+    padding: 0;
+
+    color: #17324d;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   TABLETAS
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+    section {
+        padding: 2.5vh 4vw;
+    }
+
+    .clear {
+        width: min(94vw, 520px);
+        min-height: auto;
+        padding: 1.5rem;
+        border-radius: 19px;
+    }
+
+    .requisitos-contrasena ul {
+        grid-template-columns: 1fr;
+    }
+
+    .datos-cambio-contrasena {
+        min-width: 0;
+        max-width: 42vw;
+        padding-right: 3vw;
+    }
+
+    .datos-cambio-contrasena #username {
+        max-width: 40vw;
+
+        overflow: hidden;
+
+        font-size: 0.92rem;
+
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+
+/* =========================================================
+   TELÉFONOS
+   ========================================================= */
+
+@media screen and (max-width: 480px) {
+    section {
+        padding-right: 3vw;
+        padding-left: 3vw;
+    }
+
+    .clear {
+        width: 94vw;
+        padding: 1.2rem;
+    }
+
+    .encabezado-inicio-sesion h3 {
+        font-size: 1.4rem;
+    }
+
+    .encabezado-inicio-sesion p {
+        font-size: 0.84rem;
+    }
+
+    .contenedor-contrasena {
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .contenedor-contrasena .input {
+        border-radius: 10px;
+    }
+
+    .boton-mostrar-contrasena {
+        width: 100%;
+        min-height: 40px;
+
+        border: 1px solid #adbece;
+        border-radius: 8px;
+    }
+
+    .icono-seguridad {
+        width: 50px;
+        height: 50px;
+
+        font-size: 1.5rem;
+    }
+}
+
+
+/* =========================================================
+   ACCESIBILIDAD
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }

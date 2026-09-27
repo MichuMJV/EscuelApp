@@ -1,56 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EscuelaApp🎓</title>
+
+    <title>EscuelaApp 🎓 | Inicio de sesión</title>
+
     <link rel="stylesheet" href="../styles/iniciosesion.css">
     <link rel="stylesheet" href="../styles/HeadAndFoot.css">
+
+    <script src="../middleware/iniciodesesion.js" defer></script>
 </head>
+
 <body>
     <header>
         <div id="headerlogo">
             <img src="../Assets/luzh47ih_400x400.png" alt="" class="logo_colegio">
+
             <h1>EscuelaApp</h1>
         </div>
+
         <div>
-            <h2>Usted no se ha registrado</h2>
-        </div>  
+            <h2>Acceso al sistema</h2>
+        </div>
     </header>
-    <section>
-        <span class="clear">
-            <div id="form_inicio_de_sesion">
-                <h3>Acceda a su cuenta</h3>
 
-                <span class="input-contain">
-                    <div class="input-contained">
-                        <input class="input" type="text" id="Cedula" name="Cedula" autocomplete="off">
-                        <label class="placeholder-text" for="Cedula">
-                            <div class="text">Cédula</div>
-                        </label>
+    <main>
+        <section>
+            <div class="clear">
+                <form id="form_inicio_de_sesion">
+                    <div class="encabezado-inicio-sesion">
+                        <h3>Accede a tu cuenta</h3>
+
+                        <p>
+                            Ingresa tu cédula y contraseña para continuar.
+                        </p>
                     </div>
-                    <div class="input-contained">
-                        <input class="input" type="password" id="Password" name="Password" autocomplete="off">
-                        <label class="placeholder-text" for="Password">
-                            <div class="text">Contraseña</div>
-                        </label>
+
+                    <div class="input-contain">
+                        <div class="input-contained">
+                            <label
+                                class="etiqueta-campo-sesion"
+                                for="Cedula"
+                            >
+                                Cédula
+                            </label>
+
+                            <input
+                                class="input"
+                                type="text"
+                                id="Cedula"
+                                name="Cedula"
+                                autocomplete="username"
+                                maxlength="40"
+                                placeholder="Ej: 8-123-456"
+                                required
+                            >
+                        </div>
+
+                        <div class="input-contained">
+                            <label
+                                class="etiqueta-campo-sesion"
+                                for="Password"
+                            >
+                                Contraseña
+                            </label>
+
+                            <div class="contenedor-contrasena">
+                                <input
+                                    class="input"
+                                    type="password"
+                                    id="Password"
+                                    name="Password"
+                                    autocomplete="current-password"
+                                    maxlength="128"
+                                    placeholder="Ingresa tu contraseña"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    id="mostrar-contrasena"
+                                    class="boton-mostrar-contrasena"
+                                    aria-label="Mostrar contraseña"
+                                    title="Mostrar contraseña"
+                                >
+                                    Mostrar
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </span>
 
-                <button id="buttsubmit"> Acceder
-                </div>
+                    <div
+                        id="mensaje-inicio-sesion"
+                        class="mensaje-inicio-sesion"
+                        role="status"
+                        aria-live="polite"
+                        hidden
+                    ></div>
 
+                    <button
+                        id="buttsubmit"
+                        type="submit"
+                    >
+                        Acceder
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
 
-        </span>
-    </section>
     <footer>
-        <h2>CONTACTENOS</h1>
-        <h2>Avenida Universidad Tecnológica de Panamá,
+        <h2>CONTÁCTENOS</h2>
+
+        <h2>
+            Avenida Universidad Tecnológica de Panamá,
             Vía Puente Centenario, Campus Metropolitano
-            Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.</h2>
-        <h2>Telefono: (507) 317-2000</h2>
+            Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.
+        </h2>
+
+        <h2>Teléfono: (507) 317-2000</h2>
     </footer>
-    <script src="../middleware/iniciodesesion.js"></script>
 </body>
 </html>

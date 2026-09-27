@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EscuelaApp 🎓 | Cambiar contraseña</title>
+
+    <link rel="stylesheet" href="../styles/HeadAndFoot.css">
+    <link rel="stylesheet" href="../styles/iniciosesion.css">
+</head>
+
+<body>
+    <header>
+        <div id="headerlogo">
+            <img
+                src="../Assets/luzh47ih_400x400.png"
+                alt="Logo de la escuela"
+            >
+        </div>
+
+        <div class="datos-cambio-contrasena">
+            <span class="etiqueta-cambio-contrasena">
+                Cambio obligatorio
+            </span>
+
+            <h2 id="username"></h2>
+        </div>
+    </header>
+
+    <main>
+        <section>
+            <div class="clear contenedor-cambio-contrasena">
+                <form
+                    id="form_cambio_contrasena"
+                    class="form-cambio-contrasena"
+                    autocomplete="off"
+                >
+                    <div class="encabezado-inicio-sesion">
+                        <span
+                            class="icono-seguridad"
+                            aria-hidden="true"
+                        >
+                            🔐
+                        </span>
+
+                        <h3>Establece una contraseña nueva</h3>
+
+                        <p>
+                            La cuenta fue creada con una contraseña temporal.
+                            Por seguridad, debes cambiarla antes de continuar.
+                        </p>
+                    </div>
+
+                    <div class="input-contain campos-cambio-contrasena">
+                        <div class="input-contained">
+                            <label
+                                class="etiqueta-campo-sesion"
+                                for="contrasenaActual"
+                            >
+                                Contraseña temporal actual
+                            </label>
+
+                            <div class="contenedor-contrasena">
+                                <input
+                                    class="input"
+                                    type="password"
+                                    id="contrasenaActual"
+                                    name="contrasenaActual"
+                                    autocomplete="current-password"
+                                    maxlength="128"
+                                    placeholder="Ingresa la contraseña temporal"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    class="boton-mostrar-contrasena"
+                                    data-password-target="contrasenaActual"
+                                    aria-label="Mostrar contraseña temporal"
+                                    title="Mostrar contraseña temporal"
+                                >
+                                    Mostrar
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="input-contained">
+                            <label
+                                class="etiqueta-campo-sesion"
+                                for="nuevaContrasena"
+                            >
+                                Nueva contraseña
+                            </label>
+
+                            <div class="contenedor-contrasena">
+                                <input
+                                    class="input"
+                                    type="password"
+                                    id="nuevaContrasena"
+                                    name="nuevaContrasena"
+                                    autocomplete="new-password"
+                                    minlength="8"
+                                    maxlength="128"
+                                    placeholder="Crea una contraseña nueva"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    class="boton-mostrar-contrasena"
+                                    data-password-target="nuevaContrasena"
+                                    aria-label="Mostrar nueva contraseña"
+                                    title="Mostrar nueva contraseña"
+                                >
+                                    Mostrar
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="input-contained">
+                            <label
+                                class="etiqueta-campo-sesion"
+                                for="confirmarContrasena"
+                            >
+                                Confirmar nueva contraseña
+                            </label>
+
+                            <div class="contenedor-contrasena">
+                                <input
+                                    class="input"
+                                    type="password"
+                                    id="confirmarContrasena"
+                                    name="confirmarContrasena"
+                                    autocomplete="new-password"
+                                    minlength="8"
+                                    maxlength="128"
+                                    placeholder="Repite la contraseña nueva"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    class="boton-mostrar-contrasena"
+                                    data-password-target="confirmarContrasena"
+                                    aria-label="Mostrar confirmación de contraseña"
+                                    title="Mostrar confirmación de contraseña"
+                                >
+                                    Mostrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="requisitos-contrasena"
+                        aria-labelledby="titulo-requisitos"
+                    >
+                        <strong id="titulo-requisitos">
+                            La nueva contraseña debe contener:
+                        </strong>
+
+                        <ul>
+                            <li id="requisito-longitud">
+                                Al menos 8 caracteres.
+                            </li>
+
+                            <li id="requisito-mayuscula">
+                                Al menos una letra mayúscula.
+                            </li>
+
+                            <li id="requisito-minuscula">
+                                Al menos una letra minúscula.
+                            </li>
+
+                            <li id="requisito-numero">
+                                Al menos un número.
+                            </li>
+
+                            <li id="requisito-diferente">
+                                Debe ser diferente de la contraseña temporal.
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div
+                        id="mensaje-cambio-contrasena"
+                        class="mensaje-inicio-sesion"
+                        role="status"
+                        aria-live="polite"
+                        hidden
+                    ></div>
+
+                    <button
+                        id="boton-cambiar-contrasena"
+                        type="submit"
+                    >
+                        Guardar nueva contraseña
+                    </button>
+
+                    <button
+                        id="boton-cerrar-sesion"
+                        class="boton-secundario-sesion"
+                        type="button"
+                    >
+                        Cancelar y cerrar sesión
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <h2>CONTÁCTENOS</h2>
+
+        <h2>
+            Avenida Universidad Tecnológica de Panamá,
+            Vía Puente Centenario, Campus Metropolitano
+            Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.
+        </h2>
+
+        <h2>Teléfono: (507) 317-2000</h2>
+    </footer>
+
+    <script src="../middleware/cambiarContrasena.js"></script>
+</body>
+</html>

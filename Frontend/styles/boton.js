@@ -268,3 +268,7 @@ function Nuevo_rol() {
 function EditarSalones() {
     window.location.href = "./modificarSalon.html";
 }
+
+function AbrirAdministrarMatriculas() {
+    window.location.href = "./Administrar_matriculas.html";
+}
