@@ -2,54 +2,381 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Calificaciones</title>
+
+    <title>EscuelaApp | Dashboard de calificaciones</title>
+
     <link rel="stylesheet" href="../styles/HeadAndFoot.css">
     <link rel="stylesheet" href="../styles/tareas.css">
     <link rel="stylesheet" href="../styles/dashboard.css">
 </head>
+
 <body>
     <header>
         <div id="headerlogo">
-            <button id="boton_atras_home" onclick="history.back()">
-                <img src="../Assets/luzh47ih_400x400.png" alt="" class="logo_colegio">
+            <button
+                id="boton_atras_home"
+                type="button"
+                onclick="history.back()"
+                aria-label="Volver a la página anterior"
+                title="Volver a la página anterior"
+            >
+            <img
+            src="../Assets/luzh47ih_400x400.png"
+            alt="Logotipo de EscuelaApp"
+            class="logo_colegio"
+        >
             </button>
+
             <h1>EscuelaApp</h1>
         </div>
-        <div><h2 id="username"></h2></div>
+
+        <div class="datos-dashboard-header">
+            <span class="etiqueta-dashboard-header">
+                Profesor
+            </span>
+
+            <h2 id="username"></h2>
+        </div>
     </header>
 
-    <section id="contenido">
-        <div class="dashboard-container">
-            <h1 id="dashboard-title">Dashboard de Calificaciones</h1>
-            
-            <div class="filters">
-                <input type="text" id="filter-student" class="inputbuscar" placeholder="Filtrar por estudiante...">
-                <input type="text" id="filter-task" class="inputbuscar" placeholder="Filtrar por tarea...">
-                <button id="download-button" class="save-button">Descargar</button>
+    <main>
+        <section id="contenido">
+            <div class="dashboard-container">
+                <div class="dashboard-heading">
+                    <div>
+                        <p class="dashboard-eyebrow">
+                            Seguimiento académico
+                        </p>
+
+                        <h1 id="dashboard-title">
+                            Dashboard de calificaciones
+                        </h1>
+
+                        <p
+                            id="dashboard-salon-info"
+                            class="dashboard-salon-info"
+                        >
+                            Cargando información del salón...
+                        </p>
+                    </div>
+
+                    <button
+                        id="open-enrollment-button"
+                        class="enrollment-button"
+                        type="button"
+                    >
+                        <span aria-hidden="true">+</span>
+                        Matricular estudiante
+                    </button>
+                </div>
+
+                <section
+                    class="summary-grid"
+                    aria-label="Resumen del salón"
+                >
+                    <article class="summary-card summary-students">
+                        <span
+                            class="summary-icon"
+                            aria-hidden="true"
+                        >
+                            👥
+                        </span>
+
+                        <div>
+                            <span
+                                id="summary-students"
+                                class="summary-value"
+                            >
+                                0
+                            </span>
+
+                            <span class="summary-label">
+                                Estudiantes matriculados
+                            </span>
+                        </div>
+                    </article>
+
+                    <article class="summary-card summary-tasks">
+                        <span
+                            class="summary-icon"
+                            aria-hidden="true"
+                        >
+                            📚
+                        </span>
+
+                        <div>
+                            <span
+                                id="summary-tasks"
+                                class="summary-value"
+                            >
+                                0
+                            </span>
+
+                            <span class="summary-label">
+                                Tareas del salón
+                            </span>
+                        </div>
+                    </article>
+
+                    <article class="summary-card summary-delivered">
+                        <span
+                            class="summary-icon"
+                            aria-hidden="true"
+                        >
+                            ✓
+                        </span>
+
+                        <div>
+                            <span
+                                id="summary-delivered"
+                                class="summary-value"
+                            >
+                                0
+                            </span>
+
+                            <span class="summary-label">
+                                Entregas realizadas
+                            </span>
+                        </div>
+                    </article>
+
+                    <article class="summary-card summary-pending">
+                        <span
+                            class="summary-icon"
+                            aria-hidden="true"
+                        >
+                            ⏳
+                        </span>
+
+                        <div>
+                            <span
+                                id="summary-pending"
+                                class="summary-value"
+                            >
+                                0
+                            </span>
+
+                            <span class="summary-label">
+                                Entregas pendientes
+                            </span>
+                        </div>
+                    </article>
+                </section>
+
+                <div class="dashboard-toolbar">
+                    <div class="filters">
+                        <label
+                            class="filter-field"
+                            for="filter-student"
+                        >
+                            <span>Buscar estudiante</span>
+
+                            <input
+                                type="search"
+                                id="filter-student"
+                                class="inputbuscar"
+                                placeholder="Nombre o cédula..."
+                                autocomplete="off"
+                            >
+                        </label>
+
+                        <label
+                            class="filter-field"
+                            for="filter-task"
+                        >
+                            <span>Buscar tarea o tema</span>
+
+                            <input
+                                type="search"
+                                id="filter-task"
+                                class="inputbuscar"
+                                placeholder="Tarea o tema..."
+                                autocomplete="off"
+                            >
+                        </label>
+
+                        <label
+                            class="filter-field"
+                            for="filter-status"
+                        >
+                            <span>Estado de entrega</span>
+
+                            <select
+                                id="filter-status"
+                                class="inputbuscar"
+                            >
+                                <option value="">
+                                    Todos los estados
+                                </option>
+
+                                <option value="Sin entregar">
+                                    Sin entregar
+                                </option>
+
+                                <option value="Entregada">
+                                    Entregada
+                                </option>
+
+                                <option value="Calificada">
+                                    Calificada
+                                </option>
+
+                                <option value="Sin tareas">
+                                    Sin tareas
+                                </option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <button
+                        id="download-button"
+                        class="download-button"
+                        type="button"
+                    >
+                        Descargar CSV
+                    </button>
+                </div>
+
+                <div
+                    id="dashboard-message"
+                    class="dashboard-message"
+                    role="status"
+                    aria-live="polite"
+                    hidden
+                ></div>
+
+                <div class="table-wrapper">
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    Estudiante
+                                </th>
+
+                                <th scope="col">
+                                    Tema
+                                </th>
+
+                                <th scope="col">
+                                    Tarea
+                                </th>
+
+                                <th scope="col">
+                                    Estado
+                                </th>
+
+                                <th scope="col">
+                                    Documento
+                                </th>
+
+                                <th scope="col">
+                                    Fecha de entrega
+                                </th>
+
+                                <th scope="col">
+                                    Calificación
+                                </th>
+
+                                <th scope="col">
+                                    Acción
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="dashboard-body">
+                            <tr>
+                                <td
+                                    colspan="8"
+                                    class="table-message"
+                                >
+                                    Cargando datos...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <dialog
+        id="enrollment-dialog"
+        class="enrollment-dialog"
+        aria-labelledby="enrollment-dialog-title"
+    >
+        <button
+            id="close-enrollment-dialog"
+            class="dialog-close-button"
+            type="button"
+            aria-label="Cerrar ventana de matrícula"
+            title="Cerrar"
+        >
+            &times;
+        </button>
+
+        <div class="enrollment-dialog-content">
+            <div class="enrollment-dialog-header">
+                <p class="dialog-eyebrow">
+                    Gestión de matrícula
+                </p>
+
+                <h2 id="enrollment-dialog-title">
+                    Matricular estudiante
+                </h2>
+
+                <p>
+                    Busca un estudiante por nombre o cédula y selecciona
+                    la cuenta que deseas matricular en este salón.
+                </p>
             </div>
 
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Estudiante</th>
-                            <th>Tarea</th>
-                            <th>Documento Entregado</th>
-                            <th>Fecha de Entrega</th>
-                            <th>Calificación</th>
-                            <th>Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody id="dashboard-body">
-                        <tr><td colspan="6">Cargando datos...</td></tr>
-                    </tbody>
-                </table>
+            <label
+                class="enrollment-search-field"
+                for="enrollment-student-search"
+            >
+                <span>Buscar estudiante</span>
+
+                <input
+                    type="search"
+                    id="enrollment-student-search"
+                    placeholder="Escribe un nombre o una cédula..."
+                    autocomplete="off"
+                >
+            </label>
+
+            <div
+                id="enrollment-message"
+                class="enrollment-message"
+                role="status"
+                aria-live="polite"
+                hidden
+            ></div>
+
+            <div
+                id="enrollment-student-list"
+                class="enrollment-student-list"
+            >
+                <p class="empty-student-list">
+                    Cargando estudiantes...
+                </p>
+            </div>
+
+            <div class="enrollment-dialog-actions">
+                <button
+                    id="cancel-enrollment-button"
+                    class="secondary-button"
+                    type="button"
+                >
+                    Cancelar
+                </button>
             </div>
         </div>
-    </section>
-    
+    </dialog>
+
     <script src="../middleware/dashboard.js"></script>
     <script src="../Assets/printresults.js"></script>
+    <script src="../middleware/pantallaprincipal.js"></script>
 </body>
 </html>

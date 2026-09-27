@@ -1,102 +1,1148 @@
-/* --- Contenedor Principal del Dashboard --- */
-/* Este contenedor añade un poco de espacio dentro del layout de #contenido */
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
+
 .dashboard-container {
-    width: 90vw;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
+
+    width: min(1400px, 94vw);
+    padding: 1.5rem 0 3rem;
     gap: 1.5rem;
-    padding: 1rem 0;
+}
+
+
+/* =========================================================
+   ENCABEZADO DEL DASHBOARD
+   ========================================================= */
+
+.dashboard-heading {
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    width: 100%;
+    padding: 1.5rem;
+    gap: 1.5rem;
+
+    border: 1px solid #dbe7f3;
+    border-radius: 18px;
+
+    background-color: #ffffff;
+
+    box-shadow:
+        0 8px 22px rgba(20, 63, 104, 0.12);
+}
+
+.dashboard-eyebrow {
+    margin: 0 0 0.4rem;
+    padding: 0;
+
+    color: #2878d0;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+
+    text-transform: uppercase;
 }
 
 #dashboard-title {
-    color: #002241;
-    font-size: 2.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid #66A6FF;
     margin: 0;
+    padding: 0;
+
+    color: #17324d;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(1.65rem, 3vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.2;
 }
 
-/* --- Filtros --- */
-.filters {
+.dashboard-salon-info {
+    margin: 0.6rem 0 0;
+    padding: 0;
+
+    color: #60758a;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+    line-height: 1.45;
+}
+
+.enrollment-button {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 48px;
+    margin: 0;
+    padding: 0.75rem 1.2rem;
+    gap: 0.55rem;
+
+    border: 0;
+    border-radius: 10px;
+
+    background-color: #2878d0;
+
+    color: #ffffff;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 6px 14px rgba(40, 120, 208, 0.22);
+
+    transition:
+        background-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.enrollment-button span {
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.enrollment-button:hover {
+    background-color: #1e65b3;
+
+    box-shadow:
+        0 9px 18px rgba(40, 120, 208, 0.3);
+
+    transform: translateY(-1px);
+}
+
+.enrollment-button:active {
+    background-color: #185795;
+    transform: translateY(1px);
+}
+
+.enrollment-button:focus-visible {
+    outline: 3px solid rgba(40, 120, 208, 0.35);
+    outline-offset: 3px;
+}
+
+
+/* =========================================================
+   INFORMACIÓN DEL PROFESOR EN EL HEADER
+   ========================================================= */
+
+.datos-dashboard-header {
     display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+
+    min-width: 160px;
+    padding-right: 2vw;
+}
+
+.etiqueta-dashboard-header {
+    color: #345f86;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+
+    text-transform: uppercase;
+}
+
+.datos-dashboard-header #username {
+    margin: 0.25rem 0 0;
+    padding: 0;
+
+    color: #17324d;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   TARJETAS DE RESUMEN
+   ========================================================= */
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    width: 100%;
     gap: 1rem;
 }
 
-/* Reutilizamos y adaptamos el estilo .inputbuscar que ya tienes */
-.filters .inputbuscar {
-    width: 100%;
-    padding: 0.75rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-}
+.summary-card {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
 
-/* --- Estilo de la Tabla --- */
-.table-wrapper {
+    min-height: 105px;
+    padding: 1.25rem;
+    gap: 1rem;
+
+    border: 1px solid #dce7f1;
+    border-left-width: 6px;
+    border-radius: 14px;
+
     background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+
+    box-shadow:
+        0 6px 16px rgba(20, 63, 104, 0.1);
 }
 
-table {
+.summary-icon {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+
+    width: 48px;
+    height: 48px;
+
+    border-radius: 12px;
+
+    background-color: #edf5ff;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+}
+
+.summary-card > div {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.summary-value {
+    color: #17324d;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.summary-label {
+    margin-top: 0.2rem;
+
+    color: #687d91;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.84rem;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.summary-students {
+    border-left-color: #2878d0;
+}
+
+.summary-tasks {
+    border-left-color: #7654bd;
+}
+
+.summary-delivered {
+    border-left-color: #2d9b5d;
+}
+
+.summary-pending {
+    border-left-color: #d49a24;
+}
+
+
+/* =========================================================
+   BARRA DE HERRAMIENTAS Y FILTROS
+   ========================================================= */
+
+.dashboard-toolbar {
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
     width: 100%;
+    padding: 1.2rem;
+    gap: 1rem;
+
+    border: 1px solid #dce7f1;
+    border-radius: 14px;
+
+    background-color: #ffffff;
+
+    box-shadow:
+        0 5px 15px rgba(20, 63, 104, 0.08);
+}
+
+.filters {
+    display: grid;
+    flex: 1;
+    grid-template-columns: repeat(3, minmax(160px, 1fr));
+
+    gap: 1rem;
+}
+
+.filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.filter-field > span {
+    color: #4a6278;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.filters .inputbuscar,
+.enrollment-search-field input {
+    box-sizing: border-box;
+
+    width: 100%;
+    min-height: 44px;
+    padding: 0.7rem 0.8rem;
+
+    border: 1px solid #bdcbd8;
+    border-radius: 8px;
+
+    background-color: #ffffff;
+
+    color: #243b53;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.95rem;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.filters .inputbuscar:hover,
+.enrollment-search-field input:hover {
+    border-color: #8aabc9;
+}
+
+.filters .inputbuscar:focus,
+.enrollment-search-field input:focus {
+    border-color: #2878d0;
+    outline: 0;
+
+    box-shadow:
+        0 0 0 3px rgba(40, 120, 208, 0.16);
+}
+
+.download-button {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+
+    min-height: 44px;
+    margin: 0;
+    padding: 0.7rem 1rem;
+
+    border: 1px solid #2d9b5d;
+    border-radius: 8px;
+
+    background-color: #2d9b5d;
+
+    color: #ffffff;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.download-button:hover {
+    background-color: #237b49;
+
+    box-shadow:
+        0 6px 14px rgba(45, 155, 93, 0.24);
+}
+
+.download-button:active {
+    background-color: #1c653c;
+}
+
+
+/* =========================================================
+   MENSAJES
+   ========================================================= */
+
+.dashboard-message,
+.enrollment-message {
+    box-sizing: border-box;
+
+    width: 100%;
+    padding: 0.85rem 1rem;
+
+    border: 1px solid transparent;
+    border-radius: 9px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.dashboard-message[hidden],
+.enrollment-message[hidden] {
+    display: none;
+}
+
+.message-informacion {
+    border-color: #b8d8f6;
+    background-color: #eaf5ff;
+    color: #185c96;
+}
+
+.message-exito {
+    border-color: #a9dfbd;
+    background-color: #e8f7ed;
+    color: #176739;
+}
+
+.message-error {
+    border-color: #f0b4b4;
+    background-color: #fdeaea;
+    color: #9a2929;
+}
+
+
+/* =========================================================
+   TABLA
+   ========================================================= */
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+
+    border: 1px solid #dce5ee;
+    border-radius: 14px;
+
+    background-color: #ffffff;
+
+    box-shadow:
+        0 7px 20px rgba(20, 63, 104, 0.1);
+}
+
+.dashboard-table {
+    width: 100%;
+    min-width: 1120px;
+
     border-collapse: collapse;
 }
 
-thead tr {
-    /* Reutilizamos el gradiente del header para la cabecera de la tabla */
-    background: linear-gradient(90deg, #66A6FF 0%, #ADCFFF 100%);
+.dashboard-table thead tr {
+    background:
+        linear-gradient(
+            90deg,
+            #397fce 0%,
+            #6ba8ed 100%
+        );
+
     color: #ffffff;
 }
 
-th, td {
-    padding: 0.8rem 1rem;
+.dashboard-table th,
+.dashboard-table td {
+    padding: 0.9rem 0.8rem;
+
+    border-bottom: 1px solid #e4ebf2;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.4;
     text-align: left;
-    border-bottom: 1px solid #e0e0e0;
+    vertical-align: middle;
 }
 
-tbody tr:hover {
-    background-color: #f5f5f5;
+.dashboard-table th {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+
+    text-transform: uppercase;
+
+    white-space: nowrap;
 }
 
-td a {
-    color: #007bff;
-    font-weight: bold;
+.dashboard-table tbody tr {
+    transition:
+        background-color 0.18s ease;
+}
+
+.dashboard-table tbody tr:hover {
+    background-color: #f5f9fd;
+}
+
+.dashboard-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.table-message {
+    padding: 2rem !important;
+
+    color: #64798d;
+
+    font-size: 1rem !important;
+    text-align: center !important;
+}
+
+
+/* =========================================================
+   CELDA DEL ESTUDIANTE
+   ========================================================= */
+
+.student-cell-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+
+    min-width: 160px;
+}
+
+.student-cell-content strong {
+    color: #20384e;
+    font-size: 0.92rem;
+}
+
+.student-id {
+    color: #718598;
+    font-size: 0.76rem;
+}
+
+.enrollment-status {
+    display: inline-flex;
+
+    width: fit-content;
+    margin-top: 0.2rem;
+    padding: 0.25rem 0.55rem;
+
+    border-radius: 999px;
+
+    background-color: #edf5ff;
+
+    color: #24659f;
+
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.celda-tema {
+    color: #5b438f;
+    font-weight: 700;
+}
+
+.celda-tarea {
+    color: #31495f;
+    font-weight: 600;
+}
+
+.celda-fecha {
+    color: #61778b;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   ESTADOS DE ENTREGA
+   ========================================================= */
+
+.delivery-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 92px;
+    padding: 0.35rem 0.65rem;
+
+    border-radius: 999px;
+
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-align: center;
+
+    white-space: nowrap;
+}
+
+.status-graded {
+    background-color: #e3f6e9;
+    color: #176f3a;
+}
+
+.status-delivered {
+    background-color: #e5f1ff;
+    color: #1f65a6;
+}
+
+.status-pending {
+    background-color: #fff2d5;
+    color: #876000;
+}
+
+.status-no-tasks {
+    background-color: #eceff2;
+    color: #5f6973;
+}
+
+
+/* =========================================================
+   ENLACES, NOTAS Y ACCIONES
+   ========================================================= */
+
+.submission-link {
+    color: #1670c5;
+
+    font-weight: 700;
     text-decoration: none;
 }
 
-td a:hover {
+.submission-link:hover {
     text-decoration: underline;
 }
 
-/* --- Elementos Interactivos en la Tabla --- */
-.nota-input {
-    width: 70px;
-    padding: 0.5rem;
-    text-align: center;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+.submission-link:focus-visible {
+    outline: 3px solid rgba(22, 112, 197, 0.25);
+    outline-offset: 2px;
 }
 
-.save-button {
-    padding: 0.5rem 1rem;
-    font-weight: bold;
+.empty-value {
+    color: #8997a4;
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+.nota-input {
+    box-sizing: border-box;
+
+    width: 78px;
+    min-height: 38px;
+    padding: 0.45rem;
+
+    border: 1px solid #bdcad6;
+    border-radius: 7px;
+
+    background-color: #ffffff;
+
+    color: #243b53;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.nota-input:focus {
+    border-color: #2878d0;
+    outline: 0;
+
+    box-shadow:
+        0 0 0 3px rgba(40, 120, 208, 0.15);
+}
+
+.nota-input:disabled {
+    background-color: #f1f3f5;
+    color: #87929c;
+    cursor: not-allowed;
+}
+
+.save-grade-button {
+    box-sizing: border-box;
+
+    min-height: 38px;
+    padding: 0.5rem 0.85rem;
+
+    border: 0;
+    border-radius: 7px;
+
+    background-color: #2d9b5d;
+
     color: #ffffff;
-    background-color: #28a745; /* Verde para 'Guardar' */
-    border: none;
-    border-radius: 6px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.save-grade-button:hover {
+    background-color: #237b49;
+}
+
+.save-grade-button:active {
+    transform: translateY(1px);
+}
+
+.save-grade-button:disabled {
+    background-color: #94bca5;
+    cursor: wait;
+}
+
+
+/* =========================================================
+   MODAL DE MATRÍCULA
+   ========================================================= */
+
+.enrollment-dialog {
+    box-sizing: border-box;
+
+    width: min(92vw, 680px);
+    max-height: 88vh;
+    padding: 0;
+
+    overflow: hidden;
+
+    border: 0;
+    border-radius: 18px;
+
+    background-color: #ffffff;
+
+    box-shadow:
+        0 20px 55px rgba(0, 0, 0, 0.28);
+}
+
+.enrollment-dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.62);
+    backdrop-filter: blur(4px);
+}
+
+.enrollment-dialog[open] {
+    animation: enrollmentDialogIn 0.2s ease;
+}
+
+@keyframes enrollmentDialogIn {
+    from {
+        opacity: 0;
+        transform: translateY(-12px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.dialog-close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+    margin: 0;
+    padding: 0;
+
+    border: 0;
+    border-radius: 50%;
+
+    background-color: #e9eef3;
+
+    color: #43586b;
+
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1;
+
     cursor: pointer;
 }
 
-/* --- Responsividad para Móviles --- */
-@media (max-width: 768px) {
-    .filters {
-        flex-direction: column;
+.dialog-close-button:hover {
+    background-color: #dce4eb;
+}
+
+.dialog-close-button:focus-visible {
+    outline: 3px solid rgba(40, 120, 208, 0.35);
+    outline-offset: 2px;
+}
+
+.enrollment-dialog-content {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    max-height: 88vh;
+    padding: 1.8rem;
+    gap: 1.2rem;
+
+    overflow-y: auto;
+}
+
+.enrollment-dialog-header {
+    padding-right: 2.5rem;
+}
+
+.dialog-eyebrow {
+    margin: 0 0 0.35rem;
+    padding: 0;
+
+    color: #2878d0;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+}
+
+#enrollment-dialog-title {
+    margin: 0;
+    padding: 0;
+
+    color: #17324d;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.enrollment-dialog-header > p:last-child {
+    margin: 0.55rem 0 0;
+    padding: 0;
+
+    color: #64798c;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.enrollment-search-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.enrollment-search-field > span {
+    color: #425c73;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   LISTA DE ESTUDIANTES DEL MODAL
+   ========================================================= */
+
+.enrollment-student-list {
+    display: flex;
+    flex-direction: column;
+
+    max-height: 45vh;
+    padding: 0.25rem;
+    gap: 0.75rem;
+
+    overflow-y: auto;
+}
+
+.enrollment-student-card {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    padding: 0.9rem 1rem;
+    gap: 1rem;
+
+    border: 1px solid #dce6ef;
+    border-radius: 11px;
+
+    background-color: #fafcff;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.enrollment-student-card:hover {
+    border-color: #a8c5e2;
+
+    box-shadow:
+        0 5px 12px rgba(31, 90, 144, 0.08);
+}
+
+.enrollment-student-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 0.2rem;
+}
+
+.enrollment-student-info strong {
+    overflow: hidden;
+
+    color: #21394f;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.95rem;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.enrollment-student-info span {
+    color: #708496;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.78rem;
+}
+
+.student-enroll-button {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+
+    min-height: 38px;
+    padding: 0.5rem 0.85rem;
+
+    border: 1px solid #2878d0;
+    border-radius: 7px;
+
+    background-color: #2878d0;
+
+    color: #ffffff;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.student-enroll-button:hover {
+    border-color: #1e65b3;
+    background-color: #1e65b3;
+}
+
+.student-enroll-button.reactivate {
+    border-color: #c88719;
+    background-color: #d99928;
+}
+
+.student-enroll-button.reactivate:hover {
+    border-color: #ad7110;
+    background-color: #bc7d18;
+}
+
+.student-enroll-button.already-enrolled {
+    border-color: #c4ccd3;
+    background-color: #e8ecef;
+    color: #687580;
+    cursor: not-allowed;
+}
+
+.student-enroll-button:disabled:not(.already-enrolled) {
+    border-color: #8eafd1;
+    background-color: #8eafd1;
+    cursor: wait;
+}
+
+.empty-student-list {
+    margin: 0;
+    padding: 1.5rem;
+
+    border: 1px dashed #cbd7e2;
+    border-radius: 10px;
+
+    color: #708496;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.enrollment-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+
+    padding-top: 0.3rem;
+}
+
+.secondary-button {
+    box-sizing: border-box;
+
+    min-height: 42px;
+    padding: 0.6rem 1rem;
+
+    border: 1px solid #aebbc7;
+    border-radius: 8px;
+
+    background-color: #ffffff;
+
+    color: #42576a;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.secondary-button:hover {
+    border-color: #8493a0;
+    background-color: #f1f4f6;
+}
+
+
+/* =========================================================
+   TABLETAS
+   ========================================================= */
+
+@media screen and (max-width: 1050px) {
+    .summary-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
     }
-    
-    /* Permite que la tabla se deslice horizontalmente sin romper la página */
-    .table-wrapper {
-        overflow-x: auto;
+
+    .dashboard-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .download-button {
+        align-self: flex-end;
+    }
+}
+
+
+/* =========================================================
+   TELÉFONOS
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+    .dashboard-container {
+        width: 92vw;
+    }
+
+    .dashboard-heading {
+        flex-direction: column;
+        align-items: stretch;
+
+        padding: 1.2rem;
+    }
+
+    .enrollment-button {
+        align-self: stretch;
+    }
+
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-card {
+        min-height: 90px;
+    }
+
+    .filters {
+        grid-template-columns: 1fr;
+    }
+
+    .download-button {
+        align-self: stretch;
+    }
+
+    .datos-dashboard-header {
+        min-width: 0;
+        max-width: 42vw;
+    }
+
+    .datos-dashboard-header #username {
+        max-width: 40vw;
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .enrollment-dialog {
+        width: 94vw;
+        max-height: 92vh;
+    }
+
+    .enrollment-dialog-content {
+        max-height: 92vh;
+        padding: 1.3rem;
+    }
+
+    .enrollment-student-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .student-enroll-button {
+        width: 100%;
+    }
+}
+
+
+/* =========================================================
+   PANTALLAS MUY PEQUEÑAS
+   ========================================================= */
+
+@media screen and (max-width: 480px) {
+    .dashboard-heading {
+        padding: 1rem;
+    }
+
+    #dashboard-title {
+        font-size: 1.45rem;
+    }
+
+    .summary-card {
+        padding: 1rem;
+    }
+
+    .dashboard-toolbar {
+        padding: 1rem;
+    }
+
+    .enrollment-dialog-content {
+        padding: 1rem;
+    }
+}
+
+
+/* =========================================================
+   ACCESIBILIDAD
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .enrollment-dialog[open] {
+        animation: none;
+    }
+
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
     }
 }

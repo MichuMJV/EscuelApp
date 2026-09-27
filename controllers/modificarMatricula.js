@@ -1,35 +1,302 @@
-const {Salon}=require("../models/Models.js")
-const {Usuario}=require("../models/Models.js")
-const {SalonEstudiante}=require("../models/Models.js")
+const mongoose = require("mongoose");
 
-const opcionesStatus=["Matriculado","Retirado","Aprobado","Reprobado"]
+const {
+    Salon,
+    Usuario,
+    SalonEstudiante,
+    Tarea,
+    TareaEstudiante
+} = require("../models/Models.js");
 
-module.exports= async function modificarMatricula(request,response){
-    let body=request.body
+const ESTADOS_VALIDOS = [
+    "Matriculado",
+    "Retirado",
+    "Aprobado",
+    "Reprobado"
+];
 
-    request.profesor=await Usuario.findOne({_id:request.query.idProfesor})
-    request.SalonEstudiante=await SalonEstudiante.findOne({_id:request.query.idMatricula})
-    request.salon=await Salon.findOne(({_id:request.SalonEstudiante.idgrupo}))
-    
-    if(request.salon.idprofesor!==request.profesor._id)
-        return response.json({success:false,message:"No eres el profesor de este salon"})
+module.exports = async function modificarMatricula(
+    request,
+    response
+) {
+    const {
+        idProfesor,
+        idMatricula
+    } = request.query;
 
-    if(opcionesStatus.includes(body.status))
-        return response.json({success:false,message:"Status no valido"})
+    const {
+        status,
+        nota
+    } = request.body;
 
-    if(body.nota>100 || body.nota<0 || Number(body.nota))
-        return response.json({success:false,message:"Nota no valida"})
-
-    let dataUpdating={
-        status:body.status,
-        notafinal:body.nota
+    if (!idProfesor || !idMatricula) {
+        return response.status(400).json({
+            success: false,
+            message:
+                "Se requiere el ID del profesor y el ID de la matrícula."
+        });
     }
 
-    try{
-        let Upstatus=await SalonEstudiante.updateOne({_id:request.SalonEstudiante._id},dataUpdating)
-        response.json(Upstatus)
-    }catch(e){
-        console.log(e)
-        return response.json({success:false, message:"Error al modificar"})
+    if (
+        !mongoose.Types.ObjectId.isValid(idProfesor) ||
+        !mongoose.Types.ObjectId.isValid(idMatricula)
+    ) {
+        return response.status(400).json({
+            success: false,
+            message:
+                "El ID del profesor o de la matrícula no es válido."
+        });
     }
+
+    const estadoNormalizado =
+        typeof status === "string"
+            ? status.trim()
+            : "";
+
+    if (!ESTADOS_VALIDOS.includes(estadoNormalizado)) {
+        return response.status(400).json({
+            success: false,
+            message:
+                "El estado proporcionado no es válido."
+        });
+    }
+
+    const notaNormalizada =
+        nota === undefined ||
+        nota === null ||
+        String(nota).trim() === ""
+            ? null
+            : Number(nota);
+
+    if (
+        notaNormalizada !== null &&
+        (
+            !Number.isFinite(notaNormalizada) ||
+            notaNormalizada < 0 ||
+            notaNormalizada > 100
+        )
+    ) {
+        return response.status(400).json({
+            success: false,
+            message:
+                "La nota final debe ser un número entre 0 y 100."
+        });
+    }
+
+    try {
+        const profesor = await Usuario.findById(
+            idProfesor
+        )
+            .select("_id nombre rol")
+            .lean();
+
+        if (!profesor) {
+            return response.status(404).json({
+                success: false,
+                message:
+                    "El profesor especificado no fue encontrado."
+            });
+        }
+
+        if (Number(profesor.rol) !== 2) {
+            return response.status(403).json({
+                success: false,
+                message:
+                    "El usuario especificado no tiene el rol de profesor."
+            });
+        }
+
+        const matricula = await SalonEstudiante.findById(
+            idMatricula
+        );
+
+        if (!matricula) {
+            return response.status(404).json({
+                success: false,
+                message:
+                    "La matrícula especificada no fue encontrada."
+            });
+        }
+
+        const salon = await Salon.findById(
+            matricula.idgrupo
+        );
+
+        if (!salon) {
+            return response.status(404).json({
+                success: false,
+                message:
+                    "El salón relacionado con la matrícula no fue encontrado."
+            });
+        }
+
+        const profesorEsPropietario =
+            salon.idprofe &&
+            salon.idprofe.toString() ===
+                profesor._id.toString();
+
+        if (!profesorEsPropietario) {
+            return response.status(403).json({
+                success: false,
+                message:
+                    "No tienes permiso para modificar matrículas de este salón."
+            });
+        }
+
+        const estadoAnterior =
+            matricula.status || "Matriculado";
+
+        const estabaRetirado =
+            estadoAnterior === "Retirado";
+
+        const quedaraRetirado =
+            estadoNormalizado === "Retirado";
+
+        if (
+            estabaRetirado &&
+            !quedaraRetirado
+        ) {
+            const cupoDisponible = Number(salon.cupo);
+
+            if (
+                !Number.isFinite(cupoDisponible) ||
+                cupoDisponible <= 0
+            ) {
+                return response.status(400).json({
+                    success: false,
+                    message:
+                        "No hay cupos disponibles para reactivar esta matrícula."
+                });
+            }
+
+            salon.cupo = cupoDisponible - 1;
+
+            await crearAsignacionesFaltantes(
+                salon._id,
+                matricula.idestudiante
+            );
+        }
+
+        if (
+            !estabaRetirado &&
+            quedaraRetirado
+        ) {
+            const cupoActual = Number(salon.cupo);
+
+            salon.cupo =
+                Number.isFinite(cupoActual)
+                    ? cupoActual + 1
+                    : 1;
+        }
+
+        matricula.status = estadoNormalizado;
+
+        if (notaNormalizada !== null) {
+            matricula.notafinal =
+                String(notaNormalizada);
+        }
+
+        if (
+            estadoNormalizado === "Matriculado" &&
+            notaNormalizada === null
+        ) {
+            matricula.notafinal =
+                matricula.notafinal || "0";
+        }
+
+        const [
+            matriculaActualizada
+        ] = await Promise.all([
+            matricula.save(),
+            salon.save()
+        ]);
+
+        return response.status(200).json({
+            success: true,
+            message:
+                "La matrícula fue actualizada correctamente.",
+
+            matricula: {
+                _id: matriculaActualizada._id,
+                idgrupo:
+                    matriculaActualizada.idgrupo,
+                idestudiante:
+                    matriculaActualizada.idestudiante,
+                status:
+                    matriculaActualizada.status,
+                notafinal:
+                    matriculaActualizada.notafinal,
+                fecha:
+                    matriculaActualizada.fecha
+            },
+
+            salon: {
+                _id: salon._id,
+                nombre: salon.nombre,
+                materia: salon.materia,
+                cupo: salon.cupo
+            }
+        });
+    } catch (error) {
+        console.error(
+            "Error al modificar la matrícula:",
+            error
+        );
+
+        if (error.name === "CastError") {
+            return response.status(400).json({
+                success: false,
+                message:
+                    "Uno de los identificadores proporcionados no es válido."
+            });
+        }
+
+        return response.status(500).json({
+            success: false,
+            message:
+                "Ocurrió un error en el servidor al modificar la matrícula."
+        });
+    }
+};
+
+async function crearAsignacionesFaltantes(
+    idGrupo,
+    idEstudiante
+) {
+    const tareas = await Tarea.find({
+        idgrupo: idGrupo
+    })
+        .select("_id")
+        .lean();
+
+    if (tareas.length === 0) {
+        return;
+    }
+
+    const operaciones = tareas.map(function (tarea) {
+        return {
+            updateOne: {
+                filter: {
+                    idtarea: tarea._id,
+                    idestudiante: idEstudiante
+                },
+
+                update: {
+                    $setOnInsert: {
+                        idtarea: tarea._id,
+                        idestudiante: idEstudiante
+                    }
+                },
+
+                upsert: true
+            }
+        };
+    });
+
+    await TareaEstudiante.bulkWrite(
+        operaciones,
+        {
+            ordered: false
+        }
+    );
 }
