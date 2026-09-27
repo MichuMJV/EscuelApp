@@ -1,11 +1,8 @@
-// Importamos los modelos necesarios
 const { Tarea, Salon } = require("../models/Models.js");
 
 module.exports = async function GetTareasPorSalon(request, response) {
-    // Obtenemos el ID del salón desde los query params de la URL
     const { id: idgrupo } = request.query;
 
-    // Verificamos que se haya enviado un ID
     if (!idgrupo) {
         return response.status(400).json({
             success: false,
@@ -14,8 +11,8 @@ module.exports = async function GetTareasPorSalon(request, response) {
     }
 
     try {
-        // Paso 1: Verificamos que el salón realmente exista (buena práctica)
         const salonExiste = await Salon.findById(idgrupo);
+
         if (!salonExiste) {
             return response.status(404).json({
                 success: false,
@@ -23,17 +20,45 @@ module.exports = async function GetTareasPorSalon(request, response) {
             });
         }
 
-        // Paso 2: Buscamos todas las tareas que coincidan con el idgrupo
-        const tareas = await Tarea.find({ idgrupo: idgrupo });
+        const tareasEncontradas = await Tarea.find({
+            idgrupo: idgrupo
+        })
+            .sort({
+                tema: 1,
+                fechavencimiento: 1
+            })
+            .lean();
 
-        // Enviamos la respuesta con las tareas encontradas (puede ser un array vacío)
+        const tareas = tareasEncontradas.map(function (tarea) {
+            const temaNormalizado =
+                typeof tarea.tema === "string" &&
+                tarea.tema.trim()
+                    ? tarea.tema.trim()
+                    : "Sin tema";
+
+            return {
+                ...tarea,
+                tema: temaNormalizado
+            };
+        });
+
         return response.status(200).json({
             success: true,
             tareas: tareas
         });
-
     } catch (error) {
-        console.error("Error al obtener las tareas por salón:", error);
+        console.error(
+            "Error al obtener las tareas por salón:",
+            error
+        );
+
+        if (error.name === "CastError") {
+            return response.status(400).json({
+                success: false,
+                message: "El ID del salón no es válido."
+            });
+        }
+
         return response.status(500).json({
             success: false,
             message: "Ocurrió un error en el servidor."

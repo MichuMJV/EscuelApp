@@ -1,67 +1,386 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EscuelaApp🎓</title>
+
+    <title>EscuelaApp 🎓 | Administración</title>
+
     <link rel="stylesheet" href="../styles/HeadAndFoot.css">
     <link rel="stylesheet" href="../styles/homeAdmin.css">
 </head>
+
 <body>
     <header>
         <div id="headerlogo">
-            <button id="boton_atras_home" onClick="cerrarsesion()">
-                <img src="../Assets/luzh47ih_400x400.png" alt="" class="logo_colegio">
+            <button
+                id="boton_atras_home"
+                type="button"
+                onclick="cerrarsesion()"
+                aria-label="Cerrar sesión"
+                title="Cerrar sesión"
+            >
+                <img
+                    src="../Assets/luzh47ih_400x400.png"
+                    alt="Logotipo de EscuelaApp"
+                    class="logo_colegio"
+                >
             </button>
+
             <h1>EscuelaApp</h1>
         </div>
-        <div>
+
+        <div class="datos-usuario">
+            <span class="etiqueta-usuario">Administrador</span>
             <h2 id="username"></h2>
         </div>
     </header>
-    <section>
-        <span>
-            <div>   
-                <button id="input-button5" onclick="VerUsuarios()">Ver Usuarios</button> <!--tabla de usuarios-->
+
+    <main id="panel-administracion">
+        <section
+            class="contenedor-administracion"
+            aria-labelledby="titulo-administracion"
+        >
+            <div class="encabezado-panel">
+                <p class="subtitulo-panel">Panel administrativo</p>
+
+                <h2 id="titulo-administracion">
+                    ¿Qué deseas administrar?
+                </h2>
+
+                <p class="descripcion-panel">
+                    Selecciona una categoría para ver las opciones disponibles.
+                </p>
             </div>
-        </span>
-        <span>
-            <div>
-                <button id="input-button1" onclick="EditarSalones()" >Editar Salones</button> <!--tabla de salones-->
+
+            <div class="acordeon-administracion">
+                <article class="modulo-administracion modulo-usuarios">
+                    <button
+                        class="boton-categoria"
+                        type="button"
+                        aria-expanded="false"
+                        aria-controls="opciones-usuarios"
+                        data-acordeon="opciones-usuarios"
+                    >
+                        <span class="categoria-contenido">
+                            <span
+                                class="categoria-icono"
+                                aria-hidden="true"
+                            >
+                                👥
+                            </span>
+
+                            <span class="categoria-textos">
+                                <span class="categoria-titulo">
+                                    Gestión de usuarios
+                                </span>
+
+                                <span class="categoria-descripcion">
+                                    Consulta, registra y asigna roles a los usuarios.
+                                </span>
+                            </span>
+                        </span>
+
+                        <span
+                            class="categoria-flecha"
+                            aria-hidden="true"
+                        >
+                            &#9662;
+                        </span>
+                    </button>
+
+                    <div
+                        id="opciones-usuarios"
+                        class="lista-opciones"
+                        hidden
+                    >
+                        <button
+                            class="boton-opcion opcion-usuarios"
+                            type="button"
+                            onclick="VerUsuarios()"
+                        >
+                            <span class="opcion-contenido">
+                                <span class="opcion-titulo">
+                                    Ver usuarios
+                                </span>
+
+                                <span class="opcion-descripcion">
+                                    Consulta los usuarios registrados en el sistema.
+                                </span>
+                            </span>
+
+                            <span
+                                class="opcion-flecha"
+                                aria-hidden="true"
+                            >
+                                &#8250;
+                            </span>
+                        </button>
+
+                        <button
+                            class="boton-opcion opcion-usuarios"
+                            type="button"
+                            onclick="abrirNuevoUsuario()"
+                        >
+                            <span class="opcion-contenido">
+                                <span class="opcion-titulo">
+                                    Agregar nuevo usuario
+                                </span>
+
+                                <span class="opcion-descripcion">
+                                    Registra una nueva cuenta de usuario.
+                                </span>
+                            </span>
+
+                            <span
+                                class="opcion-flecha"
+                                aria-hidden="true"
+                            >
+                                &#8250;
+                            </span>
+                        </button>
+
+                        <button
+                            class="boton-opcion opcion-usuarios"
+                            type="button"
+                            onclick="Nuevo_rol()"
+                        >
+                            <span class="opcion-contenido">
+                                <span class="opcion-titulo">
+                                    Asignar rol a usuario
+                                </span>
+
+                                <span class="opcion-descripcion">
+                                    Define el nivel de acceso de una cuenta.
+                                </span>
+                            </span>
+
+                            <span
+                                class="opcion-flecha"
+                                aria-hidden="true"
+                            >
+                                &#8250;
+                            </span>
+                        </button>
+                    </div>
+                </article>
+
+                <article class="modulo-administracion modulo-academico">
+                    <button
+                        class="boton-categoria"
+                        type="button"
+                        aria-expanded="false"
+                        aria-controls="opciones-academicas"
+                        data-acordeon="opciones-academicas"
+                    >
+                        <span class="categoria-contenido">
+                            <span
+                                class="categoria-icono"
+                                aria-hidden="true"
+                            >
+                                🎓
+                            </span>
+
+                            <span class="categoria-textos">
+                                <span class="categoria-titulo">
+                                    Gestión académica
+                                </span>
+
+                                <span class="categoria-descripcion">
+                                    Administra salones y consulta calificaciones.
+                                </span>
+                            </span>
+                        </span>
+
+                        <span
+                            class="categoria-flecha"
+                            aria-hidden="true"
+                        >
+                            &#9662;
+                        </span>
+                    </button>
+
+                    <div
+                        id="opciones-academicas"
+                        class="lista-opciones"
+                        hidden
+                    >
+                        <button
+                            class="boton-opcion opcion-academica"
+                            type="button"
+                            onclick="EditarSalones()"
+                        >
+                            <span class="opcion-contenido">
+                                <span class="opcion-titulo">
+                                    Ver y editar salones
+                                </span>
+
+                                <span class="opcion-descripcion">
+                                    Consulta y modifica la información de los salones.
+                                </span>
+                            </span>
+
+                            <span
+                                class="opcion-flecha"
+                                aria-hidden="true"
+                            >
+                                &#8250;
+                            </span>
+                        </button>
+
+                        <button
+                            class="boton-opcion opcion-academica"
+                            type="button"
+                            onclick="AbrirNuevoSalon()"
+                        >
+                            <span class="opcion-contenido">
+                                <span class="opcion-titulo">
+                                    Crear nuevo salón
+                                </span>
+
+                                <span class="opcion-descripcion">
+                                    Registra un nuevo salón en el sistema.
+                                </span>
+                            </span>
+
+                            <span
+                                class="opcion-flecha"
+                                aria-hidden="true"
+                            >
+                                &#8250;
+                            </span>
+                        </button>
+
+                        <button
+                            class="boton-opcion opcion-academica"
+                            type="button"
+                            onclick="abrirdashboardadmin()"
+                        >
+                            <span class="opcion-contenido">
+                                <span class="opcion-titulo">
+                                    Consultar notas de estudiantes
+                                </span>
+
+                                <span class="opcion-descripcion">
+                                    Revisa las calificaciones registradas.
+                                </span>
+                            </span>
+
+                            <span
+                                class="opcion-flecha"
+                                aria-hidden="true"
+                            >
+                                &#8250;
+                            </span>
+                        </button>
+                    </div>
+                </article>
+
+                <article class="modulo-administracion modulo-aplicaciones">
+                    <button
+                        class="boton-categoria"
+                        type="button"
+                        aria-expanded="false"
+                        aria-controls="opciones-aplicaciones"
+                        data-acordeon="opciones-aplicaciones"
+                    >
+                        <span class="categoria-contenido">
+                            <span
+                                class="categoria-icono"
+                                aria-hidden="true"
+                            >
+                                🧩
+                            </span>
+
+                            <span class="categoria-textos">
+                                <span class="categoria-titulo">
+                                    Gestión de aplicaciones
+                                </span>
+
+                                <span class="categoria-descripcion">
+                                    Agrega o elimina aplicaciones disponibles.
+                                </span>
+                            </span>
+                        </span>
+
+                        <span
+                            class="categoria-flecha"
+                            aria-hidden="true"
+                        >
+                            &#9662;
+                        </span>
+                    </button>
+
+                    <div
+                        id="opciones-aplicaciones"
+                        class="lista-opciones"
+                        hidden
+                    >
+                        <button
+                            class="boton-opcion opcion-aplicaciones"
+                            type="button"
+                            onclick="AbrirNuevaApp()"
+                        >
+                            <span class="opcion-contenido">
+                                <span class="opcion-titulo">
+                                    Agregar aplicación
+                                </span>
+
+                                <span class="opcion-descripcion">
+                                    Registra una nueva aplicación educativa.
+                                </span>
+                            </span>
+
+                            <span
+                                class="opcion-flecha"
+                                aria-hidden="true"
+                            >
+                                &#8250;
+                            </span>
+                        </button>
+
+                        <button
+                            class="boton-opcion opcion-eliminar"
+                            type="button"
+                            onclick="Borrar_APP()"
+                        >
+                            <span class="opcion-contenido">
+                                <span class="opcion-titulo">
+                                    Eliminar aplicación
+                                </span>
+
+                                <span class="opcion-descripcion">
+                                    Selecciona una aplicación registrada para eliminarla.
+                                </span>
+                            </span>
+
+                            <span
+                                class="opcion-flecha"
+                                aria-hidden="true"
+                            >
+                                &#8250;
+                            </span>
+                        </button>
+                    </div>
+                </article>
             </div>
-            <div>
-                <button id="input-button2" onclick="AbrirNuevoSalon()">Nuevo salon</button>
-            </div>
-        </span>
-        <span>
-            <div>
-                <button id="input-button3" onclick="Nuevo_rol()">Asignar rol a usuario</button>
-            </div>
-            <div>
-                <button id="input-button4" onclick="abrirdashboardadmin()">Notas Estudiantes</button><!--tabla de estudiantes-->
-            </div>
-        </span>
-        <span>
-            <div>
-                <button id="input-button5" onclick="abrirNuevoUsuario()">Agregar Nuevos usuarios</button>
-            </div>
-            <div>
-                <button id="input-button6" onclick="AbrirNuevaApp()">Agregar Apps</button>
-            </div>
-            <div>
-                <button id="input-button7" onclick="Borrar_APP()">Borrar App</button>
-            </div>
-        </span>
-    </section>
+        </section>
+    </main>
+
     <footer>
-        <h2>CONTACTENOS</h1>
-        <h2>Avenida Universidad Tecnológica de Panamá,
+        <h2>CONTÁCTENOS</h2>
+
+        <h2>
+            Avenida Universidad Tecnológica de Panamá,
             Vía Puente Centenario, Campus Metropolitano
-            Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.</h2>
-        <h2>Telefono: (507) 317-2000</h2>
+            Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.
+        </h2>
+
+        <h2>Teléfono: (507) 317-2000</h2>
     </footer>
-    <script src="..\styles\boton.js"></script>
-    <script src="..\middleware\pantallaprincipal.js"></script>
+
+    <script src="../styles/boton.js"></script>
+    <script src="../middleware/pantallaprincipal.js"></script>
 </body>
 </html>

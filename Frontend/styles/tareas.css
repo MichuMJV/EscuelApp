@@ -1,225 +1,870 @@
-#contenido{ 
-    position: fixed; 
-    top: 16vh; 
-    display: flex; 
-    align-items: center; 
-    flex-direction: column; 
-    gap: 3vh; 
-    height: 72vh; 
-    width: 100vw; 
-    overflow-y: scroll; 
-    overflow-x: none; 
-} 
+/* =========================================================
+   CONTENIDO PRINCIPAL
+   ========================================================= */
 
-#link_tarea{ 
-    display: flex; 
-    flex-direction: row; 
-} 
+#contenido {
+    position: fixed;
+    top: 12vh;
+    bottom: 12vh;
+    left: 0;
 
-#botondashboard,#botonaddtarea{ 
-    border-radius: 1vw; 
-    text-align: center; 
-    text-decoration: none; 
-    font-size: 6vh; 
-    cursor: pointer; 
-    height: fit-content; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    background: linear-gradient(90deg, #66A6FF 0%, #ADCFFF 100%); 
-    color: white; 
-} 
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-#botondashboard:hover,#botonaddtarea:hover{ 
-    box-shadow: 0 0.5vw rgb(182, 182, 182); 
-} 
+    width: 100vw;
+    height: 76vh;
+    padding: 3vh 4vw 5vh;
+    gap: 3vh;
 
-#botondashboard:active,#botonaddtarea:active{ 
-    background: linear-gradient(0deg, #66A6FF 0%, #ADCFFF 100%);; 
-    box-shadow: 0 0.5vw rgb(0, 0, 0); 
-    transform: translateY(4px); 
-} 
+    overflow-x: hidden;
+    overflow-y: auto;
 
-
-#botondashboard{ 
-    width: 90vw; 
-} 
-
-.Tareas { 
-    /* Auto layout */ 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    padding: 0; 
-    gap: 1.5vw; 
-    border-radius: 2.5vw;
-
-    width: 90vw; 
-    height: 10vh; 
-
-    /* Sombra buena */ 
-    filter: drop-shadow(-0.75vw 1.5vh 1.5vw rgba(0, 0, 0, 0.4)); 
-
-    /* Inside auto layout */ 
-    flex: none; 
-    order: 0; 
-    flex-grow: 0; 
-} 
-
-.Tareas #link_tarea { 
-    display: flex; 
-    flex-direction: row; 
-    justify-content: space-between; 
-    align-items: center; 
-    width: 90vw; 
-    height: 10vh; 
-    background: #FFFFFF; 
-    border-radius: 2.5vw; 
-    padding: 0 2vw; 
-} 
-
-#imagen { 
-    display: flex; 
-    width: 18.75vw; 
-    height: 18.75vw; 
-
-    /* Materia */ 
-    filter: drop-shadow(-3.75vw 2.5vw 2.5vw rgba(0, 0, 0, 0.01)) drop-shadow(-2.1vw 1.4vw 1.75vw rgba(0, 0, 0, 0.05)) drop-shadow(-0.96vw 0.6vw 1.425vw rgba(0, 0, 0, 0.09)) drop-shadow(-0.24vw 0.18vw 0.625vw rgba(0, 0, 0, 0.1)) drop-shadow(0 0 0 rgba(0, 0, 0, 0.1)); 
-    border-radius: 50%; 
-
-    /* Inside auto layout */ 
-    flex: none; 
-    order: 0; 
-    flex-grow: 0; 
-} 
-
-/* Media queries para dispositivos móviles */ 
-@media (max-width: 768px) { 
-    .Tareas { 
-        width: 90vw; 
-        height: 15vh; 
-        gap: 2vw; 
-    } 
-
-    .Tareas #link_tarea { 
-        width: 90vw; 
-        height: 15vh; 
-        border-radius: 3vw; 
-        padding: 0 4vw; 
-    } 
-
-    #imagen { 
-        width: 25vw; 
-        height: 25vw; 
-        border-radius: 50%; 
-    } 
-} 
-
-
-
-#headingmateria{ 
-    display: flex; 
-    flex-direction: row; 
-    align-items: center; 
-    gap: 2vh; 
-    width: 90vw; 
-    justify-content: space-between; 
-} 
-
-#headingmateria h1{ 
-    font-family:Arial, Helvetica, sans-serif; 
-    font-size: 3vw; 
-    font-weight: 900; 
-    color: #000000; 
-    margin: 0; 
-} 
-
-#headingmateria h2{ 
-    font-family:Arial, Helvetica, sans-serif; 
-    font-size: 2vw; 
-    font-weight: 900; 
-    color: #000e2b; 
-    margin: 0; 
-} 
-
-
-.container_tareas{ 
-    display: flex; 
-    flex-direction: column; 
-    gap: 2vw; 
-    padding-bottom: 2vw; 
-} 
-
-.contenedor_vencimiento{ 
-    display: flex; 
-    flex-direction: row; 
-    gap: 1vh; 
-    align-items: center; 
-    justify-content: center;   
-} 
-
-h4{ 
-    font-family: 'Avenir Next LT Pro', sans-serif; 
-    font-size: 1.5vw; 
-    font-weight: 400; 
-    color: #000000; 
-    margin: 0; 
-} 
-
-#boton_atras_home{ 
-    display: flex; 
-    justify-content: center; 
-    border: 0px; 
-    padding: 0px; 
-    border-radius: 50vw; 
-    text-align: center; 
-    text-decoration: none; 
-    cursor: pointer; 
-} 
-
-#boton_atras_home:hover{ 
-    box-shadow: 0 0.5vw #6ac8ff; 
-    transform: translateY(3px); 
-} 
-
-#boton_atras_home:active{ 
-    background: linear-gradient(0deg, #66A6FF 0%, #ADCFFF 100%);; 
-    box-shadow: 0 0.5vw rgb(0, 0, 0); 
-    transform: translateY(5px); 
-} 
-
-.datetime-input { 
-    font-family: 'Avenir Next LT Pro', sans-serif; 
-    font-size: 1.5vw; 
-    font-weight: 400; 
-    color: #000000; 
-    margin: 0; 
-    box-shadow: 0.15vw 0.15vw 0.3vw 0.05vw rgba(0, 0, 0, 0.3); 
-    width: 20vw; /* Ancho relativo */ 
-    height: 5vh; /* Altura relativa */ 
-    border-radius: 3vw; 
-    border: 0; 
-  }
-
-.Tareas.completada { 
-    box-shadow: -11px 0 0 0 #28a745; /* Verde */
+    background:
+        linear-gradient(
+            rgba(245, 249, 255, 0.9),
+            rgba(238, 246, 255, 0.94)
+        );
 }
-.Tareas.vencida { 
-    box-shadow: -11px 0 0 0 #dc3545; /* Rojo */
+
+
+/* =========================================================
+   ENCABEZADO DE LA MATERIA
+   ========================================================= */
+
+#headingmateria {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    width: min(1100px, 90vw);
+    min-height: 13vh;
+    padding: 2vh 2vw;
+    gap: 2vw;
+
+    border: 1px solid #dce8f5;
+    border-radius: 20px;
+
+    background-color: #ffffff;
+
+    box-shadow:
+        0 10px 24px rgba(31, 73, 115, 0.14);
 }
-.Tareas.pendiente { 
-    box-shadow: -11px 0 0 0 #f0f0f0; /* Blanco/Gris */
+
+#headingmateria #imagen {
+    display: block;
+    flex: 0 0 auto;
+
+    width: 9vh;
+    height: 9vh;
+
+    border: 3px solid #e7f0fa;
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    filter:
+        drop-shadow(
+            0 5px 8px rgba(0, 0, 0, 0.18)
+        );
+}
+
+#headingmateria h1 {
+    flex: 1;
+
+    margin: 0;
+    padding: 0;
+
+    color: #17324d;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(1.35rem, 3vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+#headingmateria h2 {
+    margin: 0;
+    padding: 0;
+
+    color: #425d77;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(0.88rem, 1.7vw, 1.15rem);
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.contenedor-codigo-salon {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+
+    padding: 1vh 1.2vw;
+    gap: 0.5vw;
+
+    border-radius: 10px;
+
+    background-color: #edf5ff;
+}
+
+
+/* =========================================================
+   BOTONES DEL ENCABEZADO
+   ========================================================= */
+
+#botondashboard,
+#botonaddtarea {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #4e91ec 0%,
+            #85baff 100%
+        );
+
+    color: #ffffff;
+
+    text-align: center;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 16px rgba(39, 104, 176, 0.22);
+
+    transition:
+        box-shadow 0.2s ease,
+        transform 0.2s ease,
+        filter 0.2s ease;
+}
+
+#botondashboard:hover,
+#botonaddtarea:hover {
+    filter: brightness(1.04);
+
+    box-shadow:
+        0 10px 20px rgba(39, 104, 176, 0.3);
+
+    transform: translateY(-2px);
+}
+
+#botondashboard:active,
+#botonaddtarea:active {
+    filter: brightness(0.96);
+
+    box-shadow:
+        0 4px 10px rgba(39, 104, 176, 0.24);
+
+    transform: translateY(1px);
+}
+
+#botondashboard:focus-visible,
+#botonaddtarea:focus-visible {
+    outline: 3px solid rgba(0, 95, 184, 0.4);
+    outline-offset: 3px;
+}
+
+#botondashboard {
+    width: min(1100px, 90vw);
+    min-height: 8vh;
+    padding: 1.2vh 2vw;
+}
+
+#botondashboard h1 {
+    margin: 0;
+    padding: 0;
+
+    color: #ffffff;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(1rem, 2.2vw, 1.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+#botonaddtarea {
+    min-width: 170px;
+    min-height: 6vh;
+    margin: 0;
+    padding: 1vh 1.5vw;
+}
+
+#botonaddtarea h4 {
+    margin: 0;
+    padding: 0;
+
+    color: #ffffff;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   CONTENEDOR DE TODAS LAS TAREAS
+   ========================================================= */
+
+.container_tareas {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    width: min(1100px, 90vw);
+    padding-bottom: 4vh;
+    gap: 3vh;
+}
+
+.container_tareas > h2,
+.container_tareas > h4 {
+    margin: 2vh 0;
+    padding: 2vh 2vw;
+
+    border-radius: 14px;
+
+    background-color: rgba(255, 255, 255, 0.94);
+
+    color: #334e68;
+
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+
+    box-shadow:
+        0 6px 16px rgba(31, 73, 115, 0.12);
+}
+
+
+/* =========================================================
+   AGRUPACIÓN POR TEMAS
+   ========================================================= */
+
+.grupo-tema {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    gap: 1.5vh;
+}
+
+.encabezado-tema {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    min-height: 7vh;
+    padding: 1.2vh 1.6vw;
+    gap: 2vw;
+
+    border-left: 7px solid #4e91ec;
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #e6f1ff 0%,
+            #f7fbff 100%
+        );
+
+    box-shadow:
+        0 5px 14px rgba(31, 73, 115, 0.1);
+}
+
+.titulo-tema {
+    margin: 0;
+    padding: 0;
+
+    color: #153d66;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(1.05rem, 2vw, 1.4rem);
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.contador-tareas {
+    flex: 0 0 auto;
+
+    padding: 0.6vh 1vw;
+
+    border: 1px solid #c8def5;
+    border-radius: 999px;
+
+    background-color: #ffffff;
+
+    color: #365f88;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(0.72rem, 1.2vw, 0.88rem);
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.lista-tareas-tema {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    padding-left: 1vw;
+    gap: 1.4vh;
+}
+
+
+/* =========================================================
+   TARJETAS DE TAREAS
+   ========================================================= */
+
+.Tareas {
+    box-sizing: border-box;
+    display: block;
+
+    width: 100%;
+    min-height: 10vh;
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
+
+    border: 0;
+    border-radius: 16px;
+
+    background-color: #ffffff;
+
+    color: #172b3a;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 18px rgba(29, 65, 101, 0.14);
+
+    transition:
+        box-shadow 0.2s ease,
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.Tareas:hover {
+    box-shadow:
+        0 12px 25px rgba(29, 65, 101, 0.2);
+
+    transform: translateY(-2px);
+}
+
+.Tareas:active {
+    box-shadow:
+        0 5px 12px rgba(29, 65, 101, 0.16);
+
+    transform: translateY(1px);
+}
+
+.Tareas:focus-visible {
+    outline: 3px solid rgba(40, 120, 208, 0.42);
+    outline-offset: 3px;
 }
 
 .Tareas .link_tarea {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(120px, auto)
+        minmax(220px, auto);
     align-items: center;
+
+    width: 100%;
+    min-height: 10vh;
+    padding: 1.5vh 2vw;
+    gap: 2vw;
+
+    border-radius: 16px;
+
+    background-color: #ffffff;
+}
+
+
+/* =========================================================
+   INFORMACIÓN DE LA TAREA
+   ========================================================= */
+
+.informacion-tarea {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+    gap: 0.5vh;
+}
+
+.nombre-tarea {
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
+
+    color: #17324d;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    font-weight: 700;
+    line-height: 1.3;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.descripcion-tarea {
+    max-width: 60ch;
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
+
+    color: #62768a;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(0.78rem, 1.3vw, 0.92rem);
+    font-weight: 400;
+    line-height: 1.35;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.trim {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   FECHA DE VENCIMIENTO
+   ========================================================= */
+
+.contenedor_vencimiento {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+
+    min-width: 200px;
+    padding: 1vh 1.2vw;
+    gap: 0.3vh;
+
+    border-radius: 10px;
+
+    background-color: #f1f6fb;
+}
+
+.etiqueta-vencimiento {
+    color: #698096;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(0.7rem, 1.1vw, 0.82rem);
+    font-weight: 700;
+    line-height: 1.2;
+
+    text-transform: uppercase;
+}
+
+.fecha-vencimiento {
+    color: #17324d;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(0.82rem, 1.3vw, 0.96rem);
+    font-weight: 700;
+    line-height: 1.3;
+
+    white-space: nowrap;
+}
+
+.datetime-input {
+    box-sizing: border-box;
+
+    width: 100%;
+    min-height: 44px;
+    padding: 0.65rem 0.8rem;
+
+    border: 1px solid #b9cce0;
+    border-radius: 8px;
+
+    background-color: #ffffff;
+
+    color: #172b3a;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1rem;
+}
+
+
+/* =========================================================
+   INFORMACIÓN DE NOTA DEL ESTUDIANTE
+   ========================================================= */
+
+.informacion-nota {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 110px;
+    padding: 0.8vh 1vw;
+    gap: 0.3vh;
+
+    border: 1px solid #dce6ef;
+    border-radius: 10px;
+
+    background-color: #fafcff;
+}
+
+.etiqueta-nota {
+    color: #72869a;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(0.68rem, 1vw, 0.8rem);
+    font-weight: 700;
+
+    text-transform: uppercase;
+}
+
+.valor-nota {
+    color: #245a8d;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(0.85rem, 1.4vw, 1rem);
+    font-weight: 700;
+    line-height: 1.3;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   ESTADO DE LA TAREA
+   ========================================================= */
+
+.estado-tarea {
+    display: inline-flex;
+    align-items: center;
+
+    width: fit-content;
+    padding: 0.4vh 0.8vw;
+
+    border-radius: 999px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(0.68rem, 1vw, 0.8rem);
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.estado-completada {
+    background-color: #e5f7ea;
+    color: #18723a;
+}
+
+.estado-vencida {
+    background-color: #fde7e7;
+    color: #a82d2d;
+}
+
+.estado-pendiente {
+    background-color: #fff5d7;
+    color: #805c00;
+}
+
+
+/* =========================================================
+   COLORES LATERALES SEGÚN ESTADO
+   ========================================================= */
+
+.Tareas.completada {
+    border-left: 9px solid #28a745;
+}
+
+.Tareas.vencida {
+    border-left: 9px solid #dc3545;
+}
+
+.Tareas.pendiente {
+    border-left: 9px solid #f2bd27;
+}
+
+
+/* =========================================================
+   BOTÓN DEL LOGOTIPO
+   ========================================================= */
+
+#boton_atras_home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 10vh;
+    height: 10vh;
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
+
+    border: 0;
+    border-radius: 50%;
+
+    background-color: transparent;
+
+    cursor: pointer;
+
+    transition:
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+#boton_atras_home:hover {
+    box-shadow:
+        0 0.5vw #6ac8ff;
+
+    transform: translateY(3px);
+}
+
+#boton_atras_home:active {
+    background:
+        linear-gradient(
+            0deg,
+            #66a6ff 0%,
+            #adcfff 100%
+        );
+
+    box-shadow:
+        0 0.5vw rgb(0, 0, 0);
+
+    transform: translateY(5px);
+}
+
+#boton_atras_home:focus-visible {
+    outline: 3px solid #005fb8;
+    outline-offset: 3px;
+}
+
+#boton_atras_home .logo_colegio {
+    display: block;
+
     width: 100%;
     height: 100%;
-    background: #FFFFFF;
-    border-radius: 2.5vw;
-    padding: 0 2vw;
-    box-sizing: border-box; /* Importante para que el padding no desborde */
+
+    object-fit: cover;
 }
+
+
+/* =========================================================
+   AYUDAS DE FORMULARIO DE NUEVA TAREA
+   ========================================================= */
+
+.ayuda-campo {
+    box-sizing: border-box;
+
+    width: 30vw;
+    margin: -0.3vh 0 0.8vh;
+    padding: 0;
+
+    color: #62768a;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(0.72rem, 1.1vw, 0.85rem);
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.grupo-fecha {
+    align-items: center;
+}
+
+.contenedor-selector-fecha {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+
+    width: 15vw;
+    min-width: 210px;
+
+    border: 1px solid #aebfd1;
+    border-radius: 1vh;
+
+    background-color: #ffffff;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.contenedor-selector-fecha:hover {
+    border-color: #4e91ec;
+
+    box-shadow:
+        0 0 0 3px rgba(78, 145, 236, 0.14);
+}
+
+.contenedor-selector-fecha:focus-within {
+    border-color: #2878d0;
+
+    box-shadow:
+        0 0 0 3px rgba(40, 120, 208, 0.2);
+}
+
+.contenedor-selector-fecha .campo-fecha {
+    flex: 1;
+
+    width: auto;
+    min-width: 0;
+    height: 4.5vh;
+    padding: 0 0.6vw;
+
+    border: 0;
+    outline: 0;
+
+    background-color: transparent;
+
+    cursor: pointer;
+}
+
+.boton-calendario {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    padding: 0;
+
+    border: 0;
+    border-left: 1px solid #d4dfeb;
+    border-radius: 0 1vh 1vh 0;
+
+    background-color: #edf5ff;
+
+    font-size: 1.25rem;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.boton-calendario:hover {
+    background-color: #d9eaff;
+}
+
+.boton-calendario:active {
+    background-color: #c4ddfa;
+    transform: none;
+}
+
+.boton-calendario:focus-visible {
+    outline: 3px solid rgba(40, 120, 208, 0.4);
+    outline-offset: -3px;
+}
+
+
+/* =========================================================
+   TABLETAS
+   ========================================================= */
+
+@media screen and (max-width: 900px) {
+    #contenido {
+        padding-right: 3vw;
+        padding-left: 3vw;
+    }
+
+    #headingmateria,
+    #botondashboard,
+    .container_tareas {
+        width: 94vw;
+    }
+
+    .Tareas .link_tarea {
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(105px, auto)
+            minmax(180px, auto);
+
+        gap: 1.5vw;
+    }
+
+    .contenedor_vencimiento {
+        min-width: 175px;
+    }
+
+    .ayuda-campo {
+        width: 40vw;
+    }
+
+    .contenedor-selector-fecha {
+        width: 22vw;
+    }
+}
+
+
+/* =========================================================
+   TELÉFONOS
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+    #contenido {
+        padding: 2.5vh 4vw 5vh;
+        gap: 2.2vh;
+    }
+
+    #headingmateria {
+        width: 92vw;
+        min-height: auto;
+        padding: 1.5vh 4vw;
+        gap: 3vw;
+    }
+
+    #headingmateria #imagen {
+        width: 8vh;
+        height: 8vh;
+    }
+
+    #headingmateria h1 {
+        font-size: 1.25rem;
+    }
+
+    .contenedor-codigo-salon {
+        flex-direction: column;
+        align-items: flex-end;
+
+        padding: 0.7vh 2vw;
+        gap: 0;
+    }
+
+    #botondashboard,
+    .container_tareas {
+        width: 92vw;
+    }
+
+    #botondashboard {
+        min-height: 7vh;
+    }
+
+   

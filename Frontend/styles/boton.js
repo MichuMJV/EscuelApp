@@ -1,24 +1,176 @@
-let button = document.getElementById("my-button");
-let list = document.getElementById("my-list");
+document.addEventListener("DOMContentLoaded", function () {
+    inicializarAcordeonAdministracion();
+    inicializarListaAplicaciones();
+});
 
-try{
-    button.addEventListener("click", function() {
-    if (list.style.display === "none") {
-        $("#my-list").fadeIn();
-        list.style.display = "flex";
-    } else {
-        ($("#my-list").fadeOut()).then(()=>list.style.display = "none")
+function inicializarAcordeonAdministracion() {
+    const botonesCategoria = document.querySelectorAll(
+        ".boton-categoria[data-acordeon]"
+    );
+
+    if (botonesCategoria.length === 0) {
+        return;
     }
-    });
-}catch(e){
 
+    botonesCategoria.forEach(function (botonCategoria) {
+        botonCategoria.addEventListener("click", function () {
+            const idListaOpciones = botonCategoria.dataset.acordeon;
+            const listaOpciones = document.getElementById(
+                idListaOpciones
+            );
+
+            if (!listaOpciones) {
+                return;
+            }
+
+            const categoriaEstaAbierta =
+                botonCategoria.getAttribute("aria-expanded") === "true";
+
+            cerrarCategoriasAdministrativas();
+
+            if (!categoriaEstaAbierta) {
+                abrirCategoriaAdministrativa(
+                    botonCategoria,
+                    listaOpciones
+                );
+            }
+        });
+    });
 }
 
-function redirigirPaginaProfesor(){
-    if(JSON.parse(localStorage.getItem('sesionEscuelApp')).rol===2)
+function abrirCategoriaAdministrativa(
+    botonCategoria,
+    listaOpciones
+) {
+    const moduloAdministracion = botonCategoria.closest(
+        ".modulo-administracion"
+    );
+
+    botonCategoria.setAttribute("aria-expanded", "true");
+    listaOpciones.hidden = false;
+
+    if (moduloAdministracion) {
+        moduloAdministracion.classList.add("modulo-abierto");
+    }
+}
+
+function cerrarCategoriasAdministrativas() {
+    const botonesCategoria = document.querySelectorAll(
+        ".boton-categoria[data-acordeon]"
+    );
+
+    botonesCategoria.forEach(function (botonCategoria) {
+        const idListaOpciones = botonCategoria.dataset.acordeon;
+
+        const listaOpciones = document.getElementById(
+            idListaOpciones
+        );
+
+        const moduloAdministracion = botonCategoria.closest(
+            ".modulo-administracion"
+        );
+
+        botonCategoria.setAttribute("aria-expanded", "false");
+
+        if (listaOpciones) {
+            listaOpciones.hidden = true;
+        }
+
+        if (moduloAdministracion) {
+            moduloAdministracion.classList.remove("modulo-abierto");
+        }
+    });
+}
+
+function inicializarListaAplicaciones() {
+    const botonAplicaciones = document.getElementById("my-button");
+    const listaAplicaciones = document.getElementById("my-list");
+
+    if (!botonAplicaciones || !listaAplicaciones) {
+        return;
+    }
+
+    botonAplicaciones.addEventListener("click", function () {
+        const listaEstaOculta =
+            window.getComputedStyle(listaAplicaciones).display === "none";
+
+        listaAplicaciones.style.display = listaEstaOculta
+            ? "flex"
+            : "none";
+    });
+}
+
+function obtenerSesionEscuelApp() {
+    const sessionData = localStorage.getItem("sesionEscuelApp");
+
+    if (!sessionData) {
+        return null;
+    }
+
+    try {
+        return JSON.parse(sessionData);
+    } catch (error) {
+        console.error(
+            "No fue posible interpretar los datos de la sesión:",
+            error
+        );
+
+        return null;
+    }
+}
+
+function obtenerIdSalonActual() {
+    const parametrosURL = new URLSearchParams(
+        window.location.search
+    );
+
+    const idSalonURL = parametrosURL.get("id");
+
+    if (idSalonURL) {
+        return idSalonURL;
+    }
+
+    const salonGuardado = localStorage.getItem("salonelegido");
+
+    if (!salonGuardado) {
+        return null;
+    }
+
+    try {
+        const salon = JSON.parse(salonGuardado);
+
+        if (salon && salon._id) {
+            return salon._id;
+        }
+
+        if (salon && salon.id) {
+            return salon.id;
+        }
+
+        return typeof salon === "string"
+            ? salon
+            : null;
+    } catch (error) {
+        return salonGuardado;
+    }
+}
+
+function redirigirPaginaProfesor() {
+    const usuario = obtenerSesionEscuelApp();
+
+    localStorage.removeItem("salonelegido");
+
+    if (usuario && Number(usuario.rol) === 2) {
         window.location.href = "./homeProfesor.html";
-    window.location.href = "./homeAdmin.html";
-    localStorage.removeItem('salonelegido')
+        return;
+    }
+
+    if (usuario && Number(usuario.rol) === 1) {
+        window.location.href = "./homeAdmin.html";
+        return;
+    }
+
+    window.location.href = "./inicio_sesion.html";
 }
 
 function redirigirPaginaEstudiante() {
@@ -33,50 +185,86 @@ function VerUsuarios() {
     window.location.href = "./UsuariosActuales.html";
 }
 
-function redirigirPaginaProfesor() {
-    window.location.href = "./homeProfesor.html";
-}
-
 function redirigirPaginaAdmin() {
     window.location.href = "./homeAdmin.html";
 }
 
 function abrirTareasProfe() {
+    const idSalon = obtenerIdSalonActual();
+
+    if (idSalon) {
+        window.location.href =
+            `./Tareas_profesor.html?id=${encodeURIComponent(idSalon)}`;
+
+        return;
+    }
+
     window.location.href = "./Tareas_profesor.html";
 }
 
 function abrirTareasEstudiante() {
+    const idSalon = obtenerIdSalonActual();
+
+    if (idSalon) {
+        window.location.href =
+            `./Tareas_estudiante.html?id=${encodeURIComponent(idSalon)}`;
+
+        return;
+    }
+
     window.location.href = "./Tareas_estudiante.html";
 }
 
 function abrirNuevoUsuario() {
-    window.location.href = "../screens/Nuevo_usuario.html";
+    window.location.href = "./Nuevo_usuario.html";
 }
 
 function AbrirNuevaTarea() {
-    window.location.href = "../screens/Nueva_tarea.html";
+    const idSalon = obtenerIdSalonActual();
+
+    if (!idSalon) {
+        alert(
+            "Error: No se pudo identificar el salón para crear la tarea."
+        );
+
+        return;
+    }
+
+    window.location.href =
+        `./Nueva_tarea.html?id=${encodeURIComponent(idSalon)}`;
 }
 
 function AbrirNuevaApp() {
-    window.location.href = "../screens/Nueva_app.html";
-} 
+    window.location.href = "./Nueva_App.html";
+}
 
 function Borrar_APP() {
-    window.location.href = "../screens/Borrar_APP.html";
-} 
+    window.location.href = "./Borrar_APP.html";
+}
 
 function AbrirNuevoSalon() {
-    window.location.href = "../screens/Nuevo_salon.html";
+    window.location.href = "./Nuevo_salon.html";
 }
 
 function abrirDashboardSalones() {
-    window.location.href = "../screens/Dashboard_salones.html";
+    const idSalon = obtenerIdSalonActual();
+
+    if (!idSalon) {
+        alert(
+            "Error: No se pudo identificar el salón para abrir el dashboard."
+        );
+
+        return;
+    }
+
+    window.location.href =
+        `./dashboard.html?id=${encodeURIComponent(idSalon)}`;
 }
 
 function Nuevo_rol() {
-    window.location.href = "../screens/Nuevo_rol.html";
+    window.location.href = "./Nuevo_rol.html";
 }
 
-function EditarSalones(){
-    window.location.href = "../screens/modificarSalon.html";
+function EditarSalones() {
+    window.location.href = "./modificarSalon.html";
 }

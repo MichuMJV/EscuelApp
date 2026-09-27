@@ -1,21 +1,65 @@
-// Obtener los datos de sesión guardados en localStorage
-const sessionData = localStorage.getItem('sesionEscuelApp');
-// Comprobar si los datos existen en localStorage
-const usuariojson = JSON.parse(sessionData)
-if (sessionData === null) {
-  // Los datos de la sesión no existen, se puede informar al usuario
-  alert('No se encontraron datos de sesión')
-  window.location.href="http://127.0.0.1:5000/screens/inicio_sesion.html"
-} else {
-  // Los datos de la sesión existen, se pueden usar... && usuariojson.rol
-  document.getElementById("username").innerText=usuariojson.nombre
+const CLAVE_SESION_ESCUELAPP = "sesionEscuelApp";
+const PAGINA_INICIO_SESION = "./inicio_sesion.html";
+
+function obtenerDatosSesion() {
+    const datosGuardados = localStorage.getItem(CLAVE_SESION_ESCUELAPP);
+
+    if (!datosGuardados) {
+        return null;
+    }
+
+    try {
+        return JSON.parse(datosGuardados);
+    } catch (error) {
+        console.error(
+            "No fue posible interpretar los datos de la sesión:",
+            error
+        );
+
+        localStorage.removeItem(CLAVE_SESION_ESCUELAPP);
+
+        return null;
+    }
 }
 
-function cerrarsesion(){
-  localStorage.removeItem('sesionEscuelApp')
-  window.location.href="http://127.0.0.1:5000/screens/inicio_sesion.html"
+function mostrarNombreUsuario(usuario) {
+    const elementoNombreUsuario = document.getElementById("username");
+
+    if (!elementoNombreUsuario) {
+        return;
+    }
+
+    if (usuario.nombre) {
+        elementoNombreUsuario.textContent = usuario.nombre;
+        return;
+    }
+
+    elementoNombreUsuario.textContent = "Usuario";
 }
 
-window.addEventListener('boton_atras_home', function() {
-  cerrarsesion()
+function redirigirAlInicioSesion() {
+    window.location.replace(PAGINA_INICIO_SESION);
+}
+
+function validarSesion() {
+    const usuario = obtenerDatosSesion();
+
+    if (!usuario) {
+        alert("No se encontraron datos de sesión.");
+        redirigirAlInicioSesion();
+        return;
+    }
+
+    mostrarNombreUsuario(usuario);
+}
+
+function cerrarsesion() {
+    localStorage.removeItem(CLAVE_SESION_ESCUELAPP);
+    localStorage.removeItem("salonelegido");
+
+    redirigirAlInicioSesion();
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    validarSesion();
 });

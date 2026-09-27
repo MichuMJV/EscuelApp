@@ -1,13 +1,14 @@
-const mongoose =require("mongoose")
-// schemas
+const mongoose = require("mongoose");
 
-const usuariosqueme= mongoose.Schema({
-    rol: Number,//1:admin, 2:profesor, 3:alumno
+// Schemas
+const usuarioSchema = mongoose.Schema({
+    rol: Number, // 1: administrador, 2: profesor, 3: estudiante
     nombre: String,
-    cedula:String,
-    contrasena: String})
+    cedula: String,
+    contrasena: String
+});
 
-const salonSqueme= mongoose.Schema({
+const salonSchema = mongoose.Schema({
     idprofe: mongoose.Schema.ObjectId,
     nombre: String,
     grado: Number,
@@ -16,47 +17,66 @@ const salonSqueme= mongoose.Schema({
     clave: String,
     logo: String,
     cupo: Number
-})
+});
 
-const tareaSqueme= mongoose.Schema({
+const tareaSchema = mongoose.Schema({
     idgrupo: mongoose.Schema.ObjectId,
+    tema: {
+        type: String,
+        trim: true,
+        default: "Sin tema"
+    },
     nombre: String,
     descripcion: String,
-    doctarea:String,
-    fecha: Date,
-    fechavencimiento: Date,
-})
+    doctarea: String,
+    fecha: {
+        type: Date,
+        default: Date.now
+    },
+    fechavencimiento: Date
+});
 
-const tareaEstudianteSqueme= mongoose.Schema({
+const tareaEstudianteSchema = mongoose.Schema({
     idtarea: mongoose.Schema.ObjectId,
     idestudiante: mongoose.Schema.ObjectId,
     nota: String,
-    docentrega:String,
+    docentrega: String,
     fechaentrega: Date
-})
+});
 
-const salonEstudianteSqueme= mongoose.Schema({
+const salonEstudianteSchema = mongoose.Schema({
     idgrupo: mongoose.Schema.ObjectId,
     idestudiante: mongoose.Schema.ObjectId,
-    status: String,//Matriculado, Retirado, Aprobado, Reprobado
-    notafinal: String,//0-100
-    fecha:Date
-})
+    status: String, // Matriculado, Retirado, Aprobado, Reprobado
+    notafinal: String, // 0-100
+    fecha: Date
+});
 
-const AplicacionesSqueme= mongoose.Schema({
+const aplicacionesSchema = mongoose.Schema({
     nombre: String,
     imagen: String,
     link: String
-})
+});
 
+// Model declarations
+const Usuario = mongoose.model("usuariosEscuela", usuarioSchema);
+const Salon = mongoose.model("salonesEscuela", salonSchema);
+const Tarea = mongoose.model("tareasEscuela", tareaSchema);
+const TareaEstudiante = mongoose.model(
+    "tareasEstudianteEscuela",
+    tareaEstudianteSchema
+);
+const SalonEstudiante = mongoose.model(
+    "salonesEstudianteEscuela",
+    salonEstudianteSchema
+);
+const Apps = mongoose.model("AplicacionesSqueme", aplicacionesSchema);
 
-// squema declarations
-
-const Usuario= mongoose.model('usuariosEscuela', usuariosqueme)
-const Salon= mongoose.model('salonesEscuela', salonSqueme)
-const Tarea= mongoose.model('tareasEscuela', tareaSqueme)
-const TareaEstudiante= mongoose.model('tareasEstudianteEscuela', tareaEstudianteSqueme)
-const SalonEstudiante= mongoose.model('salonesEstudianteEscuela', salonEstudianteSqueme)
-const Apps= mongoose.model('AplicacionesSqueme', AplicacionesSqueme)
-
-module.exports={Usuario, Salon, Tarea, TareaEstudiante, SalonEstudiante,Apps}
+module.exports = {
+    Usuario,
+    Salon,
+    Tarea,
+    TareaEstudiante,
+    SalonEstudiante,
+    Apps
+};

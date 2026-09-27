@@ -1,204 +1,945 @@
-// --- Inicia el proceso cuando la página se carga ---
-document.addEventListener('DOMContentLoaded', () => {
-    loadSalonDetails();
-    const container = document.querySelector('.container_tareas');
-    container.addEventListener('click', handleTaskClick);
+let temasDisponiblesProfesor = [];
+
+document.addEventListener("DOMContentLoaded", function () {
+    const contenedorTareas = document.querySelector(
+        ".container_tareas"
+    );
+
+    if (contenedorTareas) {
+        contenedorTareas.addEventListener(
+            "click",
+            manejarClicTarea
+        );
+    }
+
+    configurarSelectorFechaModal();
+    configurarCierreModal();
+
+    cargarDetallesSalon();
 });
 
-// --- Carga los detalles del encabezado del Salón/Materia ---
-async function loadSalonDetails() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const idsalon = urlParams.get('id');
+async function cargarDetallesSalon() {
+    const parametrosURL = new URLSearchParams(
+        window.location.search
+    );
 
-    if (!idsalon) {
-        document.querySelector('.container_tareas').innerHTML = '<h2>No se encontró el ID del salón.</h2>';
+    const idSalon = parametrosURL.get("id");
+    const contenedorTareas = document.querySelector(
+        ".container_tareas"
+    );
+
+    if (!idSalon) {
+        if (contenedorTareas) {
+            contenedorTareas.innerHTML =
+                "<h2>No se encontró el ID del salón.</h2>";
+        }
+
         return;
     }
 
     try {
-        // Obtenemos los detalles del salón (curso)
-        let response = await fetch(`http://127.0.0.1:5000/Escuelapp/GetSalonDetails?id=${idsalon}`);
-        let salon = await response.json();
+        const response = await fetch(
+            `/Escuelapp/GetSalonDetails?id=${encodeURIComponent(idSalon)}`
+        );
 
-        // Llenamos el encabezado de la página
-        document.getElementById("imagen").src = salon.logo;
-        document.getElementById("nombreMat").innerText = salon.nombre;
-        document.getElementById("codigo").innerText = salon.clave;
+        const salon = await response.json();
 
-        // LLAMADA A LA NUEVA FUNCIÓN: Una vez que tenemos los detalles, cargamos las tareas
-        await cargarTareas(idsalon);
+        if (!response.ok) {
+            throw new Error(
+                salon.message ||
+                "No fue posible cargar los detalles del salón."
+            );
+        }
 
+        const imagenSalon = document.getElementById("imagen");
+        const nombreMateria = document.getElementById("nombreMat");
+        const codigoSalon = document.getElementById("codigo");
+
+        if (imagenSalon) {
+            imagenSalon.src = salon.logo || "";
+            imagenSalon.alt = salon.nombre
+                ? `Logo de ${salon.nombre}`
+                : "Logo del salón";
+        }
+
+        if (nombreMateria) {
+            nombreMateria.textContent =
+                salon.nombre || "Materia sin nombre";
+        }
+
+        if (codigoSalon) {
+            codigoSalon.textContent =
+                salon.clave || "Sin código";
+        }
+
+        await cargarTareas(idSalon);
     } catch (error) {
-        console.error("Error al cargar los detalles del salón:", error);
+        console.error(
+            "Error al cargar los detalles del salón:",
+            error
+        );
+
+        if (contenedorTareas) {
+            contenedorTareas.innerHTML =
+                "<h2>No se pudieron cargar los datos del salón.</h2>";
+        }
     }
 }
 
-
-// --- NUEVA FUNCIÓN: Carga y muestra las tareas del salón (CORREGIDA) ---
 async function cargarTareas(idSalon) {
-    const container = document.querySelector('.container_tareas');
-    container.innerHTML = '<h4>Cargando tareas...</h4>';
+    const contenedorTareas = document.querySelector(
+        ".container_tareas"
+    );
+
+    if (!contenedorTareas) {
+        return;
+    }
+
+    contenedorTareas.innerHTML =
+        "<h4>Cargando tareas...</h4>";
 
     try {
-        const response = await fetch(`http://127.0.0.1:5000/Escuelapp/tareas?id=${idSalon}`);
+        const response = await fetch(
+            `/Escuelapp/tareas?id=${encodeURIComponent(idSalon)}`
+        );
+
         const data = await response.json();
 
         if (!response.ok || !data.success) {
-            throw new Error(data.message || 'Error al obtener las tareas.');
+            throw new Error(
+                data.message ||
+                "Error al obtener las tareas."
+            );
         }
 
-        if (data.tareas.length === 0) {
-            container.innerHTML = '<h2>No hay tareas asignadas para esta materia.</h2>';
+        if (
+            !Array.isArray(data.tareas) ||
+            data.tareas.length === 0
+        ) {
+            temasDisponiblesProfesor = [];
+            actualizarOpcionesTemasModal([]);
+
+            contenedorTareas.innerHTML =
+                "<h2>No hay tareas asignadas para esta materia.</h2>";
+
             return;
         }
 
-        console.log("Tareas obtenidas:", data.tareas);
+        const tareasOrdenadas = ordenarTareas(
+            data.tareas
+        );
 
-        // PASO 1: Crear una variable para almacenar todo el HTML
-        let todasLasTareasHTML = '';
+        temasDisponiblesProfesor =
+            obtenerTemasUnicos(tareasOrdenadas);
 
-        // PASO 2: Llenar la variable en el bucle, sin tocar el DOM
-        data.tareas.forEach(tarea => {
-            const fechaFormateada = formatISODateToInput(tarea.fechavencimiento);
+        actualizarOpcionesTemasModal(
+            temasDisponiblesProfesor
+        );
 
-            const tareaHTML = `
-                <a class="Tareas" data-task-id="${tarea._id}">
-                    <div id="link_tarea">
-                        <h4>${tarea.nombre}</h4>
-                        <h4 class="trim">${tarea.descripcion}</h4>
-                        <div class="contenedor_vencimiento">
-                            <p>Vence:</p>
-                            <input type="datetime-local" value="${fechaFormateada}" class="datetime-input" disabled>
-                        </div>
-                    </div>
-                </a>
-            `;
-            todasLasTareasHTML += tareaHTML;
+        const tareasAgrupadas =
+            agruparTareasPorTema(tareasOrdenadas);
+
+        renderizarGruposTareas(
+            tareasAgrupadas,
+            contenedorTareas
+        );
+    } catch (error) {
+        console.error(
+            "Error al cargar las tareas:",
+            error
+        );
+
+        contenedorTareas.innerHTML =
+            "<h2>Ocurrió un error al cargar las tareas.</h2>";
+    }
+}
+
+function ordenarTareas(tareas) {
+    return [...tareas].sort(function (tareaA, tareaB) {
+        const temaA = obtenerTemaNormalizado(
+            tareaA.tema
+        );
+
+        const temaB = obtenerTemaNormalizado(
+            tareaB.tema
+        );
+
+        const temaASinAsignar =
+            temaA.toLocaleLowerCase("es") ===
+            "sin tema";
+
+        const temaBSinAsignar =
+            temaB.toLocaleLowerCase("es") ===
+            "sin tema";
+
+        if (temaASinAsignar && !temaBSinAsignar) {
+            return 1;
+        }
+
+        if (!temaASinAsignar && temaBSinAsignar) {
+            return -1;
+        }
+
+        const comparacionTemas = temaA.localeCompare(
+            temaB,
+            "es",
+            {
+                sensitivity: "base"
+            }
+        );
+
+        if (comparacionTemas !== 0) {
+            return comparacionTemas;
+        }
+
+        return obtenerTiempoVencimiento(tareaA) -
+            obtenerTiempoVencimiento(tareaB);
+    });
+}
+
+function obtenerTiempoVencimiento(tarea) {
+    if (!tarea.fechavencimiento) {
+        return Number.MAX_SAFE_INTEGER;
+    }
+
+    const tiempo = new Date(
+        tarea.fechavencimiento
+    ).getTime();
+
+    return Number.isNaN(tiempo)
+        ? Number.MAX_SAFE_INTEGER
+        : tiempo;
+}
+
+function agruparTareasPorTema(tareas) {
+    const grupos = new Map();
+
+    tareas.forEach(function (tarea) {
+        const tema = obtenerTemaNormalizado(
+            tarea.tema
+        );
+
+        const claveTema =
+            tema.toLocaleLowerCase("es");
+
+        if (!grupos.has(claveTema)) {
+            grupos.set(claveTema, {
+                nombre: tema,
+                tareas: []
+            });
+        }
+
+        grupos.get(claveTema).tareas.push({
+            ...tarea,
+            tema: tema
+        });
+    });
+
+    return Array.from(grupos.values());
+}
+
+function obtenerTemasUnicos(tareas) {
+    const temas = new Map();
+
+    tareas.forEach(function (tarea) {
+        const tema = obtenerTemaNormalizado(
+            tarea.tema
+        );
+
+        if (
+            tema.toLocaleLowerCase("es") ===
+            "sin tema"
+        ) {
+            return;
+        }
+
+        const clave =
+            tema.toLocaleLowerCase("es");
+
+        if (!temas.has(clave)) {
+            temas.set(clave, tema);
+        }
+    });
+
+    return Array.from(temas.values()).sort(
+        function (temaA, temaB) {
+            return temaA.localeCompare(
+                temaB,
+                "es",
+                {
+                    sensitivity: "base"
+                }
+            );
+        }
+    );
+}
+
+function renderizarGruposTareas(
+    grupos,
+    contenedor
+) {
+    contenedor.replaceChildren();
+
+    grupos.forEach(function (grupo) {
+        const seccionTema = document.createElement(
+            "section"
+        );
+
+        seccionTema.className = "grupo-tema";
+
+        const encabezadoTema = document.createElement(
+            "div"
+        );
+
+        encabezadoTema.className =
+            "encabezado-tema";
+
+        const tituloTema = document.createElement(
+            "h2"
+        );
+
+        tituloTema.className = "titulo-tema";
+        tituloTema.textContent = grupo.nombre;
+
+        const contadorTareas = document.createElement(
+            "span"
+        );
+
+        contadorTareas.className =
+            "contador-tareas";
+
+        contadorTareas.textContent =
+            grupo.tareas.length === 1
+                ? "1 tarea"
+                : `${grupo.tareas.length} tareas`;
+
+        encabezadoTema.appendChild(tituloTema);
+        encabezadoTema.appendChild(contadorTareas);
+
+        const listaTema = document.createElement(
+            "div"
+        );
+
+        listaTema.className = "lista-tareas-tema";
+
+        grupo.tareas.forEach(function (tarea) {
+            listaTema.appendChild(
+                crearTarjetaTarea(tarea)
+            );
         });
 
-        // PASO 3: Insertar todo el HTML en el contenedor UNA SOLA VEZ
-        container.innerHTML = todasLasTareasHTML;
-
-    } catch (error) {
-        console.error("Error al cargar las tareas:", error);
-        container.innerHTML = '<h2>Ocurrió un error al cargar las tareas.</h2>';
-    }
+        seccionTema.appendChild(encabezadoTema);
+        seccionTema.appendChild(listaTema);
+        contenedor.appendChild(seccionTema);
+    });
 }
 
-/**
- * Toma un string de fecha ISO (desde MongoDB en UTC) y lo convierte
- * al formato 'YYYY-MM-DDTHH:MM' en la ZONA HORARIA LOCAL del navegador,
- * que es el formato requerido por los inputs de tipo 'datetime-local'.
- */
-function formatISODateToInput(isoDate) {
-    if (!isoDate) return '';
+function crearTarjetaTarea(tarea) {
+    const tarjeta = document.createElement("button");
 
-    // 1. Creamos un objeto Date. JavaScript lo convierte automáticamente a la zona horaria local.
-    const date = new Date(isoDate);
+    tarjeta.type = "button";
+    tarjeta.className = "Tareas";
+    tarjeta.dataset.taskId = tarea._id;
+    tarjeta.setAttribute(
+        "aria-label",
+        `Editar tarea: ${tarea.nombre || "Sin nombre"}`
+    );
 
-    // 2. Extraemos cada componente de la fecha ya en hora local.
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Se suma 1 porque los meses son de 0 a 11
-    const day = date.getDate().toString().padStart(2, '0');
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const contenido = document.createElement("div");
 
-    // 3. Unimos los componentes en el formato correcto.
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
-}
-// ... (todo el código que ya tienes en Tareasprofesor.js) ...
+    contenido.className = "link_tarea";
 
-// --- FUNCIÓN PARA IR A LA PÁGINA DE CREAR NUEVA TAREA ---
-function NuevaTarea() {
-    // Paso 1: Leer los parámetros de la URL actual
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    // Paso 2: Obtener el valor del parámetro 'id' (que es el id del salón/materia)
-    const idGrupo = urlParams.get('id');
+    const informacion = document.createElement("div");
 
-    // Paso 3: Verificar si el ID existe para evitar errores
-    if (idGrupo) {
-        // Si existe, redirigir a la página del formulario, AÑADIENDO el id como parámetro
-        window.location.href = `./Nueva_tarea.html?id=${idGrupo}`;
+    informacion.className = "informacion-tarea";
+
+    const nombre = document.createElement("h4");
+
+    nombre.className = "nombre-tarea";
+    nombre.textContent =
+        tarea.nombre || "Tarea sin nombre";
+
+    const descripcion = document.createElement("p");
+
+    descripcion.className =
+        "descripcion-tarea trim";
+
+    descripcion.textContent =
+        tarea.descripcion || "Sin descripción";
+
+    informacion.appendChild(nombre);
+    informacion.appendChild(descripcion);
+
+    const contenedorVencimiento =
+        document.createElement("div");
+
+    contenedorVencimiento.className =
+        "contenedor_vencimiento";
+
+    const etiquetaVencimiento =
+        document.createElement("span");
+
+    etiquetaVencimiento.className =
+        "etiqueta-vencimiento";
+
+    etiquetaVencimiento.textContent = "Vence:";
+
+    const fechaVencimiento =
+        document.createElement("time");
+
+    fechaVencimiento.className =
+        "fecha-vencimiento";
+
+    if (tarea.fechavencimiento) {
+        const fecha = new Date(
+            tarea.fechavencimiento
+        );
+
+        if (!Number.isNaN(fecha.getTime())) {
+            fechaVencimiento.dateTime =
+                fecha.toISOString();
+
+            fechaVencimiento.textContent =
+                formatearFechaLegible(fecha);
+        } else {
+            fechaVencimiento.textContent =
+                "Fecha no válida";
+        }
     } else {
-        // Si no hay ID, notificar al usuario que algo anda mal
-        alert('Error: No se pudo identificar la materia para crear la tarea.');
+        fechaVencimiento.textContent =
+            "Sin fecha";
     }
+
+    contenedorVencimiento.appendChild(
+        etiquetaVencimiento
+    );
+
+    contenedorVencimiento.appendChild(
+        fechaVencimiento
+    );
+
+    contenido.appendChild(informacion);
+    contenido.appendChild(
+        contenedorVencimiento
+    );
+
+    tarjeta.appendChild(contenido);
+
+    return tarjeta;
 }
 
-async function handleTaskClick(event) {
-    const taskCard = event.target.closest('.Tareas');
-    if (!taskCard) return;
-
-    const taskId = taskCard.dataset.taskId;
-    const dialog = document.getElementById('dialogo');
-
-    try {
-        // Usamos el endpoint para buscar los detalles de la tarea
-        const response = await fetch(`http://127.0.0.1:5000/Escuelapp/tarea_unica?id=${taskId}`);
-        const data = await response.json();
-        if (!data.success) throw new Error(data.message);
-        
-        const tarea = data.tarea;
-
-        // LLENAMOS EL DIÁLOGO CON LA INFORMACIÓN OBTENIDA USANDO LOS NUEVOS IDs
-        document.getElementById('dialog_task_title').value = tarea.nombre;
-        document.getElementById('dialog_task_description').value = tarea.descripcion;
-        document.getElementById('dialog_task_reference').value = tarea.doctarea;
-        document.getElementById('dialog_task_due_date').value = formatISODateToInput(tarea.fechavencimiento);
-
-        // Guardamos el ID de la tarea actual en el diálogo para usarlo al actualizar   
-        dialog.dataset.currentTaskId = taskId;
-        
-        // MUESTRA EL DIÁLOGO
-        dialog.showModal();
-
-    } catch (error) {
-        console.error('Error al abrir la tarea:', error);
-        alert('No se pudieron cargar los detalles de la tarea.');
-    }
+function formatearFechaLegible(fecha) {
+    return new Intl.DateTimeFormat(
+        "es-PA",
+        {
+            dateStyle: "medium",
+            timeStyle: "short"
+        }
+    ).format(fecha);
 }
 
+function obtenerTemaNormalizado(tema) {
+    if (typeof tema !== "string") {
+        return "Sin tema";
+    }
 
-// --- NUEVA FUNCIÓN PARA EL BOTÓN "ACTUALIZAR" ---
-async function actualizarTarea() {
-    const dialog = document.getElementById('dialogo');
-    const taskId = dialog.dataset.currentTaskId;
+    const temaLimpio = tema
+        .trim()
+        .replace(/\s+/g, " ");
 
-    if (!taskId) {
-        alert("Error: No se puede identificar la tarea a actualizar.");
+    return temaLimpio || "Sin tema";
+}
+
+function normalizarTexto(valor) {
+    return typeof valor === "string"
+        ? valor.trim().replace(/\s+/g, " ")
+        : "";
+}
+
+function NuevaTarea() {
+    const parametrosURL = new URLSearchParams(
+        window.location.search
+    );
+
+    const idGrupo = parametrosURL.get("id");
+
+    if (!idGrupo) {
+        alert(
+            "Error: No se pudo identificar la materia para crear la tarea."
+        );
+
         return;
     }
 
-    // Recolectamos los datos actualizados desde los campos del diálogo
-    const datosActualizados = {
-        nombre: document.getElementById('dialog_task_title').value,
-        descripcion: document.getElementById('dialog_task_description').value,
-        doctarea: document.getElementById('dialog_task_reference').value,
-        fechavencimiento: document.getElementById('dialog_task_due_date').value
-    };
+    window.location.href =
+        `./Nueva_tarea.html?id=${encodeURIComponent(idGrupo)}`;
+}
+
+async function manejarClicTarea(event) {
+    const tarjetaTarea = event.target.closest(
+        ".Tareas"
+    );
+
+    if (!tarjetaTarea) {
+        return;
+    }
+
+    const idTarea =
+        tarjetaTarea.dataset.taskId;
+
+    if (!idTarea) {
+        alert(
+            "No fue posible identificar la tarea seleccionada."
+        );
+
+        return;
+    }
+
+    await abrirTareaEnModal(idTarea);
+}
+
+async function abrirTareaEnModal(idTarea) {
+    const dialogo = document.getElementById(
+        "dialogo"
+    );
+
+    if (!dialogo) {
+        return;
+    }
 
     try {
-        const response = await fetch(`http://127.0.0.1:5000/Escuelapp/UpdateTarea?id=${taskId}`, {
-            method: 'PUT', // Usamos el método PUT para actualizar
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(datosActualizados)
-        });
+        const response = await fetch(
+            `/Escuelapp/tarea_unica?id=${encodeURIComponent(idTarea)}`
+        );
 
-        const result = await response.json();
+        const data = await response.json();
 
-        if (!result.success) throw new Error(result.message);
+        if (!response.ok || !data.success) {
+            throw new Error(
+                data.message ||
+                "No fue posible consultar la tarea."
+            );
+        }
 
-        alert('¡Tarea actualizada correctamente!');
-        dialog.close(); // Cerramos el diálogo
+        const tarea = data.tarea;
 
-        // Refrescamos la lista de tareas para ver los cambios sin recargar la página
-        const urlParams = new URLSearchParams(window.location.search);
-        const idSalon = urlParams.get('id');
-        cargarTareas(idSalon);
+        document.getElementById(
+            "dialog_task_topic"
+        ).value = obtenerTemaNormalizado(
+            tarea.tema
+        );
 
+        document.getElementById(
+            "dialog_task_title"
+        ).value = tarea.nombre || "";
+
+        document.getElementById(
+            "dialog_task_description"
+        ).value = tarea.descripcion || "";
+
+        document.getElementById(
+            "dialog_task_reference"
+        ).value = tarea.doctarea || "";
+
+        const campoFecha = document.getElementById(
+            "dialog_task_due_date"
+        );
+
+        campoFecha.value = formatISODateToInput(
+            tarea.fechavencimiento
+        );
+
+        actualizarFechaMinimaModal(campoFecha);
+
+        dialogo.dataset.currentTaskId = idTarea;
+
+        dialogo.showModal();
     } catch (error) {
-        console.error('Error al actualizar la tarea:', error);
-        alert('No se pudo actualizar la tarea.');
+        console.error(
+            "Error al abrir la tarea:",
+            error
+        );
+
+        alert(
+            `No se pudieron cargar los detalles de la tarea. ${error.message}`
+        );
+    }
+}
+
+async function actualizarTarea() {
+    const dialogo = document.getElementById(
+        "dialogo"
+    );
+
+    const idTarea =
+        dialogo.dataset.currentTaskId;
+
+    const botonActualizar = document.getElementById(
+        "botonActualizarTarea"
+    );
+
+    if (!idTarea) {
+        alert(
+            "Error: No se puede identificar la tarea a actualizar."
+        );
+
+        return;
+    }
+
+    const tema = normalizarTexto(
+        document.getElementById(
+            "dialog_task_topic"
+        ).value
+    );
+
+    const nombre = normalizarTexto(
+        document.getElementById(
+            "dialog_task_title"
+        ).value
+    );
+
+    const descripcion = normalizarTexto(
+        document.getElementById(
+            "dialog_task_description"
+        ).value
+    );
+
+    const doctarea = normalizarTexto(
+        document.getElementById(
+            "dialog_task_reference"
+        ).value
+    );
+
+    const fechavencimiento =
+        document.getElementById(
+            "dialog_task_due_date"
+        ).value;
+
+    if (
+        !tema ||
+        !nombre ||
+        !descripcion ||
+        !doctarea ||
+        !fechavencimiento
+    ) {
+        alert(
+            "Por favor, completa todos los campos de la tarea."
+        );
+
+        return;
+    }
+
+    if (!esURLValida(doctarea)) {
+        alert(
+            "El documento de referencia debe ser una dirección URL válida."
+        );
+
+        document.getElementById(
+            "dialog_task_reference"
+        ).focus();
+
+        return;
+    }
+
+    const fechaVencimiento = new Date(
+        fechavencimiento
+    );
+
+    if (
+        Number.isNaN(fechaVencimiento.getTime())
+    ) {
+        alert(
+            "La fecha de vencimiento no es válida."
+        );
+
+        return;
+    }
+
+    if (
+        fechaVencimiento.getTime() <= Date.now()
+    ) {
+        alert(
+            "La fecha de vencimiento debe ser posterior a la fecha y hora actuales."
+        );
+
+        abrirSelectorFechaModal();
+
+        return;
+    }
+
+    const datosActualizados = {
+        tema,
+        nombre,
+        descripcion,
+        doctarea,
+        fechavencimiento
+    };
+
+    botonActualizar.disabled = true;
+    botonActualizar.textContent =
+        "Actualizando...";
+
+    try {
+        const response = await fetch(
+            `/Escuelapp/UpdateTarea?id=${encodeURIComponent(idTarea)}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+                body: JSON.stringify(
+                    datosActualizados
+                )
+            }
+        );
+
+        const resultado = await response.json();
+
+        if (!response.ok || !resultado.success) {
+            throw new Error(
+                resultado.message ||
+                "No fue posible actualizar la tarea."
+            );
+        }
+
+        alert(
+            resultado.message ||
+            "¡Tarea actualizada correctamente!"
+        );
+
+        cerrarModalTarea();
+
+        const parametrosURL =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        const idSalon =
+            parametrosURL.get("id");
+
+        if (idSalon) {
+            await cargarTareas(idSalon);
+        }
+    } catch (error) {
+        console.error(
+            "Error al actualizar la tarea:",
+            error
+        );
+
+        alert(
+            `No se pudo actualizar la tarea. ${error.message}`
+        );
+    } finally {
+        botonActualizar.disabled = false;
+        botonActualizar.textContent =
+            "Actualizar tarea";
+    }
+}
+
+function actualizarOpcionesTemasModal(temas) {
+    const listaOpciones =
+        document.getElementById(
+            "dialog_topic_options"
+        );
+
+    if (!listaOpciones) {
+        return;
+    }
+
+    listaOpciones.replaceChildren();
+
+    temas.forEach(function (tema) {
+        const opcion =
+            document.createElement("option");
+
+        opcion.value = tema;
+        listaOpciones.appendChild(opcion);
+    });
+}
+
+function configurarSelectorFechaModal() {
+    const campoFecha = document.getElementById(
+        "dialog_task_due_date"
+    );
+
+    const contenedorFecha =
+        document.getElementById(
+            "contenedorFechaModal"
+        );
+
+    const botonCalendario =
+        document.getElementById(
+            "abrirCalendarioModal"
+        );
+
+    if (!campoFecha) {
+        return;
+    }
+
+    campoFecha.addEventListener(
+        "click",
+        function () {
+            abrirSelectorFechaModal();
+        }
+    );
+
+    campoFecha.addEventListener(
+        "focus",
+        function () {
+            actualizarFechaMinimaModal(
+                campoFecha
+            );
+        }
+    );
+
+    if (contenedorFecha) {
+        contenedorFecha.addEventListener(
+            "click",
+            function (event) {
+                if (
+                    event.target === campoFecha ||
+                    event.target.closest(
+                        "#abrirCalendarioModal"
+                    )
+                ) {
+                    return;
+                }
+
+                abrirSelectorFechaModal();
+            }
+        );
+    }
+
+    if (botonCalendario) {
+        botonCalendario.addEventListener(
+            "click",
+            function () {
+                abrirSelectorFechaModal();
+            }
+        );
+    }
+}
+
+function abrirSelectorFechaModal() {
+    const campoFecha = document.getElementById(
+        "dialog_task_due_date"
+    );
+
+    if (!campoFecha || campoFecha.disabled) {
+        return;
+    }
+
+    actualizarFechaMinimaModal(campoFecha);
+    campoFecha.focus();
+
+    if (
+        typeof campoFecha.showPicker ===
+        "function"
+    ) {
+        try {
+            campoFecha.showPicker();
+        } catch (error) {
+            console.warn(
+                "El navegador no permitió abrir automáticamente el selector de fecha.",
+                error
+            );
+        }
+    }
+}
+
+function actualizarFechaMinimaModal(
+    campoFecha
+) {
+    const ahora = new Date();
+
+    ahora.setSeconds(0, 0);
+
+    campoFecha.min =
+        convertirFechaAInput(ahora);
+}
+
+function convertirFechaAInput(fecha) {
+    const ano = fecha.getFullYear();
+
+    const mes = String(
+        fecha.getMonth() + 1
+    ).padStart(2, "0");
+
+    const dia = String(
+        fecha.getDate()
+    ).padStart(2, "0");
+
+    const horas = String(
+        fecha.getHours()
+    ).padStart(2, "0");
+
+    const minutos = String(
+        fecha.getMinutes()
+    ).padStart(2, "0");
+
+    return `${ano}-${mes}-${dia}T${horas}:${minutos}`;
+}
+
+function formatISODateToInput(fechaISO) {
+    if (!fechaISO) {
+        return "";
+    }
+
+    const fecha = new Date(fechaISO);
+
+    if (Number.isNaN(fecha.getTime())) {
+        return "";
+    }
+
+    return convertirFechaAInput(fecha);
+}
+
+function esURLValida(valor) {
+    try {
+        const url = new URL(valor);
+
+        return (
+            url.protocol === "http:" ||
+            url.protocol === "https:"
+        );
+    } catch (error) {
+        return false;
+    }
+}
+
+function configurarCierreModal() {
+    const dialogo = document.getElementById(
+        "dialogo"
+    );
+
+    if (!dialogo) {
+        return;
+    }
+
+    dialogo.addEventListener(
+        "click",
+        function (event) {
+            if (event.target === dialogo) {
+                cerrarModalTarea();
+            }
+        }
+    );
+
+    dialogo.addEventListener(
+        "close",
+        function () {
+            delete dialogo.dataset.currentTaskId;
+        }
+    );
+}
+
+function cerrarModalTarea() {
+    const dialogo = document.getElementById(
+        "dialogo"
+    );
+
+    if (dialogo && dialogo.open) {
+        dialogo.close();
     }
 }

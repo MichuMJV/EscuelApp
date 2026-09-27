@@ -1,7 +1,6 @@
 const { Tarea } = require("../models/Models.js");
 
 module.exports = async function GetTareaById(request, response) {
-    // Obtenemos el ID de la tarea desde los parámetros de la URL
     const { id } = request.query;
 
     if (!id) {
@@ -12,24 +11,43 @@ module.exports = async function GetTareaById(request, response) {
     }
 
     try {
-        // Buscamos la tarea en la base de datos por su ID
-        const tarea = await Tarea.findById(id);
+        const tareaEncontrada = await Tarea.findById(id).lean();
 
-        if (!tarea) {
+        if (!tareaEncontrada) {
             return response.status(404).json({
                 success: false,
                 message: "Tarea no encontrada."
             });
         }
 
-        // Si la encontramos, la devolvemos en la respuesta
+        const temaNormalizado =
+            typeof tareaEncontrada.tema === "string" &&
+            tareaEncontrada.tema.trim()
+                ? tareaEncontrada.tema.trim()
+                : "Sin tema";
+
+        const tarea = {
+            ...tareaEncontrada,
+            tema: temaNormalizado
+        };
+
         return response.status(200).json({
             success: true,
             tarea: tarea
         });
-
     } catch (error) {
-        console.error("Error al obtener la tarea por ID:", error);
+        console.error(
+            "Error al obtener la tarea por ID:",
+            error
+        );
+
+        if (error.name === "CastError") {
+            return response.status(400).json({
+                success: false,
+                message: "El ID de la tarea no es válido."
+            });
+        }
+
         return response.status(500).json({
             success: false,
             message: "Ocurrió un error en el servidor."

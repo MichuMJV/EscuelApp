@@ -1,68 +1,194 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EscuelaApp🎓</title>
+
+    <title>EscuelaApp 🎓 | Tareas del estudiante</title>
+
     <link rel="stylesheet" href="../styles/HeadAndFoot.css">
     <link rel="stylesheet" href="../styles/tareas.css">
-    <link rel="stylesheet" href="../styles/tarea_especifica.css">
-</head>
+    <link rel="stylesheet" href="../styles/tarea_especifica.css"></head>
+
 <body>
     <header>
         <div id="headerlogo">
-            <button id="boton_atras_home" onclick="history.back()">
-                <img src="../Assets/luzh47ih_400x400.png" alt="" class="logo_colegio">
+            <button
+                id="boton_atras_home"
+                type="button"
+                onclick="history.back()"
+                aria-label="Volver a la página anterior"
+                title="Volver a la página anterior"
+            >
+                <img
+                    src="../Assets/luzh47ih_400x400.png"
+                    alt="Logotipo de EscuelaApp"
+                    class="logo_colegio"
+                >
             </button>
+
             <h1>EscuelaApp</h1>
         </div>
-        <div><h2 id="username"></h2></div>
-    </header>
-    <section id="contenido">     
-        <div id="headingmateria">
-            <img src="" id="imagen" alt="">
-            <h1 style="font-weight: 600;" id="nombreMat">Cargando materia...</h1>
-        </div>
-        <div class="container_tareas">
-            <h4>Cargando tareas...</h4>
-        </div>
-    </section>
 
-    <dialog class="Modal" id="dialogo">
-        <button class="close-button" onclick="document.getElementById('dialogo').close()">X</button>
+        <div>
+            <h2 id="username"></h2>
+        </div>
+    </header>
+
+    <main>
+        <section id="contenido">
+            <div id="headingmateria">
+                <img
+                    src=""
+                    id="imagen"
+                    alt="Logo del salón"
+                >
+                <h1
+                    id="nombreMat"
+                    style="font-weight: 600;"
+                >
+                    Cargando materia...
+                </h1>
+            </div>
+
+            <div
+                class="container_tareas"
+                aria-live="polite"
+            >
+                <h4>Cargando tareas...</h4>
+            </div>
+        </section>
+    </main>
+
+    <dialog
+        class="Modal"
+        id="dialogo"
+        aria-labelledby="dialog_task_title"
+    >
+        <button
+            class="close-button"
+            type="button"
+            onclick="cerrarModalTareaEstudiante()"
+            aria-label="Cerrar ventana"
+            title="Cerrar"
+        >
+            &times;
+        </button>
+
         <div class="content">
             <div class="task-header">
                 <div class="task-title">
+                    <div class="tema-modal-estudiante">
+                        <span class="etiqueta-tema-modal">
+                            Tema
+                        </span>
+
+                        <span id="dialog_task_topic">
+                            Sin tema
+                        </span>
+                    </div>
+
                     <h1 id="dialog_task_title"></h1>
-                    <span>
+
+                    <span class="fila-vencimiento-modal">
                         <h2>Vencimiento:</h2>
-                        <input type="datetime-local" id="dialog_task_due_date" class="datetime-input" disabled>
+
+                        <input
+                            type="datetime-local"
+                            id="dialog_task_due_date"
+                            class="datetime-input"
+                            disabled
+                        >
                     </span>
                 </div>
+
                 <div class="task-note">
                     <h2 id="dialog_task_grade"></h2>
                 </div>
             </div>
+
             <div class="task-details">
-                <div class="task-reference">
-                    <a id="dialog_reference_link" href="#" target="_blank">Ver material de referencia</a>
-                </div>
-                <br>
                 <div class="task-attachment">
-                    <h3>Pega el enlace a tu documento aquí para entregar</h3>
-                    <input class="attachment-box" type="text" id="dialog_submission_link" placeholder="https://docs.google.com/...">
+                    <h3>Descripción de la tarea</h3>
+
+                    <p
+                        id="dialog_task_description"
+                        class="descripcion-modal-estudiante"
+                    >
+                        Sin descripción.
+                    </p>
+                </div>
+
+                <div class="task-reference">
+                    <h3>Material de referencia</h3>
+
+                    <a
+                        id="dialog_reference_link"
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Ver material de referencia
+                    </a>
+                </div>
+
+                <div class="task-attachment">
+                    <label
+                        class="etiqueta-campo-modal"
+                        for="dialog_submission_link"
+                    >
+                        Enlace de tu entrega
+                    </label>
+
+                    <input
+                        class="attachment-box"
+                        type="url"
+                        id="dialog_submission_link"
+                        autocomplete="off"
+                        placeholder="https://docs.google.com/..."
+                    >
+
+                    <small class="texto-ayuda-modal">
+                        Pega el enlace al documento que deseas entregar.
+                    </small>
                 </div>
             </div>
-            <button class="task-submit" onclick="enviarrespuesta()">Enviar Entrega</button>
+
+            <div class="acciones-modal">
+                <button
+                    class="boton-cancelar-modal"
+                    type="button"
+                    onclick="cerrarModalTareaEstudiante()"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    class="task-submit"
+                    id="botonEnviarEntrega"
+                    type="button"
+                    onclick="enviarrespuesta()"
+                >
+                    Enviar entrega
+                </button>
+            </div>
         </div>
     </dialog>
-    
+
     <footer>
         <h2>CONTÁCTENOS</h2>
-        <p>Avenida Universidad Tecnológica de Panamá, Vía Puente Centenario...</p>
-        <p>Teléfono: (507) 317-2000</p>
+
+        <h2>
+            Avenida Universidad Tecnológica de Panamá,
+            Vía Puente Centenario, Campus Metropolitano
+            Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.
+        </h2>
+
+        <h2>Teléfono: (507) 317-2000</h2>
     </footer>
 
     <script src="../middleware/Tareasestudiante.js"></script>
+    <script src="../middleware/pantallaprincipal.js"></script>
 </body>
 </html>

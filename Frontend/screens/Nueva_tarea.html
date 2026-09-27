@@ -1,73 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EscuelaApp🎓 - Nueva Tarea</title>
+
+    <title>EscuelaApp 🎓 | Nueva tarea</title>
+
     <link rel="stylesheet" href="../styles/HeadAndFoot.css">
     <link rel="stylesheet" href="../styles/defaultform.css">
+    <link rel="stylesheet" href="../styles/tareas.css">
 </head>
+
 <body>
     <header>
         <div id="headerlogo">
-            <img src="../Assets/luzh47ih_400x400.png" alt="" class="logo_colegio">
+            <img
+                src="../Assets/luzh47ih_400x400.png"
+                alt="Logotipo de EscuelaApp"
+                class="logo_colegio"
+            >
+
             <h1>EscuelaApp</h1>
         </div>
+
         <div>
             <h2 id="username"></h2>
         </div>
     </header>
+
     <section>
         <div id="formu_father">
             <div id="Fatherbutton">
-                <button onclick="goBack()" id="sonbutton" title="Volver a la página anterior"></button>
+                <button
+                    type="button"
+                    id="sonbutton"
+                    title="Volver a la página anterior"
+                    aria-label="Volver a la página anterior"
+                    onclick="goBack()"
+                ></button>
             </div>
-            <h1 id="titulo-form">Nueva Tarea</h1>
+
+            <h1 id="titulo-form">Nueva tarea</h1>
+
             <form id="nuevaTareaForm">
-                <span Style="display: none;">
-                    <label for="idGrupo">ID del grupo</label>
-                    <input class="inputtext" type="text" name="idGrupo" id="idGrupo" readonly>
-                </span>
-                
-                <span>
-                    <label for="nombreTarea">Nombre de la tarea</label>
-                    <input class="inputtext" type="text" name="nombreTarea" id="nombreTarea" placeholder="Ej: Resumen del Capítulo 5">
-                </span>
-                
-                <span>
-                    <label for="descripcion">Descripción</label>
-                    <input class="inputtext" type="text" name="descripcion" id="descripcion" placeholder="Ej: Realizar un mapa conceptual de una página">
+                <span style="display: none;">
+                    <label for="idGrupo">
+                        ID del grupo
+                    </label>
+
+                    <input
+                        class="inputtext"
+                        type="text"
+                        name="idGrupo"
+                        id="idGrupo"
+                        readonly
+                    >
                 </span>
 
                 <span>
-                    <label for="documentoReferencia">Documento de referencia (URL)</label>
-                    <input class="inputtext" type="text" name="documentoReferencia" id="documentoReferencia" placeholder="Ej: https://docs.google.com/document/...">
+                    <label for="tema">
+                        Tema
+                    </label>
+
+                    <input
+                        class="inputtext"
+                        type="text"
+                        name="tema"
+                        id="tema"
+                        list="listaTemas"
+                        maxlength="80"
+                        autocomplete="off"
+                        placeholder="Ej: Fracciones"
+                        required
+                    >
+
+                    <datalist id="listaTemas"></datalist>
+                </span>
+
+                <p class="ayuda-campo">
+                    Puedes seleccionar un tema existente o escribir uno nuevo.
+                </p>
+
+                <span>
+                    <label for="nombreTarea">
+                        Nombre de la tarea
+                    </label>
+
+                    <input
+                        class="inputtext"
+                        type="text"
+                        name="nombreTarea"
+                        id="nombreTarea"
+                        maxlength="120"
+                        autocomplete="off"
+                        placeholder="Ej: Resumen del capítulo 5"
+                        required
+                    >
                 </span>
 
                 <span>
-                    <label for="fechavencimiento">Fecha de vencimiento</label>
-                    <input class="inputtext" type="datetime-local" name="fechavencimiento" id="fechavencimiento">
+                    <label for="descripcion">
+                        Descripción
+                    </label>
+
+                    <input
+                        class="inputtext"
+                        type="text"
+                        name="descripcion"
+                        id="descripcion"
+                        maxlength="500"
+                        autocomplete="off"
+                        placeholder="Ej: Realizar un mapa conceptual de una página"
+                        required
+                    >
                 </span>
 
-                <input type="button" id="buttsubmit" value="Crear Tarea">
+                <span>
+                    <label for="documentoReferencia">
+                        Documento de referencia (URL)
+                    </label>
+
+                    <input
+                        class="inputtext"
+                        type="url"
+                        name="documentoReferencia"
+                        id="documentoReferencia"
+                        autocomplete="off"
+                        placeholder="https://docs.google.com/document/..."
+                        required
+                    >
+                </span>
+
+                <span class="grupo-fecha">
+                    <label for="fechavencimiento">
+                        Fecha de vencimiento
+                    </label>
+
+                    <div
+                        class="contenedor-selector-fecha"
+                        id="contenedorFechaVencimiento"
+                        role="group"
+                        aria-describedby="etiquetaAyudaFecha"
+                    >
+                        <input
+                            class="inputtext campo-fecha"
+                            type="datetime-local"
+                            name="fechavencimiento"
+                            id="fechavencimiento"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            id="abrirCalendario"
+                            class="boton-calendario"
+                            aria-label="Abrir selector de fecha y hora"
+                            title="Seleccionar fecha y hora"
+                        >
+                            <span aria-hidden="true">📅</span>
+                        </button>
+                    </div>
+                </span>
+
+                <p
+                    class="ayuda-campo"
+                    id="etiquetaAyudaFecha"
+                >
+                    Pulsa el campo o el botón del calendario para seleccionar
+                    la fecha y la hora.
+                </p>
+
+                <input
+                    type="submit"
+                    id="buttsubmit"
+                    value="Crear tarea"
+                >
             </form>
         </div>
     </section>
-    
+
     <footer>
         <h2>CONTÁCTENOS</h2>
-        <h2>Avenida Universidad Tecnológica de Panamá, Vía Puente Centenario...</h2>
+
+        <h2>
+            Avenida Universidad Tecnológica de Panamá,
+            Vía Puente Centenario, Campus Metropolitano
+            Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.
+        </h2>
+
         <h2>Teléfono: (507) 317-2000</h2>
     </footer>
+
     <script>
         function goBack() {
             window.history.back();
         }
     </script>
+
     <script src="../middleware/nuevatarea.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="..\styles\boton.js"></script>
     <script src="../middleware/pantallaprincipal.js"></script>
 </body>
 </html>
