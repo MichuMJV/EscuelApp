@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EscuelaApp 🎓 | Aplicaciones por salón</title>
+
+    <link rel="stylesheet" href="../styles/HeadAndFoot.css">
+    <link rel="stylesheet" href="../styles/gestionarAplicacionesSalon.css">
+</head>
+
+<body>
+    <header>
+        <div id="headerlogo">
+            <button
+                id="boton_atras_home"
+                type="button"
+                onclick="volverInicioProfesor()"
+                aria-label="Volver al inicio del profesor"
+                title="Volver al inicio del profesor"
+            >
+            <img src="../Assets/luzh47ih_400x400.png" alt="" class="logo_colegio">
+        </div>
+
+        <div class="datos-usuario-gestion">
+            <span class="etiqueta-usuario-gestion">
+                Profesor
+            </span>
+
+            <h2 id="username"></h2>
+        </div>
+    </header>
+
+    <main id="gestion-aplicaciones">
+        <section
+            class="contenedor-gestion-aplicaciones"
+            aria-labelledby="titulo-gestion-aplicaciones"
+        >
+            <div class="encabezado-gestion">
+                <div>
+                    <p class="subtitulo-gestion">
+                        Gestión académica
+                    </p>
+
+                    <h2 id="titulo-gestion-aplicaciones">
+                        Aplicaciones por salón
+                    </h2>
+
+                    <p class="descripcion-gestion">
+                        Selecciona uno de tus salones y elige las
+                        aplicaciones que estarán disponibles para sus
+                        estudiantes.
+                    </p>
+                </div>
+
+                <button
+                    id="boton-actualizar-aplicaciones"
+                    class="boton-secundario-gestion"
+                    type="button"
+                >
+                    Actualizar información
+                </button>
+            </div>
+
+            <section
+                class="panel-seleccion-salon"
+                aria-labelledby="titulo-seleccionar-salon"
+            >
+                <div class="encabezado-panel">
+                    <span
+                        class="numero-paso"
+                        aria-hidden="true"
+                    >
+                        1
+                    </span>
+
+                    <div>
+                        <h3 id="titulo-seleccionar-salon">
+                            Selecciona un salón
+                        </h3>
+
+                        <p>
+                            Solo aparecerán los salones asociados a tu
+                            cuenta de profesor.
+                        </p>
+                    </div>
+                </div>
+
+                <label
+                    class="campo-selector-salon"
+                    for="selector-salon-aplicaciones"
+                >
+                    <span>Salón</span>
+
+                    <select
+                        id="selector-salon-aplicaciones"
+                        name="selector-salon-aplicaciones"
+                    >
+                        <option value="">
+                            Cargando salones...
+                        </option>
+                    </select>
+                </label>
+
+                <div
+                    id="resumen-salon-aplicaciones"
+                    class="resumen-salon"
+                    hidden
+                >
+                    <article class="dato-resumen-salon">
+                        <span>Salón</span>
+
+                        <strong id="resumen-nombre-salon">
+                            No seleccionado
+                        </strong>
+                    </article>
+
+                    <article class="dato-resumen-salon">
+                        <span>Materia</span>
+
+                        <strong id="resumen-materia-salon">
+                            No disponible
+                        </strong>
+                    </article>
+
+                    <article class="dato-resumen-salon">
+                        <span>Grado</span>
+
+                        <strong id="resumen-grado-salon">
+                            No disponible
+                        </strong>
+                    </article>
+
+                    <article class="dato-resumen-salon">
+                        <span>Aplicaciones asignadas</span>
+
+                        <strong id="resumen-total-asignadas">
+                            0
+                        </strong>
+                    </article>
+                </div>
+            </section>
+
+            <section
+                class="panel-aplicaciones"
+                aria-labelledby="titulo-administrar-aplicaciones"
+            >
+                <div class="encabezado-panel">
+                    <span
+                        class="numero-paso"
+                        aria-hidden="true"
+                    >
+                        2
+                    </span>
+
+                    <div>
+                        <h3 id="titulo-administrar-aplicaciones">
+                            Administra las aplicaciones
+                        </h3>
+
+                        <p>
+                            Agregar o retirar una aplicación solamente
+                            modifica su disponibilidad dentro del salón
+                            seleccionado.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="barra-herramientas-aplicaciones">
+                    <label
+                        class="campo-busqueda-aplicaciones"
+                        for="buscador-aplicaciones"
+                    >
+                        <span>Buscar aplicación</span>
+
+                        <input
+                            type="search"
+                            id="buscador-aplicaciones"
+                            placeholder="Escribe el nombre de una aplicación"
+                            autocomplete="off"
+                            disabled
+                        >
+                    </label>
+
+                    <label
+                        class="campo-filtro-aplicaciones"
+                        for="filtro-aplicaciones"
+                    >
+                        <span>Mostrar</span>
+
+                        <select
+                            id="filtro-aplicaciones"
+                            disabled
+                        >
+                            <option value="todas">
+                                Todas
+                            </option>
+
+                            <option value="asignadas">
+                                Asignadas al salón
+                            </option>
+
+                            <option value="disponibles">
+                                Disponibles para agregar
+                            </option>
+                        </select>
+                    </label>
+                </div>
+
+                <div
+                    id="mensaje-gestion-aplicaciones"
+                    class="mensaje-gestion"
+                    role="status"
+                    aria-live="polite"
+                    hidden
+                ></div>
+
+                <div class="columnas-aplicaciones">
+                    <section
+                        id="seccion-aplicaciones-asignadas"
+                        class="columna-aplicaciones columna-asignadas"
+                        aria-labelledby="titulo-aplicaciones-asignadas"
+                    >
+                        <div class="encabezado-columna">
+                            <div>
+                                <p class="etiqueta-columna">
+                                    Visibles en el salón
+                                </p>
+
+                                <h3 id="titulo-aplicaciones-asignadas">
+                                    Aplicaciones asignadas
+                                </h3>
+                            </div>
+
+                            <span
+                                id="contador-aplicaciones-asignadas"
+                                class="contador-aplicaciones"
+                            >
+                                0
+                            </span>
+                        </div>
+
+                        <div
+                            id="lista-aplicaciones-asignadas"
+                            class="lista-aplicaciones"
+                        >
+                            <p class="mensaje-lista-vacia">
+                                Selecciona un salón para consultar sus
+                                aplicaciones.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section
+                        id="seccion-aplicaciones-disponibles"
+                        class="columna-aplicaciones columna-disponibles"
+                        aria-labelledby="titulo-aplicaciones-disponibles"
+                    >
+                        <div class="encabezado-columna">
+                            <div>
+                                <p class="etiqueta-columna">
+                                    Catálogo global
+                                </p>
+
+                                <h3 id="titulo-aplicaciones-disponibles">
+                                    Aplicaciones disponibles
+                                </h3>
+                            </div>
+
+                            <span
+                                id="contador-aplicaciones-disponibles"
+                                class="contador-aplicaciones"
+                            >
+                                0
+                            </span>
+                        </div>
+
+                        <div
+                            id="lista-aplicaciones-disponibles"
+                            class="lista-aplicaciones"
+                        >
+                            <p class="mensaje-lista-vacia">
+                                Selecciona un salón para consultar el
+                                catálogo disponible.
+                            </p>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <section
+                class="panel-informacion"
+                aria-labelledby="titulo-informacion-aplicaciones"
+            >
+                <div
+                    class="icono-informacion"
+                    aria-hidden="true"
+                >
+                    ℹ
+                </div>
+
+                <div>
+                    <h3 id="titulo-informacion-aplicaciones">
+                        Información importante
+                    </h3>
+
+                    <ul>
+                        <li>
+                            Agregar una aplicación permite que los
+                            estudiantes del salón puedan verla y abrirla.
+                        </li>
+
+                        <li>
+                            Retirar una aplicación del salón no la elimina
+                            del catálogo general de EscuelaApp.
+                        </li>
+
+                        <li>
+                            La eliminación global de una aplicación continúa
+                            siendo una función exclusiva del administrador.
+                        </li>
+
+                        <li>
+                            Una misma aplicación puede estar disponible en
+                            varios salones.
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <dialog
+        id="dialogo-vista-aplicacion"
+        class="dialogo-vista-aplicacion"
+        aria-labelledby="vista-aplicacion-nombre"
+    >
+        <button
+            id="cerrar-vista-aplicacion"
+            class="boton-cerrar-dialogo"
+            type="button"
+            aria-label="Cerrar vista de aplicación"
+            title="Cerrar"
+        >
+            &times;
+        </button>
+
+        <div class="contenido-vista-aplicacion">
+            <img
+                id="vista-aplicacion-imagen"
+                src="../Assets/materia.png"
+                alt="Imagen de la aplicación"
+            >
+
+            <div>
+                <p class="etiqueta-vista-aplicacion">
+                    Vista previa
+                </p>
+
+                <h2 id="vista-aplicacion-nombre">
+                    Aplicación
+                </h2>
+
+                <p id="vista-aplicacion-enlace">
+                    Enlace no disponible
+                </p>
+            </div>
+
+            <a
+                id="vista-aplicacion-abrir"
+                class="boton-abrir-aplicacion"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Abrir aplicación
+            </a>
+        </div>
+    </dialog>
+
+    <footer>
+        <h2>CONTÁCTENOS</h2>
+
+        <h2>
+            Avenida Universidad Tecnológica de Panamá,
+            Vía Puente Centenario, Campus Metropolitano
+            Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.
+        </h2>
+
+        <h2>Teléfono: (507) 317-2000</h2>
+    </footer>
+
+    <script src="../middleware/gestionarAplicacionesSalon.js"></script>
+    <script src="../middleware/pantallaprincipal.js"></script>
+</body>
+</html>

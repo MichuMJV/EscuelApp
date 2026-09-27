@@ -16,11 +16,30 @@
             </button>
             <h1>EscuelaApp</h1>
         </div>
-        <div>
-            <button id="input-button2" onclick="AbrirNuevoSalon()">Nuevo salon</button>
-        </div>
-        <div>
-            <button id="input-button2" onclick="AbrirNuevaApp()">Nueva App</button>
+        <div class="acciones-profesor">
+            <button
+                class="boton-accion-profesor"
+                type="button"
+                onclick="AbrirNuevoSalon()"
+            >
+                Nuevo salón
+            </button>
+        
+            <button
+                class="boton-accion-profesor"
+                type="button"
+                onclick="AbrirNuevaApp()"
+            >
+                Nueva App
+            </button>
+        
+            <button
+                class="boton-accion-profesor boton-gestionar-apps"
+                type="button"
+                onclick="AbrirGestionAplicacionesSalon()"
+            >
+                Gestionar Apps por salón
+            </button>
         </div>
         <div>
             <h2 id="username"></h2>

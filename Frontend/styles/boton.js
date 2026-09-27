@@ -272,3 +272,8 @@ function EditarSalones() {
 function AbrirAdministrarMatriculas() {
     window.location.href = "./Administrar_matriculas.html";
 }
+
+function AbrirGestionAplicacionesSalon() {
+    window.location.href =
+        "./Gestionar_aplicaciones_salon.html";
+}

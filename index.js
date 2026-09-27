@@ -192,8 +192,20 @@ const DeleteApp = require(
     "./controllers/DeleteApp.js"
 );
 
+const GetAplicacionesSalon = require(
+    "./controllers/GetAplicacionesSalon.js"
+);
+
+const AgregarAplicacionSalon = require(
+    "./controllers/AgregarAplicacionSalon.js"
+);
+
+const RetirarAplicacionSalon = require(
+    "./controllers/RetirarAplicacionSalon.js"
+);
+
 // =========================================================
-// CONFIGURACIÓN DE MULTER PARA EXCEL
+// CONFIGURACIÓN DE MULTER PARA ARCHIVOS EXCEL
 // =========================================================
 
 const almacenamientoExcel = multer.memoryStorage();
@@ -264,7 +276,10 @@ app.use(
 
 app.use(
     express.static(
-        path.join(__dirname, "Frontend")
+        path.join(
+            __dirname,
+            "Frontend"
+        )
     )
 );
 
@@ -332,7 +347,7 @@ app.put(
 );
 
 // =========================================================
-// RUTAS POST
+// RUTAS POST DE AUTENTICACIÓN Y USUARIOS
 // =========================================================
 
 app.post(
@@ -341,8 +356,31 @@ app.post(
 );
 
 app.post(
+    "/Escuelapp/Register",
+    register
+);
+
+// =========================================================
+// RUTAS POST DE TAREAS
+// =========================================================
+
+app.post(
     "/Escuelapp/EstudianteEntregaTarea",
     EstudianteEntregaTarea
+);
+
+app.post(
+    "/Escuelapp/NewTarea",
+    NewTarea
+);
+
+// =========================================================
+// RUTAS POST DE SALONES Y MATRÍCULAS
+// =========================================================
+
+app.post(
+    "/Escuelapp/NewSalon",
+    NewSalon
 );
 
 app.post(
@@ -380,28 +418,27 @@ app.post(
     ProcesarMatriculasAdmin
 );
 
+// =========================================================
+// RUTAS POST DE APLICACIONES
+// =========================================================
+
 app.post(
     "/Escuelapp/NewApp",
     NewApp
 );
 
 app.post(
-    "/Escuelapp/NewSalon",
-    NewSalon
+    "/Escuelapp/AgregarAplicacionSalon",
+    AgregarAplicacionSalon
 );
 
 app.post(
-    "/Escuelapp/NewTarea",
-    NewTarea
-);
-
-app.post(
-    "/Escuelapp/Register",
-    register
+    "/Escuelapp/RetirarAplicacionSalon",
+    RetirarAplicacionSalon
 );
 
 // =========================================================
-// RUTAS GET
+// RUTAS GET DEL DASHBOARD
 // =========================================================
 
 app.get(
@@ -414,34 +451,13 @@ app.get(
     getDashboardData
 );
 
+// =========================================================
+// RUTAS GET DE SALONES
+// =========================================================
+
 app.get(
     "/Escuelapp/GetSalonDetails",
     GetSalonDetails
-);
-
-app.get(
-    "/Escuelapp/tareas",
-    GetTareasPorSalon
-);
-
-app.get(
-    "/Escuelapp/salones-estudiante",
-    getSalonesEstudiante
-);
-
-app.get(
-    "/Escuelapp/tarea_unica",
-    GetTareaById
-);
-
-app.get(
-    "/Escuelapp/GetTareasParaEstudiante",
-    GetTareasParaEstudiante
-);
-
-app.get(
-    "/Escuelapp/ReturnApps",
-    ReturnApps
 );
 
 app.get(
@@ -450,8 +466,8 @@ app.get(
 );
 
 app.get(
-    "/Escuelapp/returnEstudiantesDeGrupo",
-    returnMatricula
+    "/Escuelapp/salones-estudiante",
+    getSalonesEstudiante
 );
 
 app.get(
@@ -462,11 +478,6 @@ app.get(
 app.get(
     "/Escuelapp/returnTeachersSalon",
     returnTeachersSalon
-);
-
-app.get(
-    "/Escuelapp/returnUser",
-    returnUser
 );
 
 app.get(
@@ -489,9 +500,60 @@ app.get(
     ReturnSalonsByProfessor
 );
 
+// =========================================================
+// RUTAS GET DE TAREAS
+// =========================================================
+
+app.get(
+    "/Escuelapp/tareas",
+    GetTareasPorSalon
+);
+
+app.get(
+    "/Escuelapp/tarea_unica",
+    GetTareaById
+);
+
+app.get(
+    "/Escuelapp/GetTareasParaEstudiante",
+    GetTareasParaEstudiante
+);
+
+// =========================================================
+// RUTAS GET DE MATRÍCULAS
+// =========================================================
+
+app.get(
+    "/Escuelapp/returnEstudiantesDeGrupo",
+    returnMatricula
+);
+
 app.get(
     "/Escuelapp/DescargarPlantillaMatriculas",
     DescargarPlantillaMatriculas
+);
+
+// =========================================================
+// RUTAS GET DE USUARIOS
+// =========================================================
+
+app.get(
+    "/Escuelapp/returnUser",
+    returnUser
+);
+
+// =========================================================
+// RUTAS GET DE APLICACIONES
+// =========================================================
+
+app.get(
+    "/Escuelapp/ReturnApps",
+    ReturnApps
+);
+
+app.get(
+    "/Escuelapp/GetAplicacionesSalon",
+    GetAplicacionesSalon
 );
 
 // =========================================================

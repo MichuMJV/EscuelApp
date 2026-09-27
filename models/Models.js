@@ -236,16 +236,36 @@ const aplicacionesSchema = mongoose.Schema({
 });
 
 // =========================================================
+// RELACIÓN ENTRE SALONES Y APLICACIONES
+// =========================================================
+
+const salonAplicacionSchema = mongoose.Schema({
+    idgrupo: {
+        type: mongoose.Schema.ObjectId,
+        required: true
+    },
+
+    idaplicacion: {
+        type: mongoose.Schema.ObjectId,
+        required: true
+    },
+
+    fecha: {
+        type: Date,
+        default: Date.now
+    }
+});
+
+// =========================================================
 // ÍNDICES
 // =========================================================
 
-// Permite consultar usuarios por cédula rápidamente.
-// La prevención de duplicados también se realizará en los controladores.
+// Mejora la búsqueda de usuarios por cédula.
 usuarioSchema.index({
     cedula: 1
 });
 
-// Evita que un mismo estudiante tenga dos matrículas en el mismo salón.
+// Evita matrículas duplicadas dentro de un mismo salón.
 salonEstudianteSchema.index(
     {
         idgrupo: 1,
@@ -272,6 +292,33 @@ tareaSchema.index({
     idgrupo: 1,
     tema: 1,
     fechavencimiento: 1
+});
+
+// Mejora las consultas de salones por profesor.
+salonSchema.index({
+    idprofe: 1
+});
+
+// Mejora la búsqueda de aplicaciones por nombre.
+aplicacionesSchema.index({
+    nombre: 1
+});
+
+// Evita asignar dos veces una aplicación al mismo salón.
+salonAplicacionSchema.index(
+    {
+        idgrupo: 1,
+        idaplicacion: 1
+    },
+    {
+        unique: true
+    }
+);
+
+// Permite consultar rápidamente todos los salones
+// donde se utiliza una aplicación.
+salonAplicacionSchema.index({
+    idaplicacion: 1
 });
 
 // =========================================================
@@ -308,6 +355,11 @@ const Apps = mongoose.model(
     aplicacionesSchema
 );
 
+const SalonAplicacion = mongoose.model(
+    "salonesAplicacionesEscuela",
+    salonAplicacionSchema
+);
+
 // =========================================================
 // EXPORTACIÓN DE MODELOS
 // =========================================================
@@ -318,5 +370,6 @@ module.exports = {
     Tarea,
     TareaEstudiante,
     SalonEstudiante,
-    Apps
+    Apps,
+    SalonAplicacion
 };
