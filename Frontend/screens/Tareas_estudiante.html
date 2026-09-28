@@ -9,7 +9,8 @@
 
     <link rel="stylesheet" href="../styles/HeadAndFoot.css">
     <link rel="stylesheet" href="../styles/tareas.css">
-    <link rel="stylesheet" href="../styles/tarea_especifica.css"></head>
+    <link rel="stylesheet" href="../styles/tarea_especifica.css">
+</head>
 
 <body>
     <header>
@@ -40,10 +41,11 @@
         <section id="contenido">
             <div id="headingmateria">
                 <img
-                    src=""
+                    src="../Assets/materia.png"
                     id="imagen"
                     alt="Logo del salón"
                 >
+
                 <h1
                     id="nombreMat"
                     style="font-weight: 600;"
@@ -60,6 +62,69 @@
             </div>
         </section>
     </main>
+
+    <div class="contenedor-apps-salon">
+        <button
+            id="my-button"
+            class="boton-apps-flotante"
+            type="button"
+            aria-label="Mostrar aplicaciones del salón"
+            aria-expanded="false"
+            aria-controls="my-list"
+            title="Aplicaciones del salón"
+        >
+            <span class="rejilla-icono-apps" aria-hidden="true">
+                <span class="punto-app punto-rojo"></span>
+                <span class="punto-app punto-amarillo"></span>
+                <span class="punto-app punto-verde"></span>
+                <span class="punto-app punto-amarillo"></span>
+                <span class="punto-app punto-verde"></span>
+                <span class="punto-app punto-azul"></span>
+                <span class="punto-app punto-verde"></span>
+                <span class="punto-app punto-azul"></span>
+                <span class="punto-app punto-morado"></span>
+            </span>
+        </button>
+
+        <section
+            id="my-list"
+            class="panel-apps-salon"
+            aria-labelledby="titulo-panel-apps"
+            hidden
+        >
+            <div class="encabezado-panel-apps">
+                <div>
+                    <p class="etiqueta-panel-apps">
+                        Recursos digitales
+                    </p>
+
+                    <h2 id="titulo-panel-apps">
+                        Aplicaciones del salón
+                    </h2>
+                </div>
+
+                <button
+                    id="cerrar-panel-apps"
+                    class="cerrar-panel-apps"
+                    type="button"
+                    aria-label="Cerrar aplicaciones del salón"
+                    title="Cerrar"
+                >
+                    &times;
+                </button>
+            </div>
+
+            <div
+                id="lista-aplicaciones-salon-estudiante"
+                class="lista-aplicaciones-flotante"
+                aria-live="polite"
+            >
+                <p class="mensaje-panel-apps">
+                    Cargando aplicaciones...
+                </p>
+            </div>
+        </section>
+    </div>
 
     <dialog
         class="Modal"
@@ -189,6 +254,7 @@
     </footer>
 
     <script src="../middleware/Tareasestudiante.js"></script>
+    <script src="../middleware/aplicacionesEstudiante.js"></script>
     <script src="../middleware/pantallaprincipal.js"></script>
 </body>
 </html>
