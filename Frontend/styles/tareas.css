@@ -1916,7 +1916,7 @@
     right: 0 !important;
     bottom: calc(100% + 12px) !important;
 
-    width: min(390px, calc(100vw - 16px)) !important;
+    width: min(290px, calc(100vw - 16px)) !important;
     height: auto !important;
     max-height: none !important;
 

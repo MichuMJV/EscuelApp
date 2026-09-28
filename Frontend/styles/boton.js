@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
     inicializarAcordeonAdministracion();
-    inicializarListaAplicaciones();
 });
 
 function inicializarAcordeonAdministracion() {

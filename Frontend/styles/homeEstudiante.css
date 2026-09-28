@@ -108,7 +108,7 @@ form{
     box-shadow: -1px 5px 20px rgba(0, 0, 0, 0.4);
     border-radius:10mm;
     position: absolute;
-    bottom: 17vh;
+    bottom: 3vh;
     right: 3vw;
     height: 10vh;
     width: 10vh;
@@ -264,4 +264,344 @@ form{
 
         white-space: normal;
     }
+}
+
+/* =========================================================
+   SELECTOR FLOTANTE COMPACTO DE APLICACIONES
+   ========================================================= */
+
+.contenedor-apps-globales {
+    position: fixed;
+    right: 8px;
+    bottom: calc(12vh + 8px);
+    z-index: 1200;
+}
+
+.boton-apps-globales {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #b9d2eb;
+    border-radius: 50%;
+    background-color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 10px 28px rgba(25, 55, 88, 0.28);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.boton-apps-globales:hover {
+    background-color: #edf6ff;
+    box-shadow: 0 13px 32px rgba(25, 55, 88, 0.34);
+    transform: translateY(-2px);
+}
+
+.boton-apps-globales:focus-visible {
+    outline: 3px solid rgba(40, 120, 208, 0.38);
+    outline-offset: 3px;
+}
+
+.boton-apps-globales::after {
+    position: absolute;
+    top: -5px;
+    right: -3px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    min-width: 23px;
+    height: 23px;
+    padding: 0 6px;
+    border: 2px solid #ffffff;
+    border-radius: 999px;
+    background-color: #2878d0;
+    color: #ffffff;
+    content: attr(data-cantidad);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+.boton-apps-globales:not([data-cantidad="0"])[data-cantidad]::after {
+    display: flex;
+}
+
+.rejilla-apps-globales {
+    display: grid;
+    grid-template-columns: repeat(3, 10px);
+    grid-template-rows: repeat(3, 10px);
+    gap: 5px;
+}
+
+.punto-app-global {
+    box-sizing: border-box;
+    display: block;
+    width: 10px;
+    height: 10px;
+    border: 3px solid currentColor;
+    border-radius: 50%;
+}
+
+.punto-rojo-global { color: #ef3e36; }
+.punto-amarillo-global { color: #e9b416; }
+.punto-verde-global { color: #39ad4d; }
+.punto-azul-global { color: #1269c7; }
+.punto-morado-global { color: #5d159c; }
+
+.panel-apps-globales {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 12px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: min(390px, calc(100vw - 16px));
+    height: auto;
+    max-height: min(520px, 65vh);
+    padding: 0.9rem;
+    gap: 0.75rem;
+    overflow: hidden;
+    border: 1px solid #d7e3ee;
+    border-radius: 18px;
+    background-color: #ffffff;
+    box-shadow: 0 18px 48px rgba(20, 49, 78, 0.26);
+}
+
+.panel-apps-globales[hidden] {
+    display: none;
+}
+
+.panel-apps-globales::after {
+    position: absolute;
+    right: 24px;
+    bottom: -8px;
+    width: 16px;
+    height: 16px;
+    border-right: 1px solid #d7e3ee;
+    border-bottom: 1px solid #d7e3ee;
+    background-color: #ffffff;
+    content: "";
+    transform: rotate(45deg);
+}
+
+.encabezado-apps-globales {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.etiqueta-apps-globales {
+    margin: 0 0 0.15rem;
+    color: #2878d0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+#titulo-apps-globales {
+    margin: 0;
+    color: #17324d;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.25;
+}
+
+.cerrar-apps-globales {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background-color: #edf1f5;
+    color: #486176;
+    font-size: 1.35rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.lista-apps-globales {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    max-height: min(390px, 50vh);
+    gap: 0.65rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.lista-apps-globales::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.tarjeta-app-global {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr) auto;
+    align-items: center;
+    width: 100%;
+    min-height: 70px;
+    padding: 0.65rem;
+    gap: 0.7rem;
+    border: 1px solid #dce6ef;
+    border-radius: 12px;
+    background-color: #fbfdff;
+    color: #17324d;
+    text-decoration: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.tarjeta-app-global:hover {
+    border-color: #8eb9e7;
+    background-color: #edf6ff;
+    transform: translateY(-1px);
+}
+
+.imagen-app-global {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #d9e3ec;
+    border-radius: 11px;
+    background-color: #ffffff;
+    object-fit: cover;
+}
+
+.informacion-app-global {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 0.2rem;
+}
+
+.nombre-app-global,
+.dominio-app-global {
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.nombre-app-global {
+    color: #17324d;
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.dominio-app-global {
+    color: #718598;
+    font-size: 0.7rem;
+}
+
+.indicador-app-global {
+    min-width: 50px;
+    padding: 0.35rem 0.5rem;
+    border-radius: 7px;
+    background-color: #e5f1ff;
+    color: #24639b;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.67rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.mensaje-apps-globales {
+    margin: 0;
+    padding: 1rem;
+    border: 1px dashed #c7d6e4;
+    border-radius: 10px;
+    background-color: #f8fbfe;
+    color: #647b8f;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.82rem;
+    text-align: center;
+}
+
+.mensaje-apps-error {
+    border-color: #efb5b5;
+    background-color: #fdecec;
+    color: #982f2f;
+}
+
+@media screen and (max-width: 480px) {
+    .contenedor-apps-globales {
+        right: 6px;
+        bottom: calc(12vh + 6px);
+    }
+
+    .boton-apps-globales {
+        width: 58px;
+        height: 58px;
+    }
+
+    .panel-apps-globales {
+        position: fixed;
+        right: 6px;
+        bottom: calc(12vh + 72px);
+        width: calc(100vw - 12px);
+    }
+}
+
+/* =========================================================
+   CORRECCION DEL PANEL FLOTANTE EN LAS PAGINAS DE INICIO
+   El selector general "section" no debe afectar este panel.
+   ========================================================= */
+
+section.panel-apps-globales,
+div.panel-apps-globales,
+#my-list.panel-apps-globales {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 12px);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    width: min(390px, calc(100vw - 16px));
+    height: auto;
+    min-height: 0;
+    max-height: min(520px, 65vh);
+    margin: 0;
+    padding: 0.9rem;
+    gap: 0.75rem;
+
+    overflow: hidden;
+
+    border: 1px solid #d7e3ee;
+    border-radius: 18px;
+
+    background: #ffffff;
+    background-image: none;
+
+    box-shadow: 0 18px 48px rgba(20, 49, 78, 0.26);
+}
+
+section.panel-apps-globales[hidden],
+div.panel-apps-globales[hidden],
+#my-list.panel-apps-globales[hidden] {
+    display: none;
+}
+
+#lista-apps-globales.lista-apps-globales {
+    flex: 0 1 auto;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: min(390px, 50vh);
+    margin: 0;
+    padding: 0;
 }
