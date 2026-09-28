@@ -22,12 +22,8 @@
                 aria-label="Volver a la página del profesor"
                 title="Volver a la página del profesor"
             >
-                <img
-                    src="../Assets/luzh47ih_400x400.png"
-                    alt="Logotipo de EscuelaApp"
-                    class="logo_colegio"
-                >
-            </button>
+            <img src="../Assets/luzh47ih_400x400.png" alt="" class="logo_colegio">
+        </button>
 
             <h1>EscuelaApp</h1>
         </div>
@@ -51,7 +47,7 @@
         <section id="contenido">
             <div id="headingmateria">
                 <img
-                    src=""
+                    src="../Assets/materia.png"
                     id="imagen"
                     alt="Logo del salón"
                 >
@@ -59,7 +55,9 @@
                 <h1
                     id="nombreMat"
                     style="font-weight: 600;"
-                ></h1>
+                >
+                    Cargando salón...
+                </h1>
 
                 <div class="contenedor-codigo-salon">
                     <h2 style="font-weight: 600;">
@@ -69,9 +67,59 @@
                     <h2
                         id="codigo"
                         style="font-weight: 600;"
-                    ></h2>
+                    >
+                        Cargando...
+                    </h2>
                 </div>
             </div>
+
+            <section
+                id="aplicaciones-salon"
+                class="aplicaciones-salon"
+                aria-labelledby="titulo-aplicaciones-salon"
+            >
+                <div class="encabezado-aplicaciones-salon">
+                    <div>
+                        <p class="etiqueta-aplicaciones-salon">
+                            Recursos digitales
+                        </p>
+
+                        <h2 id="titulo-aplicaciones-salon">
+                            Aplicaciones del salón
+                        </h2>
+                    </div>
+
+                    <div class="acciones-aplicaciones-salon">
+                        <button
+                            id="gestionar-aplicaciones-salon"
+                            class="boton-gestionar-aplicaciones-salon"
+                            type="button"
+                        >
+                            Gestionar aplicaciones
+                        </button>
+
+                        <button
+                            id="alternar-aplicaciones-salon"
+                            class="boton-alternar-aplicaciones"
+                            type="button"
+                            aria-expanded="true"
+                            aria-controls="lista-aplicaciones-salon"
+                        >
+                            Ocultar
+                        </button>
+                    </div>
+                </div>
+
+                <div
+                    id="lista-aplicaciones-salon"
+                    class="lista-aplicaciones-salon"
+                    aria-live="polite"
+                >
+                    <p class="mensaje-aplicaciones-salon">
+                        Cargando aplicaciones...
+                    </p>
+                </div>
+            </section>
 
             <button
                 id="botondashboard"
@@ -265,6 +313,7 @@
     <script src="../styles/boton.js"></script>
     <script src="../middleware/Tareasprofesor.js"></script>
     <script src="../middleware/dashboardestudiantes.js"></script>
+    <script src="../middleware/aplicacionesSalon.js"></script>
     <script src="../middleware/pantallaprincipal.js"></script>
 </body>
 </html>

@@ -165,7 +165,7 @@ async function cargarSalonesProfesor() {
             ? resultado.SalonData
             : [];
 
-        renderizarOpcionesSalones();
+        await renderizarOpcionesSalones();
     } catch (error) {
         console.error(
             "Error al cargar los salones del profesor:",
@@ -187,7 +187,7 @@ async function cargarSalonesProfesor() {
     }
 }
 
-function renderizarOpcionesSalones() {
+async function renderizarOpcionesSalones() {
     const selector = document.getElementById(
         "selector-salon-aplicaciones"
     );
@@ -231,6 +231,50 @@ function renderizarOpcionesSalones() {
             selector.appendChild(opcion);
         }
     );
+
+    await seleccionarSalonDesdeURL(selector);
+}
+
+async function seleccionarSalonDesdeURL(selector) {
+    const parametros = new URLSearchParams(
+        window.location.search
+    );
+
+    const idSalonURL =
+        parametros.get("id") ||
+        parametros.get("idgrupo") ||
+        parametros.get("idGrupo");
+
+    if (!idSalonURL) {
+        return;
+    }
+
+    const salonURL = salonesProfesor.find(
+        function (salon) {
+            return (
+                String(salon._id) ===
+                String(idSalonURL)
+            );
+        }
+    );
+
+    if (!salonURL) {
+        mostrarMensajeGestion(
+            "El salón indicado no pertenece a este profesor o ya no existe.",
+            "error"
+        );
+
+        return;
+    }
+
+    selector.value = salonURL._id;
+    salonSeleccionado = salonURL;
+
+    limpiarAplicaciones();
+    actualizarResumenSalon();
+    deshabilitarControles(false);
+
+    await cargarAplicacionesSalon();
 }
 
 async function cargarAplicacionesSalon() {
@@ -1402,3 +1446,4 @@ function redirigirSegunRol(rol) {
             );
     }
 }
+

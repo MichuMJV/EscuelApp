@@ -784,7 +784,6 @@
     outline-offset: -3px;
 }
 
-
 /* =========================================================
    TABLETAS
    ========================================================= */
@@ -806,7 +805,6 @@
             minmax(0, 1fr)
             minmax(105px, auto)
             minmax(180px, auto);
-
         gap: 1.5vw;
     }
 
@@ -823,9 +821,8 @@
     }
 }
 
-
 /* =========================================================
-   TELÉFONOS
+   TELEFONOS
    ========================================================= */
 
 @media screen and (max-width: 768px) {
@@ -853,7 +850,6 @@
     .contenedor-codigo-salon {
         flex-direction: column;
         align-items: flex-end;
-
         padding: 0.7vh 2vw;
         gap: 0;
     }
@@ -867,4 +863,455 @@
         min-height: 7vh;
     }
 
-   
+    .encabezado-tema {
+        padding: 1.1vh 3vw;
+        gap: 3vw;
+    }
+
+    .lista-tareas-tema {
+        padding-left: 0;
+    }
+
+    .Tareas .link_tarea {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+        padding: 1.4vh 3vw;
+        gap: 1vh;
+    }
+
+    .contenedor_vencimiento {
+        align-items: flex-start;
+        min-width: 0;
+        width: 100%;
+        padding: 0.8vh 2vw;
+    }
+
+    .informacion-nota {
+        align-items: flex-start;
+        min-width: 0;
+        width: 100%;
+    }
+
+    .ayuda-campo {
+        width: 80vw;
+    }
+
+    .contenedor-selector-fecha {
+        width: 80vw;
+        min-width: 0;
+    }
+}
+
+/* =========================================================
+   PANTALLAS MUY PEQUENAS
+   ========================================================= */
+
+@media screen and (max-width: 480px) {
+    #contenido {
+        padding-right: 3vw;
+        padding-left: 3vw;
+    }
+
+    #headingmateria {
+        flex-wrap: wrap;
+        width: 94vw;
+        padding: 1.3vh 4vw;
+    }
+
+    #headingmateria #imagen {
+        width: 7vh;
+        height: 7vh;
+    }
+
+    #headingmateria h1 {
+        min-width: calc(100% - 10vh);
+        font-size: 1.1rem;
+    }
+
+    .contenedor-codigo-salon {
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        width: 100%;
+        padding: 0.7vh 3vw;
+        gap: 1vw;
+    }
+
+    #botondashboard,
+    .container_tareas {
+        width: 94vw;
+    }
+
+    .titulo-tema {
+        font-size: 1rem;
+    }
+
+    .contador-tareas {
+        padding: 0.45vh 2vw;
+        font-size: 0.7rem;
+    }
+
+    .nombre-tarea {
+        font-size: 0.95rem;
+    }
+
+    .descripcion-tarea {
+        font-size: 0.78rem;
+    }
+}
+
+/* =========================================================
+   APLICACIONES ASIGNADAS AL SALON
+   ========================================================= */
+
+.aplicaciones-salon {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    width: min(1100px, 90vw);
+    padding: 1.25rem;
+    gap: 1rem;
+    border: 1px solid #d8e5f1;
+    border-radius: 16px;
+    background-color: #ffffff;
+    box-shadow: 0 7px 18px rgba(29, 65, 101, 0.11);
+}
+
+.encabezado-aplicaciones-salon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 1rem;
+}
+
+.etiqueta-aplicaciones-salon {
+    margin: 0 0 0.2rem;
+    padding: 0;
+    color: #2878d0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    line-height: 1.3;
+    text-transform: uppercase;
+}
+
+#titulo-aplicaciones-salon {
+    margin: 0;
+    padding: 0;
+    color: #17324d;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: clamp(1.05rem, 2vw, 1.35rem);
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.acciones-aplicaciones-salon {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+/* =========================================================
+   BOTONES DE APLICACIONES
+   ========================================================= */
+
+.boton-alternar-aplicaciones,
+.boton-gestionar-aplicaciones-salon {
+    box-sizing: border-box;
+    min-height: 39px;
+    margin: 0;
+    padding: 0.5rem 0.85rem;
+    border-radius: 8px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.boton-alternar-aplicaciones {
+    border: 1px solid #a8bacb;
+    background-color: #ffffff;
+    color: #496176;
+}
+
+.boton-alternar-aplicaciones:hover {
+    border-color: #7e94a8;
+    background-color: #f0f4f7;
+}
+
+.boton-gestionar-aplicaciones-salon {
+    border: 1px solid #2d9760;
+    background-color: #2d9760;
+    color: #ffffff;
+}
+
+.boton-gestionar-aplicaciones-salon:hover {
+    border-color: #207746;
+    background-color: #207746;
+    box-shadow: 0 5px 12px rgba(45, 151, 96, 0.2);
+}
+
+.boton-alternar-aplicaciones:active,
+.boton-gestionar-aplicaciones-salon:active {
+    transform: translateY(1px);
+}
+
+.boton-alternar-aplicaciones:focus-visible,
+.boton-gestionar-aplicaciones-salon:focus-visible {
+    outline: 3px solid rgba(40, 120, 208, 0.32);
+    outline-offset: 2px;
+}
+
+.boton-gestionar-aplicaciones-salon:disabled {
+    border-color: #a5b8aa;
+    background-color: #a5b8aa;
+    cursor: not-allowed;
+}
+
+/* =========================================================
+   LISTA DE APLICACIONES
+   ========================================================= */
+
+.lista-aplicaciones-salon {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    width: 100%;
+    gap: 0.8rem;
+}
+
+.lista-aplicaciones-salon[hidden] {
+    display: none;
+}
+
+/* =========================================================
+   TARJETAS DE APLICACIONES
+   ========================================================= */
+
+.tarjeta-aplicacion-salon {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 50px minmax(0, 1fr) auto;
+    align-items: center;
+    min-width: 0;
+    min-height: 72px;
+    padding: 0.65rem;
+    gap: 0.7rem;
+    border: 1px solid #dbe5ee;
+    border-left: 5px solid #2878d0;
+    border-radius: 11px;
+    background-color: #fbfdff;
+    color: #17324d;
+    text-decoration: none;
+    box-shadow: 0 4px 11px rgba(25, 65, 104, 0.07);
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.tarjeta-aplicacion-salon:hover {
+    border-color: #7faee0;
+    border-left-color: #185795;
+    background-color: #edf5ff;
+    box-shadow: 0 7px 15px rgba(25, 65, 104, 0.13);
+    transform: translateY(-2px);
+}
+
+.tarjeta-aplicacion-salon:focus-visible {
+    outline: 3px solid rgba(40, 120, 208, 0.35);
+    outline-offset: 2px;
+}
+
+.contenedor-imagen-aplicacion-salon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    overflow: hidden;
+    border: 1px solid #d9e3ec;
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+
+.imagen-aplicacion-salon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.informacion-aplicacion-salon {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 0.2rem;
+}
+
+.nombre-aplicacion-salon {
+    display: block;
+    overflow: hidden;
+    color: #17324d;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dominio-aplicacion-salon {
+    display: block;
+    overflow: hidden;
+    color: #708497;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.7rem;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.indicador-abrir-aplicacion {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35rem 0.55rem;
+    border-radius: 7px;
+    background-color: #e4f0ff;
+    color: #24639b;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.aplicacion-sin-enlace {
+    border-left-color: #aeb8c1;
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.aplicacion-sin-enlace:hover {
+    border-color: #dbe5ee;
+    border-left-color: #aeb8c1;
+    background-color: #f5f6f7;
+    box-shadow: 0 4px 11px rgba(25, 65, 104, 0.07);
+    transform: none;
+}
+
+/* =========================================================
+   MENSAJES DE APLICACIONES
+   ========================================================= */
+
+.mensaje-aplicaciones-salon {
+    grid-column: 1 / -1;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+    border: 1px dashed #c6d5e3;
+    border-radius: 10px;
+    background-color: #f8fbfe;
+    color: #6c8194;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    text-align: center;
+}
+
+/* =========================================================
+   RESPONSIVIDAD DE LAS APLICACIONES
+   ========================================================= */
+
+@media screen and (max-width: 900px) {
+    .aplicaciones-salon {
+        width: 94vw;
+    }
+
+    .lista-aplicaciones-salon {
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .aplicaciones-salon {
+        width: 92vw;
+        padding: 1rem;
+    }
+
+    .encabezado-aplicaciones-salon {
+        align-items: flex-start;
+    }
+
+    .acciones-aplicaciones-salon {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .boton-alternar-aplicaciones,
+    .boton-gestionar-aplicaciones-salon {
+        min-height: 36px;
+        padding: 0.45rem 0.65rem;
+        font-size: 0.72rem;
+    }
+
+    .lista-aplicaciones-salon {
+        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .aplicaciones-salon {
+        width: 94vw;
+    }
+
+    .encabezado-aplicaciones-salon {
+        flex-direction: column;
+    }
+
+    .acciones-aplicaciones-salon {
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .acciones-aplicaciones-salon button {
+        flex: 1;
+    }
+
+    .lista-aplicaciones-salon {
+        grid-template-columns: 1fr;
+    }
+
+    .tarjeta-aplicacion-salon {
+        grid-template-columns: 46px minmax(0, 1fr) auto;
+    }
+
+    .contenedor-imagen-aplicacion-salon {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* =========================================================
+   ACCESIBILIDAD
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
