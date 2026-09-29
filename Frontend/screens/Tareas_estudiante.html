@@ -197,29 +197,33 @@
                         Ver material de referencia
                     </a>
                 </div>
-
                 <div class="task-attachment">
-                    <label
-                        class="etiqueta-campo-modal"
-                        for="dialog_submission_link"
-                    >
-                        Enlace de tu entrega
-                    </label>
-
-                    <input
-                        class="attachment-box"
-                        type="url"
-                        id="dialog_submission_link"
-                        autocomplete="off"
-                        placeholder="https://docs.google.com/..."
-                    >
-
-                    <small class="texto-ayuda-modal">
-                        Pega el enlace al documento que deseas entregar.
-                    </small>
+                    <h3>Archivos adjuntos del profesor</h3>
+                    <div id="dialog_materiales_profesor" class="lista-materiales-profesor" aria-live="polite">
+                        <p class="texto-ayuda-modal">Sin archivos adjuntos.</p>
+                    </div>
+                </div>
+                <div class="task-attachment">
+                    <label class="etiqueta-campo-modal" for="dialog_submission_link">Enlace complementario (opcional)</label>
+                    <input class="attachment-box" type="url" id="dialog_submission_link"
+                        autocomplete="off" placeholder="https://docs.google.com/...">
+                    <small class="texto-ayuda-modal">Opcional. El enlace no reemplaza el archivo obligatorio.</small>
+                </div>
+                <div class="task-attachment">
+                    <label class="etiqueta-campo-modal" for="dialog_submission_file">Archivo de tu entrega *</label>
+                    <input class="attachment-box campo-archivo-entrega" type="file" name="archivoEntrega"
+                        id="dialog_submission_file"
+                        accept=".doc,.docx,.xls,.xlsx,.csv,.ppt,.pptx,.pdf,.txt,.jpg,.jpeg,.png">
+                    <small class="texto-ayuda-modal">Obligatorio para la primera entrega. Máximo 25 MB. Un archivo nuevo reemplaza el anterior.</small>
+                    <div id="dialog_archivo_seleccionado" class="lista-archivos-seleccionados" aria-live="polite"></div>
+                </div>
+                <div class="task-attachment">
+                    <h3>Archivo entregado actualmente</h3>
+                    <div id="dialog_archivo_entregado" class="archivo-entregado-actual" aria-live="polite">
+                        <p class="texto-ayuda-modal">No has entregado un archivo.</p>
+                    </div>
                 </div>
             </div>
-
             <div class="acciones-modal">
                 <button
                     class="boton-cancelar-modal"

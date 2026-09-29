@@ -4,6 +4,14 @@ const {
     SalonEstudiante,
     TareaEstudiante
 } = require("../models/Models.js");
+const {
+    guardarVariosArchivosGridFS,
+    eliminarVariosArchivosGridFS
+} = require("../Frontend/middleware/archivosTareas.js");
+
+function textoLimpio(valor) {
+    return typeof valor === "string" ? valor.trim() : "";
+}
 
 module.exports = async function NewTarea(request, response) {
     const {
@@ -13,8 +21,13 @@ module.exports = async function NewTarea(request, response) {
         doctarea,
         fechavencimiento
     } = request.body;
-
     const { id: idgrupo } = request.query;
+
+    const temaNormalizado = textoLimpio(tema);
+    const nombreNormalizado = textoLimpio(nombre);
+    const descripcionNormalizada = textoLimpio(descripcion);
+    const documentoNormalizado = textoLimpio(doctarea);
+    const archivosRecibidos = Array.isArray(request.files) ? request.files : [];
 
     if (!idgrupo) {
         return response.status(400).json({
@@ -23,37 +36,22 @@ module.exports = async function NewTarea(request, response) {
         });
     }
 
-    const temaNormalizado =
-        typeof tema === "string"
-            ? tema.trim()
-            : "";
-
-    const nombreNormalizado =
-        typeof nombre === "string"
-            ? nombre.trim()
-            : "";
-
-    const descripcionNormalizada =
-        typeof descripcion === "string"
-            ? descripcion.trim()
-            : "";
-
-    const documentoNormalizado =
-        typeof doctarea === "string"
-            ? doctarea.trim()
-            : "";
-
     if (
         !temaNormalizado ||
         !nombreNormalizado ||
         !descripcionNormalizada ||
-        !documentoNormalizado ||
         !fechavencimiento
     ) {
         return response.status(400).json({
             success: false,
-            message:
-                "Faltan campos requeridos: tema, nombre, descripción, documento o fecha de vencimiento."
+            message: "Faltan campos requeridos: tema, nombre, descripción o fecha de vencimiento."
+        });
+    }
+
+    if (!documentoNormalizado && archivosRecibidos.length === 0) {
+        return response.status(400).json({
+            success: false,
+            message: "Debes proporcionar un enlace de referencia, al menos un archivo o ambos."
         });
     }
 
@@ -69,10 +67,12 @@ module.exports = async function NewTarea(request, response) {
     if (fechaVencimiento.getTime() <= Date.now()) {
         return response.status(400).json({
             success: false,
-            message:
-                "La fecha de vencimiento debe ser posterior a la fecha y hora actuales."
+            message: "La fecha de vencimiento debe ser posterior a la fecha y hora actuales."
         });
     }
+
+    let nuevaTarea = null;
+    let archivosGuardados = [];
 
     try {
         const salon = await Salon.findById(idgrupo);
@@ -84,33 +84,50 @@ module.exports = async function NewTarea(request, response) {
             });
         }
 
-        const nuevaTarea = new Tarea({
+        // Primero creamos la tarea para disponer de un ID que quedará en los
+        // metadatos de GridFS. Si la carga falla, la tarea se elimina.
+        nuevaTarea = await Tarea.create({
             idgrupo: salon._id,
             tema: temaNormalizado,
             nombre: nombreNormalizado,
             descripcion: descripcionNormalizada,
-            doctarea: documentoNormalizado,
+            doctarea: documentoNormalizado || null,
+            archivos: [],
             fecha: new Date(),
             fechavencimiento: fechaVencimiento
         });
 
-        await nuevaTarea.save();
-
-        const estudiantesDelSalon = await SalonEstudiante.find({
-            idgrupo: salon._id
-        });
-
-        if (estudiantesDelSalon.length > 0) {
-            const asignaciones = estudiantesDelSalon.map(
-                function (estudianteEnSalon) {
-                    return {
-                        idtarea: nuevaTarea._id,
-                        idestudiante: estudianteEnSalon.idestudiante
-                    };
+        if (archivosRecibidos.length > 0) {
+            archivosGuardados = await guardarVariosArchivosGridFS(
+                archivosRecibidos,
+                {
+                    categoria: "material_tarea",
+                    idTarea: nuevaTarea._id,
+                    idSalon: salon._id,
+                    idProfesor: salon.idprofe
                 }
             );
 
-            await TareaEstudiante.insertMany(asignaciones);
+            nuevaTarea.archivos = archivosGuardados;
+            await nuevaTarea.save();
+        }
+
+        const estudiantesDelSalon = await SalonEstudiante.find({
+            idgrupo: salon._id,
+            status: { $ne: "Retirado" }
+        }).select("idestudiante");
+
+        if (estudiantesDelSalon.length > 0) {
+            const asignaciones = estudiantesDelSalon.map(
+                (estudianteEnSalon) => ({
+                    idtarea: nuevaTarea._id,
+                    idestudiante: estudianteEnSalon.idestudiante
+                })
+            );
+
+            await TareaEstudiante.insertMany(asignaciones, {
+                ordered: false
+            });
         }
 
         return response.status(201).json({
@@ -121,10 +138,20 @@ module.exports = async function NewTarea(request, response) {
             tarea: nuevaTarea
         });
     } catch (error) {
-        console.error(
-            "Error al crear y asignar la tarea:",
-            error
-        );
+        console.error("Error al crear y asignar la tarea:", error);
+
+        if (archivosGuardados.length > 0) {
+            await eliminarVariosArchivosGridFS(
+                archivosGuardados.map((archivo) => archivo.archivoId)
+            );
+        }
+
+        if (nuevaTarea?._id) {
+            await Promise.allSettled([
+                TareaEstudiante.deleteMany({ idtarea: nuevaTarea._id }),
+                Tarea.deleteOne({ _id: nuevaTarea._id })
+            ]);
+        }
 
         if (error.name === "CastError") {
             return response.status(400).json({
@@ -135,8 +162,7 @@ module.exports = async function NewTarea(request, response) {
 
         return response.status(500).json({
             success: false,
-            message:
-                "Ocurrió un error en el servidor al procesar la solicitud."
+            message: "Ocurrió un error en el servidor al procesar la solicitud."
         });
     }
 };

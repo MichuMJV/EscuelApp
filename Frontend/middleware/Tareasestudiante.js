@@ -38,6 +38,7 @@ function inicializarPantallaTareasEstudiante() {
     }
 
     configurarCierreModalEstudiante();
+    configurarSelectorArchivoEntrega();
 
     cargarDetallesSalon(idSalon);
     cargarMisTareas(idSalon, idEstudiante);
@@ -458,38 +459,19 @@ function crearTarjetaTareaEstudiante(tarea) {
 
 function obtenerEstadoTarea(tarea) {
     const asignacion = tarea.miAsignacion;
+    const tieneArchivo = Boolean(asignacion?.archivoEntrega?.archivoId);
 
-    if (
-        asignacion &&
-        typeof asignacion.docentrega === "string" &&
-        asignacion.docentrega.trim()
-    ) {
-        return {
-            clase: "completada",
-            texto: "Entregada"
-        };
+    if (tieneArchivo) {
+        return { clase: "completada", texto: "Entregada" };
     }
 
-    const fechaVencimiento = new Date(
-        tarea.fechavencimiento
-    );
-
-    if (
-        !Number.isNaN(fechaVencimiento.getTime()) &&
-        Date.now() > fechaVencimiento.getTime()
-    ) {
-        return {
-            clase: "vencida",
-            texto: "Vencida"
-        };
+    const fechaVencimiento = new Date(tarea.fechavencimiento);
+    if (!Number.isNaN(fechaVencimiento.getTime()) && Date.now() > fechaVencimiento.getTime()) {
+        return { clase: "vencida", texto: "Vencida" };
     }
 
-    return {
-        clase: "pendiente",
-        texto: "Pendiente"
-    };
+    return { clase: "pendiente", texto: "Pendiente" };
 }
-
 function obtenerNotaTarea(tarea) {
     if (
         tarea.miAsignacion &&
@@ -531,74 +513,29 @@ function manejarClicTarea(event) {
 }
 
 function abrirModalTareaEstudiante(tarea) {
-    const dialogo = document.getElementById(
-        "dialogo"
-    );
+    const dialogo = document.getElementById("dialogo");
+    if (!dialogo) return;
 
-    if (!dialogo) {
-        return;
-    }
+    const asignacion = tarea.miAsignacion || {};
+    document.getElementById("dialog_task_topic").textContent = obtenerTemaNormalizado(tarea.tema);
+    document.getElementById("dialog_task_title").textContent = tarea.nombre || "Tarea sin nombre";
+    document.getElementById("dialog_task_grade").textContent = `Nota: ${obtenerNotaTarea(tarea)}`;
+    document.getElementById("dialog_task_description").textContent = tarea.descripcion || "Sin descripción.";
+    document.getElementById("dialog_task_due_date").value = formatISODateToInput(tarea.fechavencimiento);
+    configurarEnlaceReferencia(document.getElementById("dialog_reference_link"), tarea.doctarea);
+    document.getElementById("dialog_submission_link").value = asignacion.docentrega || "";
 
-    const tema = obtenerTemaNormalizado(
-        tarea.tema
-    );
+    const inputArchivo = document.getElementById("dialog_submission_file");
+    if (inputArchivo) inputArchivo.value = "";
+    document.getElementById("dialog_archivo_seleccionado")?.replaceChildren();
 
-    const titulo =
-        tarea.nombre || "Tarea sin nombre";
-
-    const descripcion =
-        tarea.descripcion || "Sin descripción.";
-
-    const nota = obtenerNotaTarea(tarea);
-
-    const campoFecha = document.getElementById(
-        "dialog_task_due_date"
-    );
-
-    const enlaceReferencia =
-        document.getElementById(
-            "dialog_reference_link"
-        );
-
-    const campoEntrega = document.getElementById(
-        "dialog_submission_link"
-    );
-
-    document.getElementById(
-        "dialog_task_topic"
-    ).textContent = tema;
-
-    document.getElementById(
-        "dialog_task_title"
-    ).textContent = titulo;
-
-    document.getElementById(
-        "dialog_task_grade"
-    ).textContent = `Nota: ${nota}`;
-
-    document.getElementById(
-        "dialog_task_description"
-    ).textContent = descripcion;
-
-    campoFecha.value = formatISODateToInput(
-        tarea.fechavencimiento
-    );
-
-    configurarEnlaceReferencia(
-        enlaceReferencia,
-        tarea.doctarea
-    );
-
-    campoEntrega.value =
-        tarea.miAsignacion &&
-        tarea.miAsignacion.docentrega
-            ? tarea.miAsignacion.docentrega
-            : "";
+    renderizarMaterialesProfesor(tarea.archivos || []);
+    renderizarArchivoEntregado(asignacion.archivoEntrega || null);
 
     dialogo.dataset.idtarea = tarea._id;
+    dialogo.dataset.tieneArchivoEntrega = asignacion.archivoEntrega?.archivoId ? "true" : "false";
     dialogo.showModal();
 }
-
 function configurarEnlaceReferencia(
     enlace,
     direccion
@@ -639,122 +576,150 @@ function configurarEnlaceReferencia(
 }
 
 async function enviarrespuesta() {
-    const dialogo = document.getElementById(
-        "dialogo"
-    );
+    const dialogo = document.getElementById("dialogo");
+    const estado = window.APP_STATE;
+    const idTarea = dialogo?.dataset.idtarea;
+    const enlace = document.getElementById("dialog_submission_link").value.trim();
+    const inputArchivo = document.getElementById("dialog_submission_file");
+    const archivo = inputArchivo?.files?.[0] || null;
+    const tieneArchivoAnterior = dialogo?.dataset.tieneArchivoEntrega === "true";
+    const boton = document.getElementById("botonEnviarEntrega");
 
-    const idTarea =
-        dialogo.dataset.idtarea;
-
-    const campoEntrega = document.getElementById(
-        "dialog_submission_link"
-    );
-
-    const botonEnviar = document.getElementById(
-        "botonEnviarEntrega"
-    );
-
-    const documentoEntrega =
-        campoEntrega.value.trim();
-
-    const estadoAplicacion =
-        window.APP_STATE;
-
-    if (
-        !estadoAplicacion ||
-        !estadoAplicacion.idEstudiante ||
-        !estadoAplicacion.idSalon
-    ) {
-        alert(
-            "No fue posible identificar al estudiante o al salón."
-        );
-
+    if (!estado?.idEstudiante || !estado?.idSalon || !idTarea) {
+        alert("No fue posible identificar la entrega.");
         return;
     }
 
-    if (!idTarea) {
-        alert(
-            "No fue posible identificar la tarea."
-        );
-
+    if (!archivo && !tieneArchivoAnterior) {
+        alert("Debes seleccionar un archivo para entregar la tarea.");
+        inputArchivo?.focus();
         return;
     }
 
-    if (!documentoEntrega) {
-        alert(
-            "Debes pegar el enlace de tu documento para entregarlo."
-        );
-
-        campoEntrega.focus();
+    if (enlace && !esURLValida(enlace)) {
+        alert("El enlace opcional debe ser una dirección URL válida.");
         return;
     }
 
-    if (!esURLValida(documentoEntrega)) {
-        alert(
-            "El enlace de entrega debe ser una dirección URL válida."
-        );
-
-        campoEntrega.focus();
+    if (archivo && archivo.size > 25 * 1024 * 1024) {
+        alert("El archivo seleccionado supera el límite de 25 MB.");
+        inputArchivo.value = "";
         return;
     }
 
-    botonEnviar.disabled = true;
-    botonEnviar.textContent =
-        "Enviando entrega...";
+    const datos = new FormData();
+    datos.append("idtarea", idTarea);
+    datos.append("idestudiante", estado.idEstudiante);
+    datos.append("docentrega", enlace);
+    if (archivo) datos.append("archivoEntrega", archivo, archivo.name);
+
+    boton.disabled = true;
+    boton.textContent = archivo ? "Subiendo archivo..." : "Actualizando entrega...";
 
     try {
-        const response = await fetch(
-            "/Escuelapp/EstudianteEntregaTarea",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
-                body: JSON.stringify({
-                    idtarea: idTarea,
-                    idestudiante:
-                        estadoAplicacion.idEstudiante,
-                    docentrega:
-                        documentoEntrega
-                })
-            }
-        );
-
+        const response = await fetch("/Escuelapp/EstudianteEntregaTarea", {
+            method: "POST",
+            body: datos
+        });
         const resultado = await response.json();
-
         if (!response.ok || !resultado.success) {
-            throw new Error(
-                resultado.message ||
-                "No fue posible entregar la tarea."
-            );
+            throw new Error(resultado.message || "No fue posible entregar la tarea.");
         }
-
-        alert(
-            resultado.message ||
-            "Tarea entregada exitosamente."
-        );
-
+        alert(resultado.message || "Archivo entregado exitosamente.");
         cerrarModalTareaEstudiante();
-
-        await cargarMisTareas(
-            estadoAplicacion.idSalon,
-            estadoAplicacion.idEstudiante
-        );
+        await cargarMisTareas(estado.idSalon, estado.idEstudiante);
     } catch (error) {
-        console.error(
-            "Error al enviar la tarea:",
-            error
-        );
-
-        alert(
-            `No se pudo entregar la tarea. ${error.message}`
-        );
+        console.error("Error al enviar la tarea:", error);
+        alert(`No se pudo entregar la tarea. ${error.message}`);
     } finally {
-        botonEnviar.disabled = false;
-        botonEnviar.textContent =
-            "Enviar entrega";
+        boton.disabled = false;
+        boton.textContent = "Enviar entrega";
     }
+}
+function configurarSelectorArchivoEntrega() {
+    const input = document.getElementById("dialog_submission_file");
+    const lista = document.getElementById("dialog_archivo_seleccionado");
+    if (!input || !lista) return;
+
+    input.addEventListener("change", function () {
+        lista.replaceChildren();
+        const archivo = input.files?.[0];
+        if (!archivo) return;
+        if (archivo.size > 25 * 1024 * 1024) {
+            alert("El archivo supera el límite de 25 MB.");
+            input.value = "";
+            return;
+        }
+        const item = document.createElement("p");
+        item.className = "archivo-seleccionado";
+        item.textContent = `${archivo.name} (${formatearTamanoArchivo(archivo.size)})`;
+        lista.appendChild(item);
+    });
+}
+
+function renderizarMaterialesProfesor(archivos) {
+    const contenedor = document.getElementById("dialog_materiales_profesor");
+    if (!contenedor) return;
+    contenedor.replaceChildren();
+
+    if (!Array.isArray(archivos) || archivos.length === 0) {
+        const mensaje = document.createElement("p");
+        mensaje.className = "texto-ayuda-modal";
+        mensaje.textContent = "Sin archivos adjuntos.";
+        contenedor.appendChild(mensaje);
+        return;
+    }
+
+    archivos.forEach(function (archivo) {
+        const enlace = document.createElement("a");
+        enlace.className = "material-profesor-item";
+        enlace.href = archivo.urlDescarga || "#";
+        enlace.textContent = `${archivo.nombre || "Archivo"} (${formatearTamanoArchivo(archivo.tamano)})`;
+        if (!archivo.urlDescarga) {
+            enlace.setAttribute("aria-disabled", "true");
+            enlace.addEventListener("click", event => event.preventDefault());
+        }
+        contenedor.appendChild(enlace);
+    });
+}
+
+function renderizarArchivoEntregado(archivo) {
+    const contenedor = document.getElementById("dialog_archivo_entregado");
+    if (!contenedor) return;
+    contenedor.replaceChildren();
+
+    if (!archivo?.archivoId) {
+        const mensaje = document.createElement("p");
+        mensaje.className = "texto-ayuda-modal";
+        mensaje.textContent = "No has entregado un archivo.";
+        contenedor.appendChild(mensaje);
+        return;
+    }
+
+    const info = document.createElement("div");
+    info.className = "informacion-archivo-entregado";
+    const nombre = document.createElement("strong");
+    nombre.textContent = archivo.nombre || "Archivo entregado";
+    const tamano = document.createElement("small");
+    tamano.textContent = formatearTamanoArchivo(archivo.tamano);
+    info.append(nombre, tamano);
+    contenedor.appendChild(info);
+
+    if (archivo.urlDescarga) {
+        const descargar = document.createElement("a");
+        descargar.className = "boton-descargar-entrega";
+        descargar.href = archivo.urlDescarga;
+        descargar.textContent = "Descargar mi archivo";
+        contenedor.appendChild(descargar);
+    }
+}
+
+function formatearTamanoArchivo(bytes) {
+    const numero = Number(bytes || 0);
+    if (!Number.isFinite(numero) || numero <= 0) return "Tamaño no disponible";
+    return numero < 1024 * 1024
+        ? `${(numero / 1024).toFixed(1)} KB`
+        : `${(numero / 1024 / 1024).toFixed(1)} MB`;
 }
 
 function obtenerTemaNormalizado(tema) {

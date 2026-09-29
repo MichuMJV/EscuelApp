@@ -31,154 +31,194 @@
 
     <section>
         <div id="formu_father">
-            <div id="Fatherbutton">
-                <button
-                    type="button"
-                    id="sonbutton"
-                    title="Volver a la página anterior"
-                    aria-label="Volver a la página anterior"
-                    onclick="goBack()"
-                ></button>
-            </div>
-
-            <h1 id="titulo-form">Nueva tarea</h1>
-
-            <form id="nuevaTareaForm">
-                <span style="display: none;">
-                    <label for="idGrupo">
-                        ID del grupo
-                    </label>
-
-                    <input
-                        class="inputtext"
-                        type="text"
-                        name="idGrupo"
-                        id="idGrupo"
-                        readonly
-                    >
-                </span>
-
-                <span>
-                    <label for="tema">
-                        Tema
-                    </label>
-
-                    <input
-                        class="inputtext"
-                        type="text"
-                        name="tema"
-                        id="tema"
-                        list="listaTemas"
-                        maxlength="80"
-                        autocomplete="off"
-                        placeholder="Ej: Fracciones"
-                        required
-                    >
-
-                    <datalist id="listaTemas"></datalist>
-                </span>
-
-                <p class="ayuda-campo">
-                    Puedes seleccionar un tema existente o escribir uno nuevo.
-                </p>
-
-                <span>
-                    <label for="nombreTarea">
-                        Nombre de la tarea
-                    </label>
-
-                    <input
-                        class="inputtext"
-                        type="text"
-                        name="nombreTarea"
-                        id="nombreTarea"
-                        maxlength="120"
-                        autocomplete="off"
-                        placeholder="Ej: Resumen del capítulo 5"
-                        required
-                    >
-                </span>
-
-                <span>
-                    <label for="descripcion">
-                        Descripción
-                    </label>
-
-                    <input
-                        class="inputtext"
-                        type="text"
-                        name="descripcion"
-                        id="descripcion"
-                        maxlength="500"
-                        autocomplete="off"
-                        placeholder="Ej: Realizar un mapa conceptual de una página"
-                        required
-                    >
-                </span>
-
-                <span>
-                    <label for="documentoReferencia">
-                        Documento de referencia (URL)
-                    </label>
-
-                    <input
-                        class="inputtext"
-                        type="url"
-                        name="documentoReferencia"
-                        id="documentoReferencia"
-                        autocomplete="off"
-                        placeholder="https://docs.google.com/document/..."
-                        required
-                    >
-                </span>
-
-                <span class="grupo-fecha">
-                    <label for="fechavencimiento">
-                        Fecha de vencimiento
-                    </label>
-
-                    <div
-                        class="contenedor-selector-fecha"
-                        id="contenedorFechaVencimiento"
-                        role="group"
-                        aria-describedby="etiquetaAyudaFecha"
-                    >
-                        <input
-                            class="inputtext campo-fecha"
-                            type="datetime-local"
-                            name="fechavencimiento"
-                            id="fechavencimiento"
-                            required
-                        >
-
-                        <button
-                            type="button"
-                            id="abrirCalendario"
-                            class="boton-calendario"
-                            aria-label="Abrir selector de fecha y hora"
-                            title="Seleccionar fecha y hora"
-                        >
-                            <span aria-hidden="true">📅</span>
-                        </button>
-                    </div>
-                </span>
-
-                <p
-                    class="ayuda-campo"
-                    id="etiquetaAyudaFecha"
-                >
-                    Pulsa el campo o el botón del calendario para seleccionar
-                    la fecha y la hora.
-                </p>
-
-                <input
-                    type="submit"
-                    id="buttsubmit"
-                    value="Crear tarea"
-                >
-            </form>
+        <div id="Fatherbutton">
+        <button
+        type="button"
+        id="sonbutton"
+        title="Volver a la página anterior"
+        aria-label="Volver a la página anterior"
+        onclick="goBack()"
+        ></button>
         </div>
-    </section>
+         
+        <h1 id="titulo-form">
+        Nueva tarea
+        </h1>
+         
+        <form
+        id="nuevaTareaForm"
+        enctype="multipart/form-data"
+        >
+        <span style="display: none;">
+        <label for="idGrupo">
+        ID del grupo
+        </label>
+         
+        <input
+        class="inputtext"
+        type="text"
+        name="idGrupo"
+        id="idGrupo"
+        readonly
+        >
+        </span>
+         
+        <span>
+        <label for="tema">
+        Tema
+        </label>
+         
+        <input
+        class="inputtext"
+        type="text"
+        name="tema"
+        id="tema"
+        list="listaTemas"
+        maxlength="80"
+        autocomplete="off"
+        placeholder="Ej: Fracciones"
+        required
+        >
+         
+        <datalist id="listaTemas"></datalist>
+        </span>
+         
+        <p class="ayuda-campo">
+        Puedes seleccionar un tema existente
+        o escribir uno nuevo.
+        </p>
+         
+        <span>
+        <label for="nombreTarea">
+        Nombre de la tarea
+        </label>
+         
+        <input
+        class="inputtext"
+        type="text"
+        name="nombreTarea"
+        id="nombreTarea"
+        maxlength="120"
+        autocomplete="off"
+        placeholder="Ej: Resumen del capítulo 5"
+        required
+        >
+        </span>
+         
+        <span>
+        <label for="descripcion">
+        Descripción
+        </label>
+         
+        <input
+        class="inputtext"
+        type="text"
+        name="descripcion"
+        id="descripcion"
+        maxlength="500"
+        autocomplete="off"
+        placeholder="Ej: Realizar un mapa conceptual de una página"
+        required
+        >
+        </span>
+        
+        <span>
+        <label for="documentoReferencia">
+        Documento de referencia (URL)
+        </label>
+         
+        <input
+        class="inputtext"
+        type="url"
+        name="documentoReferencia"
+        id="documentoReferencia"
+        autocomplete="off"
+        placeholder="https://docs.google.com/document/..."
+        >
+        </span>
+         
+        <p class="ayuda-campo">
+        El enlace es opcional si adjuntas al
+        menos un archivo.
+        </p>
+         
+        <span class="grupo-archivos-tarea">
+        <label for="archivosTarea">
+        Archivos de referencia
+        </label>
+         
+        <input
+        class="inputtext campo-archivos-tarea"
+        type="file"
+        name="archivosTarea"
+        id="archivosTarea"
+        accept=".doc,.docx,.xls,.xlsx,.csv,.ppt,.pptx,.pdf,.txt,.jpg,.jpeg,.png"
+        multiple
+        >
+        </span>
+         
+        <p class="ayuda-campo">
+        Puedes adjuntar hasta 5 archivos de
+        Word, Excel, CSV, PowerPoint, PDF,
+        texto o imagen. Cada archivo puede
+        pesar hasta 25 MB.
+        </p>
+         
+        <div
+        id="listaArchivosTarea"
+        class="lista-archivos-seleccionados"
+        aria-live="polite"
+        ></div>
+         
+        <span class="grupo-fecha">
+        <label for="fechavencimiento">
+        Fecha de vencimiento
+        </label>
+         
+        <div
+        class="contenedor-selector-fecha"
+        id="contenedorFechaVencimiento"
+        role="group"
+        aria-describedby="etiquetaAyudaFecha"
+        >
+        <input
+        class="inputtext campo-fecha"
+        type="datetime-local"
+        name="fechavencimiento"
+        id="fechavencimiento"
+        required
+        >
+         
+        <button
+        type="button"
+        id="abrirCalendario"
+        class="boton-calendario"
+        aria-label="Abrir selector de fecha y hora"
+        title="Seleccionar fecha y hora"
+        >
+        <span aria-hidden="true">
+        📅
+        </span>
+        </button>
+        </div>
+        </span>
+         
+        <p
+        class="ayuda-campo"
+        id="etiquetaAyudaFecha"
+        >
+        Pulsa el campo o el botón del calendario
+        para seleccionar la fecha y la hora.
+        </p>
+         
+        <input
+        type="submit"
+        id="buttsubmit"
+        value="Crear tarea"
+        >
+        </form>
+        </div>
+        </section>
 
     <footer>
         <h2>CONTÁCTENOS</h2>

@@ -720,3 +720,15 @@ h1#dialog_task_title {
         transition-duration: 0.01ms !important;
     }
 }
+
+/* ARCHIVOS DEL PROFESOR Y ENTREGA DEL ESTUDIANTE */
+.lista-materiales-profesor,
+.lista-archivos-seleccionados { display: flex; flex-direction: column; gap: 0.5rem; }
+.material-profesor-item { display: flex; align-items: center; min-height: 42px; padding: 0.65rem 0.8rem; border: 1px solid #b9d8f6; border-radius: 9px; background: #edf6ff; color: #185795; font: 700 0.86rem Arial, sans-serif; text-decoration: none; }
+.campo-archivo-entrega { padding: 0.55rem; }
+.campo-archivo-entrega::file-selector-button { margin-right: 0.75rem; padding: 0.55rem 0.8rem; border: 0; border-radius: 7px; background: #4e91ec; color: #fff; font-weight: 700; cursor: pointer; }
+.archivo-seleccionado { margin: 0; padding: 0.55rem 0.7rem; border: 1px solid #c8def5; border-radius: 8px; background: #edf5ff; color: #365f88; font: 600 0.82rem Arial, sans-serif; }
+.archivo-entregado-actual { display: flex; align-items: center; justify-content: space-between; padding: 0.7rem; gap: 0.7rem; border: 1px solid #d7e3ee; border-radius: 10px; background: #f8fbfe; }
+.informacion-archivo-entregado { display: flex; flex-direction: column; min-width: 0; gap: 0.15rem; }
+.boton-descargar-entrega { flex: 0 0 auto; padding: 0.55rem 0.75rem; border: 1px solid #2878d0; border-radius: 8px; background: #edf6ff; color: #185795; font: 700 0.82rem Arial, sans-serif; text-decoration: none; }
+@media screen and (max-width: 520px) { .archivo-entregado-actual { align-items: stretch; flex-direction: column; } .boton-descargar-entrega { text-align: center; } }

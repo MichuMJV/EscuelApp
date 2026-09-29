@@ -1,33 +1,59 @@
+const mongoose = require("mongoose");
 const {
     Tarea,
-    TareaEstudiante
+    TareaEstudiante,
+    SalonEstudiante
 } = require("../models/Models.js");
 
-module.exports = async function GetTareasParaEstudiante(
-    request,
-    response
-) {
-    const {
-        idgrupo,
-        idestudiante
-    } = request.query;
+function construirDescarga(archivo, idUsuario) {
+    if (!archivo?.archivoId) return null;
+
+    const datos = archivo.toObject?.() || archivo;
+
+    return {
+        ...datos,
+        urlDescarga:
+            `/Escuelapp/DescargarArchivo/${encodeURIComponent(datos.archivoId)}` +
+            `?idusuario=${encodeURIComponent(idUsuario)}`
+    };
+}
+
+module.exports = async function GetTareasParaEstudiante(request, response) {
+    const { idgrupo, idestudiante } = request.query;
 
     if (!idgrupo || !idestudiante) {
         return response.status(400).json({
             success: false,
-            message:
-                "Se requiere el ID del salón y del estudiante."
+            message: "Se requiere el ID del salón y del estudiante."
+        });
+    }
+
+    if (
+        !mongoose.Types.ObjectId.isValid(idgrupo) ||
+        !mongoose.Types.ObjectId.isValid(idestudiante)
+    ) {
+        return response.status(400).json({
+            success: false,
+            message: "El ID del salón o del estudiante no es válido."
         });
     }
 
     try {
-        const tareasDelSalon = await Tarea.find({
-            idgrupo: idgrupo
-        })
-            .sort({
-                tema: 1,
-                fechavencimiento: 1
-            })
+        const matricula = await SalonEstudiante.findOne({
+            idgrupo,
+            idestudiante,
+            status: { $ne: "Retirado" }
+        }).lean();
+
+        if (!matricula) {
+            return response.status(403).json({
+                success: false,
+                message: "El estudiante no tiene una matrícula activa en este salón."
+            });
+        }
+
+        const tareasDelSalon = await Tarea.find({ idgrupo })
+            .sort({ tema: 1, fechavencimiento: 1 })
             .lean();
 
         if (tareasDelSalon.length === 0) {
@@ -37,114 +63,78 @@ module.exports = async function GetTareasParaEstudiante(
             });
         }
 
-        const idsTareas = tareasDelSalon.map(function (tarea) {
-            return tarea._id;
-        });
+        const idsTareas = tareasDelSalon.map((tarea) => tarea._id);
+        const asignaciones = await TareaEstudiante.find({
+            idtarea: { $in: idsTareas },
+            idestudiante
+        }).lean();
 
-        const asignacionesEstudiante =
-            await TareaEstudiante.find({
-                idtarea: {
-                    $in: idsTareas
-                },
-                idestudiante: idestudiante
-            }).lean();
-
-        const asignacionesPorTarea = new Map();
-
-        asignacionesEstudiante.forEach(function (asignacion) {
-            asignacionesPorTarea.set(
-                asignacion.idtarea.toString(),
+        const asignacionesPorTarea = new Map(
+            asignaciones.map((asignacion) => [
+                String(asignacion.idtarea),
                 asignacion
-            );
-        });
+            ])
+        );
 
-        const tareas = tareasDelSalon.map(function (tarea) {
-            const temaNormalizado =
-                typeof tarea.tema === "string" &&
-                tarea.tema.trim()
+        const tareas = tareasDelSalon.map((tarea) => {
+            const tema =
+                typeof tarea.tema === "string" && tarea.tema.trim()
                     ? tarea.tema.trim()
                     : "Sin tema";
 
-            const miAsignacion =
-                asignacionesPorTarea.get(
-                    tarea._id.toString()
-                ) || null;
+            const asignacionOriginal =
+                asignacionesPorTarea.get(String(tarea._id)) || null;
+
+            const miAsignacion = asignacionOriginal
+                ? {
+                    ...asignacionOriginal,
+                    archivoEntrega: construirDescarga(
+                        asignacionOriginal.archivoEntrega,
+                        idestudiante
+                    ),
+                    tieneEntrega: Boolean(
+                        asignacionOriginal.docentrega ||
+                        asignacionOriginal.archivoEntrega?.archivoId
+                    )
+                }
+                : null;
 
             return {
                 ...tarea,
-                tema: temaNormalizado,
-                miAsignacion: miAsignacion
+                tema,
+                archivos: (tarea.archivos || []).map((archivo) =>
+                    construirDescarga(archivo, idestudiante)
+                ),
+                miAsignacion
             };
         });
 
-        tareas.sort(function (tareaA, tareaB) {
+        tareas.sort((tareaA, tareaB) => {
             const temaA = tareaA.tema.toLocaleLowerCase("es");
             const temaB = tareaB.tema.toLocaleLowerCase("es");
 
-            const temaASinAsignar =
-                temaA === "sin tema";
+            if (temaA === "sin tema" && temaB !== "sin tema") return 1;
+            if (temaA !== "sin tema" && temaB === "sin tema") return -1;
 
-            const temaBSinAsignar =
-                temaB === "sin tema";
+            const comparacion = temaA.localeCompare(temaB, "es", {
+                sensitivity: "base"
+            });
 
-            if (temaASinAsignar && !temaBSinAsignar) {
-                return 1;
-            }
+            if (comparacion !== 0) return comparacion;
 
-            if (!temaASinAsignar && temaBSinAsignar) {
-                return -1;
-            }
-
-            const comparacionTemas =
-                temaA.localeCompare(
-                    temaB,
-                    "es",
-                    {
-                        sensitivity: "base"
-                    }
-                );
-
-            if (comparacionTemas !== 0) {
-                return comparacionTemas;
-            }
-
-            const fechaA = tareaA.fechavencimiento
-                ? new Date(
-                    tareaA.fechavencimiento
-                ).getTime()
-                : Number.MAX_SAFE_INTEGER;
-
-            const fechaB = tareaB.fechavencimiento
-                ? new Date(
-                    tareaB.fechavencimiento
-                ).getTime()
-                : Number.MAX_SAFE_INTEGER;
-
-            return fechaA - fechaB;
+            return new Date(tareaA.fechavencimiento || 8640000000000000).getTime() -
+                new Date(tareaB.fechavencimiento || 8640000000000000).getTime();
         });
 
         return response.status(200).json({
             success: true,
-            tareas: tareas
+            tareas
         });
     } catch (error) {
-        console.error(
-            "Error al obtener las tareas del estudiante:",
-            error
-        );
-
-        if (error.name === "CastError") {
-            return response.status(400).json({
-                success: false,
-                message:
-                    "El ID del salón o del estudiante no es válido."
-            });
-        }
-
+        console.error("Error al obtener las tareas del estudiante:", error);
         return response.status(500).json({
             success: false,
-            message:
-                "Ocurrió un error en el servidor."
+            message: "Ocurrió un error en el servidor."
         });
     }
 };

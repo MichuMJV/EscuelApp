@@ -107,8 +107,11 @@ module.exports = async function updateNota(request, response) {
             typeof entrega.docentrega === "string"
                 ? entrega.docentrega.trim()
                 : "";
+        const archivoEntregado = Boolean(
+            entrega.archivoEntrega && entrega.archivoEntrega.archivoId
+        );
 
-        if (!documentoEntregado) {
+        if (!documentoEntregado && !archivoEntregado) {
             return response.status(400).json({
                 success: false,
                 message:
@@ -176,6 +179,8 @@ module.exports = async function updateNota(request, response) {
                 nota: entregaActualizada.nota,
                 docentrega:
                     entregaActualizada.docentrega,
+                archivoEntrega:
+                    entregaActualizada.archivoEntrega,
                 fechaentrega:
                     entregaActualizada.fechaentrega
             }

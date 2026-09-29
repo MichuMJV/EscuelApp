@@ -14,7 +14,6 @@ const basededatos = require("./config/db.js");
 // CONEXIÓN A LA BASE DE DATOS
 // =========================================================
 
-basededatos();
 
 // =========================================================
 // CONTROLADORES DEL DASHBOARD
@@ -103,6 +102,13 @@ const UpdateTarea = require(
 const EstudianteEntregaTarea = require(
     "./controllers/EstudianteEntregaTarea.js"
 );
+const DeleteTarea = require("./controllers/DeleteTarea.js");
+const DescargarArchivo = require("./controllers/DescargarArchivo.js");
+const {
+    subirMaterialesTarea,
+    subirEntregaEstudiante,
+    manejarErrorMulter
+} = require("./Frontend/middleware/archivosTareas.js");
 
 // =========================================================
 // CONTROLADORES DE ESTUDIANTES Y MATRÍCULAS
@@ -301,6 +307,7 @@ app.delete(
     "/Escuelapp/DeleteUser",
     DeleteUser
 );
+app.delete("/Escuelapp/DeleteTarea", DeleteTarea);
 
 // =========================================================
 // RUTAS PUT
@@ -316,10 +323,12 @@ app.put(
     modificarMatricula
 );
 
-app.put(
-    "/Escuelapp/UpdateTarea",
-    UpdateTarea
-);
+app.put("/Escuelapp/UpdateTarea", function (request, response, next) {
+    subirMaterialesTarea(request, response, function (error) {
+        if (error) return manejarErrorMulter(error, request, response, next);
+        return next();
+    });
+}, UpdateTarea);
 
 app.put(
     "/Escuelapp/nuevoRol",
@@ -364,15 +373,19 @@ app.post(
 // RUTAS POST DE TAREAS
 // =========================================================
 
-app.post(
-    "/Escuelapp/EstudianteEntregaTarea",
-    EstudianteEntregaTarea
-);
+app.post("/Escuelapp/EstudianteEntregaTarea", function (request, response, next) {
+    subirEntregaEstudiante(request, response, function (error) {
+        if (error) return manejarErrorMulter(error, request, response, next);
+        return next();
+    });
+}, EstudianteEntregaTarea);
 
-app.post(
-    "/Escuelapp/NewTarea",
-    NewTarea
-);
+app.post("/Escuelapp/NewTarea", function (request, response, next) {
+    subirMaterialesTarea(request, response, function (error) {
+        if (error) return manejarErrorMulter(error, request, response, next);
+        return next();
+    });
+}, NewTarea);
 
 // =========================================================
 // RUTAS POST DE SALONES Y MATRÍCULAS
@@ -518,6 +531,7 @@ app.get(
     "/Escuelapp/GetTareasParaEstudiante",
     GetTareasParaEstudiante
 );
+app.get("/Escuelapp/DescargarArchivo/:idarchivo", DescargarArchivo);
 
 // =========================================================
 // RUTAS GET DE MATRÍCULAS
@@ -603,17 +617,21 @@ app.use(
 );
 
 // =========================================================
-// INICIO DEL SERVIDOR
+// INICIO SEGURO DEL SERVIDOR
 // =========================================================
-
-app.listen(
-    port,
-    function () {
-        console.log(
-            `Servidor disponible en http://127.0.0.1:${port}/screens/inicio_sesion.html`
-        );
+async function iniciarServidor() {
+    try {
+        await basededatos();
+        app.listen(port, function () {
+            console.log(`Servidor disponible en http://127.0.0.1:${port}/screens/inicio_sesion.html`);
+        });
+    } catch (error) {
+        console.error("El servidor no se inició porque MongoDB no está disponible:", error);
+        process.exitCode = 1;
     }
-);
+}
+
+iniciarServidor();
 
 // =========================================================
 // FUNCIONES AUXILIARES

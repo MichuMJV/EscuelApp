@@ -1,9 +1,42 @@
 const mongoose = require("mongoose");
 
 // =========================================================
+// SUBESQUEMA DE ARCHIVOS ALMACENADOS EN GRIDFS
+// =========================================================
+const archivoAdjuntoSchema = new mongoose.Schema(
+    {
+        archivoId: {
+            type: mongoose.Schema.ObjectId,
+            required: true
+        },
+        nombre: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        tipo: {
+            type: String,
+            required: true,
+            trim: true
+        },
+        tamano: {
+            type: Number,
+            required: true,
+            min: 0
+        },
+        fechaCarga: {
+            type: Date,
+            default: Date.now
+        }
+    },
+    {
+        _id: false
+    }
+);
+
+// =========================================================
 // ESQUEMA DE USUARIOS
 // =========================================================
-
 const usuarioSchema = mongoose.Schema({
     rol: {
         type: Number,
@@ -13,34 +46,28 @@ const usuarioSchema = mongoose.Schema({
         // 2: profesor
         // 3: estudiante
     },
-
     nombre: {
         type: String,
         required: true,
         trim: true
     },
-
     cedula: {
         type: String,
         required: true,
         trim: true
     },
-
     contrasena: {
         type: String,
         required: true
     },
-
     debeCambiarContrasena: {
         type: Boolean,
         default: false
     },
-
     fechaCambioContrasena: {
         type: Date,
         default: null
     },
-
     fechaCreacion: {
         type: Date,
         default: Date.now
@@ -50,46 +77,38 @@ const usuarioSchema = mongoose.Schema({
 // =========================================================
 // ESQUEMA DE SALONES
 // =========================================================
-
 const salonSchema = mongoose.Schema({
     idprofe: {
         type: mongoose.Schema.ObjectId,
         required: true
     },
-
     nombre: {
         type: String,
         required: true,
         trim: true
     },
-
     grado: {
         type: Number,
         required: true
     },
-
     materia: {
         type: String,
         required: true,
         trim: true
     },
-
     fecha: {
         type: Date,
         default: Date.now
     },
-
     clave: {
         type: String,
         required: true,
         trim: true
     },
-
     logo: {
         type: String,
         trim: true
     },
-
     cupo: {
         type: Number,
         required: true,
@@ -100,42 +119,40 @@ const salonSchema = mongoose.Schema({
 // =========================================================
 // ESQUEMA DE TAREAS
 // =========================================================
-
 const tareaSchema = mongoose.Schema({
     idgrupo: {
         type: mongoose.Schema.ObjectId,
         required: true
     },
-
     tema: {
         type: String,
         trim: true,
         default: "Sin tema"
     },
-
     nombre: {
         type: String,
         required: true,
         trim: true
     },
-
     descripcion: {
         type: String,
         required: true,
         trim: true
     },
-
+    // Se conserva para compatibilidad con las tareas antiguas.
     doctarea: {
         type: String,
-        required: true,
+        default: null,
         trim: true
     },
-
+    archivos: {
+        type: [archivoAdjuntoSchema],
+        default: []
+    },
     fecha: {
         type: Date,
         default: Date.now
     },
-
     fechavencimiento: {
         type: Date,
         required: true
@@ -145,29 +162,29 @@ const tareaSchema = mongoose.Schema({
 // =========================================================
 // ESQUEMA DE TAREAS ASIGNADAS A ESTUDIANTES
 // =========================================================
-
 const tareaEstudianteSchema = mongoose.Schema({
     idtarea: {
         type: mongoose.Schema.ObjectId,
         required: true
     },
-
     idestudiante: {
         type: mongoose.Schema.ObjectId,
         required: true
     },
-
     nota: {
         type: String,
         default: null
     },
-
+    // Se conserva para compatibilidad con las entregas antiguas.
     docentrega: {
         type: String,
         default: null,
         trim: true
     },
-
+    archivoEntrega: {
+        type: archivoAdjuntoSchema,
+        default: null
+    },
     fechaentrega: {
         type: Date,
         default: null
@@ -175,36 +192,26 @@ const tareaEstudianteSchema = mongoose.Schema({
 });
 
 // =========================================================
-// ESQUEMA DE MATRÍCULAS
+// ESQUEMA DE MATRICULAS
 // =========================================================
-
 const salonEstudianteSchema = mongoose.Schema({
     idgrupo: {
         type: mongoose.Schema.ObjectId,
         required: true
     },
-
     idestudiante: {
         type: mongoose.Schema.ObjectId,
         required: true
     },
-
     status: {
         type: String,
-        enum: [
-            "Matriculado",
-            "Retirado",
-            "Aprobado",
-            "Reprobado"
-        ],
+        enum: ["Matriculado", "Retirado", "Aprobado", "Reprobado"],
         default: "Matriculado"
     },
-
     notafinal: {
         type: String,
         default: "0"
     },
-
     fecha: {
         type: Date,
         default: Date.now
@@ -214,20 +221,17 @@ const salonEstudianteSchema = mongoose.Schema({
 // =========================================================
 // ESQUEMA DE APLICACIONES
 // =========================================================
-
 const aplicacionesSchema = mongoose.Schema({
     nombre: {
         type: String,
         required: true,
         trim: true
     },
-
     imagen: {
         type: String,
         required: true,
         trim: true
     },
-
     link: {
         type: String,
         required: true,
@@ -236,20 +240,17 @@ const aplicacionesSchema = mongoose.Schema({
 });
 
 // =========================================================
-// RELACIÓN ENTRE SALONES Y APLICACIONES
+// RELACION ENTRE SALONES Y APLICACIONES
 // =========================================================
-
 const salonAplicacionSchema = mongoose.Schema({
     idgrupo: {
         type: mongoose.Schema.ObjectId,
         required: true
     },
-
     idaplicacion: {
         type: mongoose.Schema.ObjectId,
         required: true
     },
-
     fecha: {
         type: Date,
         default: Date.now
@@ -257,119 +258,64 @@ const salonAplicacionSchema = mongoose.Schema({
 });
 
 // =========================================================
-// ÍNDICES
+// INDICES
 // =========================================================
+usuarioSchema.index({ cedula: 1 });
 
-// Mejora la búsqueda de usuarios por cédula.
-usuarioSchema.index({
-    cedula: 1
-});
-
-// Evita matrículas duplicadas dentro de un mismo salón.
 salonEstudianteSchema.index(
-    {
-        idgrupo: 1,
-        idestudiante: 1
-    },
-    {
-        unique: true
-    }
+    { idgrupo: 1, idestudiante: 1 },
+    { unique: true }
 );
 
-// Evita asignar dos veces la misma tarea al mismo estudiante.
 tareaEstudianteSchema.index(
-    {
-        idtarea: 1,
-        idestudiante: 1
-    },
-    {
-        unique: true
-    }
+    { idtarea: 1, idestudiante: 1 },
+    { unique: true }
 );
 
-// Mejora las consultas de tareas por salón.
-tareaSchema.index({
-    idgrupo: 1,
-    tema: 1,
-    fechavencimiento: 1
-});
+tareaSchema.index({ idgrupo: 1, tema: 1, fechavencimiento: 1 });
+salonSchema.index({ idprofe: 1 });
+aplicacionesSchema.index({ nombre: 1 });
 
-// Mejora las consultas de salones por profesor.
-salonSchema.index({
-    idprofe: 1
-});
-
-// Mejora la búsqueda de aplicaciones por nombre.
-aplicacionesSchema.index({
-    nombre: 1
-});
-
-// Evita asignar dos veces una aplicación al mismo salón.
 salonAplicacionSchema.index(
-    {
-        idgrupo: 1,
-        idaplicacion: 1
-    },
-    {
-        unique: true
-    }
+    { idgrupo: 1, idaplicacion: 1 },
+    { unique: true }
 );
 
-// Permite consultar rápidamente todos los salones
-// donde se utiliza una aplicación.
-salonAplicacionSchema.index({
-    idaplicacion: 1
-});
+salonAplicacionSchema.index({ idaplicacion: 1 });
 
 // =========================================================
-// DECLARACIÓN DE MODELOS
+// DECLARACION DE MODELOS
 // =========================================================
-
-const Usuario = mongoose.model(
-    "usuariosEscuela",
-    usuarioSchema
-);
-
-const Salon = mongoose.model(
-    "salonesEscuela",
-    salonSchema
-);
-
-const Tarea = mongoose.model(
-    "tareasEscuela",
-    tareaSchema
-);
-
+const Usuario = mongoose.model("usuariosEscuela", usuarioSchema);
+const Salon = mongoose.model("salonesEscuela", salonSchema);
+const Tarea = mongoose.model("tareasEscuela", tareaSchema);
 const TareaEstudiante = mongoose.model(
     "tareasEstudianteEscuela",
     tareaEstudianteSchema
 );
-
 const SalonEstudiante = mongoose.model(
     "salonesEstudianteEscuela",
     salonEstudianteSchema
 );
-
-const Apps = mongoose.model(
-    "AplicacionesSqueme",
-    aplicacionesSchema
-);
-
+const Apps = mongoose.model("AplicacionesSqueme", aplicacionesSchema);
 const SalonAplicacion = mongoose.model(
     "salonesAplicacionesEscuela",
     salonAplicacionSchema
 );
 
-// =========================================================
-// EXPORTACIÓN DE MODELOS
-// =========================================================
+// Alias usado por algunos controladores nuevos.
+const Matricula = SalonEstudiante;
 
+// =========================================================
+// EXPORTACION DE MODELOS
+// =========================================================
 module.exports = {
     Usuario,
     Salon,
     Tarea,
     TareaEstudiante,
     SalonEstudiante,
+    Matricula,
     Apps,
     SalonAplicacion
 };
