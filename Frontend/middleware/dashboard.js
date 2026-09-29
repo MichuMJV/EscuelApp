@@ -79,6 +79,8 @@ async function cargarDashboard() {
         const response = await fetch(
             `/Escuelapp/dashboard-data?idgrupo=${encodeURIComponent(
                 idSalonDashboard
+            )}&idusuario=${encodeURIComponent(
+                usuarioActualDashboard._id
             )}`
         );
 
@@ -502,35 +504,86 @@ function obtenerClaseEstado(estado) {
 
 function crearCeldaDocumento(registro) {
     const celda = document.createElement("td");
+    const contenedor = document.createElement("div");
+    contenedor.className = "submission-actions";
+
+    let tieneEntrega = false;
 
     if (
         registro.docentrega &&
         esURLValida(registro.docentrega)
     ) {
         const enlace = document.createElement("a");
-
         enlace.href = registro.docentrega;
         enlace.target = "_blank";
         enlace.rel = "noopener noreferrer";
-        enlace.textContent = "Ver entrega";
-        enlace.className = "submission-link";
-
-        celda.appendChild(enlace);
-        return celda;
+        enlace.textContent = "Ver enlace";
+        enlace.className = "submission-link submission-url";
+        contenedor.appendChild(enlace);
+        tieneEntrega = true;
     }
 
-    const texto = document.createElement("span");
+    if (registro.archivoEntrega?.archivoId) {
+        const archivo = document.createElement("div");
+        archivo.className = "submission-file";
 
-    texto.textContent =
-        registro.estadoEntrega === "Sin tareas"
-            ? "No aplica"
-            : "No disponible";
+        const informacion = document.createElement("div");
+        informacion.className = "submission-file-info";
 
-    texto.className = "empty-value";
+        const nombre = document.createElement("strong");
+        nombre.textContent =
+            registro.archivoEntrega.nombre ||
+            "Archivo entregado";
+        nombre.title = nombre.textContent;
 
-    celda.appendChild(texto);
+        const tamano = document.createElement("small");
+        tamano.textContent = formatearTamanoDashboard(
+            registro.archivoEntrega.tamano
+        );
 
+        informacion.append(nombre, tamano);
+        archivo.appendChild(informacion);
+
+        if (registro.archivoEntrega.urlDescarga) {
+            const descargar = document.createElement("a");
+            descargar.href = registro.archivoEntrega.urlDescarga;
+            descargar.className = "submission-download";
+            descargar.textContent = "Descargar archivo";
+            descargar.setAttribute(
+                "download",
+                registro.archivoEntrega.nombre || "entrega"
+            );
+            archivo.appendChild(descargar);
+        }
+
+        contenedor.appendChild(archivo);
+        tieneEntrega = true;
+    }
+
+    if (!tieneEntrega) {
+        const texto = document.createElement("span");
+        texto.textContent =
+            registro.estadoEntrega === "Sin tareas"
+                ? "No aplica"
+                : "No disponible";
+        texto.className = "empty-value";
+        contenedor.appendChild(texto);
+    }
+
+    celda.appendChild(contenedor);
     return celda;
+}
+
+function formatearTamanoDashboard(bytes) {
+    const numero = Number(bytes || 0);
+
+    if (!Number.isFinite(numero) || numero <= 0) {
+        return "Tamaño no disponible";
+    }
+
+    return numero < 1024 * 1024
+        ? `${(numero / 1024).toFixed(1)} KB`
+        : `${(numero / 1024 / 1024).toFixed(1)} MB`;
 }
 
 function crearCeldaCalificacion(registro) {
@@ -566,8 +619,11 @@ function crearCeldaCalificacion(registro) {
     input.dataset.id =
         registro.idEntrega;
 
-    const puedeCalificar =
-        Boolean(registro.docentrega);
+    const puedeCalificar = Boolean(
+        registro.archivoEntrega?.archivoId ||
+        registro.tieneArchivoEntrega ||
+        registro.docentrega
+    );
 
     input.disabled = !puedeCalificar;
 
@@ -588,7 +644,11 @@ function crearCeldaAccion(registro) {
 
     if (
         !registro.idEntrega ||
-        !registro.docentrega
+        !(
+            registro.archivoEntrega?.archivoId ||
+            registro.tieneArchivoEntrega ||
+            registro.docentrega
+        )
     ) {
         celda.appendChild(
             crearTextoNoDisponible("No disponible")
@@ -795,6 +855,8 @@ function actualizarRegistroLocal(
         datosDashboardCompletos.filter(
             function (registro) {
                 return Boolean(
+                    registro.archivoEntrega?.archivoId ||
+                    registro.tieneArchivoEntrega ||
                     registro.docentrega
                 );
             }

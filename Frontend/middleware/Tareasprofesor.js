@@ -1,4 +1,6 @@
 let temasDisponiblesProfesor = [];
+let archivosActualesProfesor = [];
+let archivosMarcadosParaEliminar = new Set();
 
 document.addEventListener("DOMContentLoaded", function () {
     const contenedorTareas = document.querySelector(
@@ -14,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     configurarSelectorFechaModal();
     configurarCierreModal();
+    configurarSelectorArchivosProfesor();
 
     cargarDetallesSalon();
 });
@@ -100,7 +103,8 @@ async function cargarTareas(idSalon) {
 
     try {
         const response = await fetch(
-            `/Escuelapp/tareas?id=${encodeURIComponent(idSalon)}`
+            `/Escuelapp/tareas?id=${encodeURIComponent(idSalon)}` +
+            `&idusuario=${encodeURIComponent(obtenerIdProfesorSesion())}`
         );
 
         const data = await response.json();
@@ -499,241 +503,286 @@ async function manejarClicTarea(event) {
 }
 
 async function abrirTareaEnModal(idTarea) {
-    const dialogo = document.getElementById(
-        "dialogo"
-    );
+    const dialogo = document.getElementById("dialogo");
+    if (!dialogo) return;
 
-    if (!dialogo) {
+    const idProfesor = obtenerIdProfesorSesion();
+    if (!idProfesor) {
+        alert("No fue posible identificar la sesión del profesor.");
         return;
     }
 
     try {
         const response = await fetch(
-            `/Escuelapp/tarea_unica?id=${encodeURIComponent(idTarea)}`
+            `/Escuelapp/tarea_unica?id=${encodeURIComponent(idTarea)}` +
+            `&idusuario=${encodeURIComponent(idProfesor)}`
         );
-
         const data = await response.json();
-
         if (!response.ok || !data.success) {
-            throw new Error(
-                data.message ||
-                "No fue posible consultar la tarea."
-            );
+            throw new Error(data.message || "No fue posible consultar la tarea.");
         }
 
         const tarea = data.tarea;
+        document.getElementById("dialog_task_topic").value = obtenerTemaNormalizado(tarea.tema);
+        document.getElementById("dialog_task_title").value = tarea.nombre || "";
+        document.getElementById("dialog_task_description").value = tarea.descripcion || "";
+        document.getElementById("dialog_task_reference").value = tarea.doctarea || "";
 
-        document.getElementById(
-            "dialog_task_topic"
-        ).value = obtenerTemaNormalizado(
-            tarea.tema
-        );
-
-        document.getElementById(
-            "dialog_task_title"
-        ).value = tarea.nombre || "";
-
-        document.getElementById(
-            "dialog_task_description"
-        ).value = tarea.descripcion || "";
-
-        document.getElementById(
-            "dialog_task_reference"
-        ).value = tarea.doctarea || "";
-
-        const campoFecha = document.getElementById(
-            "dialog_task_due_date"
-        );
-
-        campoFecha.value = formatISODateToInput(
-            tarea.fechavencimiento
-        );
-
+        const campoFecha = document.getElementById("dialog_task_due_date");
+        campoFecha.value = formatISODateToInput(tarea.fechavencimiento);
         actualizarFechaMinimaModal(campoFecha);
 
-        dialogo.dataset.currentTaskId = idTarea;
+        archivosActualesProfesor = Array.isArray(tarea.archivos) ? tarea.archivos : [];
+        archivosMarcadosParaEliminar.clear();
 
+        const inputNuevos = document.getElementById("dialog_archivos_nuevos");
+        if (inputNuevos) inputNuevos.value = "";
+
+        renderizarArchivosActualesProfesor();
+        renderizarArchivosNuevosProfesor();
+
+        dialogo.dataset.currentTaskId = idTarea;
         dialogo.showModal();
     } catch (error) {
-        console.error(
-            "Error al abrir la tarea:",
-            error
-        );
-
-        alert(
-            `No se pudieron cargar los detalles de la tarea. ${error.message}`
-        );
+        console.error("Error al abrir la tarea:", error);
+        alert(`No se pudieron cargar los detalles de la tarea. ${error.message}`);
     }
 }
-
 async function actualizarTarea() {
-    const dialogo = document.getElementById(
-        "dialogo"
-    );
-
-    const idTarea =
-        dialogo.dataset.currentTaskId;
-
-    const botonActualizar = document.getElementById(
-        "botonActualizarTarea"
-    );
+    const dialogo = document.getElementById("dialogo");
+    const idTarea = dialogo?.dataset.currentTaskId;
+    const botonActualizar = document.getElementById("botonActualizarTarea");
 
     if (!idTarea) {
-        alert(
-            "Error: No se puede identificar la tarea a actualizar."
-        );
-
+        alert("No se puede identificar la tarea a actualizar.");
         return;
     }
 
-    const tema = normalizarTexto(
-        document.getElementById(
-            "dialog_task_topic"
-        ).value
-    );
+    const tema = normalizarTexto(document.getElementById("dialog_task_topic").value);
+    const nombre = normalizarTexto(document.getElementById("dialog_task_title").value);
+    const descripcion = normalizarTexto(document.getElementById("dialog_task_description").value);
+    const doctarea = document.getElementById("dialog_task_reference").value.trim();
+    const fechavencimiento = document.getElementById("dialog_task_due_date").value;
+    const inputArchivos = document.getElementById("dialog_archivos_nuevos");
+    const archivosNuevos = Array.from(inputArchivos?.files || []);
 
-    const nombre = normalizarTexto(
-        document.getElementById(
-            "dialog_task_title"
-        ).value
-    );
+    const archivosConservados = archivosActualesProfesor.filter(
+        archivo => !archivosMarcadosParaEliminar.has(String(archivo.archivoId))
+    ).length;
 
-    const descripcion = normalizarTexto(
-        document.getElementById(
-            "dialog_task_description"
-        ).value
-    );
-
-    const doctarea = normalizarTexto(
-        document.getElementById(
-            "dialog_task_reference"
-        ).value
-    );
-
-    const fechavencimiento =
-        document.getElementById(
-            "dialog_task_due_date"
-        ).value;
-
-    if (
-        !tema ||
-        !nombre ||
-        !descripcion ||
-        !doctarea ||
-        !fechavencimiento
-    ) {
-        alert(
-            "Por favor, completa todos los campos de la tarea."
-        );
-
+    if (!tema || !nombre || !descripcion || !fechavencimiento) {
+        alert("Completa el tema, nombre, descripción y fecha de vencimiento.");
         return;
     }
 
-    if (!esURLValida(doctarea)) {
-        alert(
-            "El documento de referencia debe ser una dirección URL válida."
-        );
-
-        document.getElementById(
-            "dialog_task_reference"
-        ).focus();
-
+    if (doctarea && !esURLValida(doctarea)) {
+        alert("El enlace opcional debe ser una dirección URL válida.");
         return;
     }
 
-    const fechaVencimiento = new Date(
-        fechavencimiento
-    );
-
-    if (
-        Number.isNaN(fechaVencimiento.getTime())
-    ) {
-        alert(
-            "La fecha de vencimiento no es válida."
-        );
-
+    if (archivosConservados + archivosNuevos.length === 0) {
+        alert("La tarea debe conservar o agregar al menos un archivo adjunto.");
         return;
     }
 
-    if (
-        fechaVencimiento.getTime() <= Date.now()
-    ) {
-        alert(
-            "La fecha de vencimiento debe ser posterior a la fecha y hora actuales."
-        );
-
-        abrirSelectorFechaModal();
-
+    if (archivosConservados + archivosNuevos.length > 5) {
+        alert("Una tarea puede tener como máximo 5 archivos adjuntos.");
         return;
     }
 
-    const datosActualizados = {
-        tema,
-        nombre,
-        descripcion,
-        doctarea,
-        fechavencimiento
-    };
+    if (archivosNuevos.some(archivo => archivo.size > 25 * 1024 * 1024)) {
+        alert("Cada archivo debe pesar como máximo 25 MB.");
+        return;
+    }
+
+    const fecha = new Date(fechavencimiento);
+    if (Number.isNaN(fecha.getTime()) || fecha.getTime() <= Date.now()) {
+        alert("La fecha de vencimiento debe ser posterior a la fecha actual.");
+        return;
+    }
+
+    const datos = new FormData();
+    datos.append("tema", tema);
+    datos.append("nombre", nombre);
+    datos.append("descripcion", descripcion);
+    datos.append("doctarea", doctarea);
+    datos.append("fechavencimiento", fechavencimiento);
+    datos.append("eliminarArchivos", JSON.stringify(Array.from(archivosMarcadosParaEliminar)));
+    archivosNuevos.forEach(archivo => datos.append("archivosTarea", archivo, archivo.name));
 
     botonActualizar.disabled = true;
-    botonActualizar.textContent =
-        "Actualizando...";
+    botonActualizar.textContent = "Actualizando...";
 
     try {
         const response = await fetch(
             `/Escuelapp/UpdateTarea?id=${encodeURIComponent(idTarea)}`,
-            {
-                method: "PUT",
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
-                body: JSON.stringify(
-                    datosActualizados
-                )
-            }
+            { method: "PUT", body: datos }
         );
-
         const resultado = await response.json();
-
         if (!response.ok || !resultado.success) {
-            throw new Error(
-                resultado.message ||
-                "No fue posible actualizar la tarea."
-            );
+            throw new Error(resultado.message || "No fue posible actualizar la tarea.");
         }
 
-        alert(
-            resultado.message ||
-            "¡Tarea actualizada correctamente!"
-        );
-
+        alert(resultado.message || "Tarea actualizada correctamente.");
         cerrarModalTarea();
-
-        const parametrosURL =
-            new URLSearchParams(
-                window.location.search
-            );
-
-        const idSalon =
-            parametrosURL.get("id");
-
-        if (idSalon) {
-            await cargarTareas(idSalon);
-        }
+        const idSalon = new URLSearchParams(window.location.search).get("id");
+        if (idSalon) await cargarTareas(idSalon);
     } catch (error) {
-        console.error(
-            "Error al actualizar la tarea:",
-            error
-        );
-
-        alert(
-            `No se pudo actualizar la tarea. ${error.message}`
-        );
+        console.error("Error al actualizar la tarea:", error);
+        alert(`No se pudo actualizar la tarea. ${error.message}`);
     } finally {
         botonActualizar.disabled = false;
-        botonActualizar.textContent =
-            "Actualizar tarea";
+        botonActualizar.textContent = "Actualizar tarea";
+    }
+}
+function obtenerIdProfesorSesion() {
+    const datos = localStorage.getItem("sesionEscuelApp");
+    if (!datos) return "";
+    try {
+        const usuario = JSON.parse(datos);
+        return usuario?._id || usuario?.id || "";
+    } catch (error) {
+        console.error("No fue posible interpretar la sesión:", error);
+        return "";
+    }
+}
+
+function configurarSelectorArchivosProfesor() {
+    const input = document.getElementById("dialog_archivos_nuevos");
+    if (!input) return;
+
+    input.addEventListener("change", function () {
+        const archivosNuevos = Array.from(input.files || []);
+        const conservados = archivosActualesProfesor.filter(
+            archivo => !archivosMarcadosParaEliminar.has(String(archivo.archivoId))
+        ).length;
+
+        if (conservados + archivosNuevos.length > 5) {
+            alert("Una tarea puede tener como máximo 5 archivos adjuntos.");
+            input.value = "";
+        } else if (archivosNuevos.some(archivo => archivo.size > 25 * 1024 * 1024)) {
+            alert("Cada archivo debe pesar como máximo 25 MB.");
+            input.value = "";
+        }
+
+        renderizarArchivosNuevosProfesor();
+    });
+}
+
+function renderizarArchivosActualesProfesor() {
+    const contenedor = document.getElementById("dialog_archivos_actuales");
+    if (!contenedor) return;
+    contenedor.replaceChildren();
+
+    if (archivosActualesProfesor.length === 0) {
+        const mensaje = document.createElement("p");
+        mensaje.className = "texto-ayuda-modal";
+        mensaje.textContent = "Sin archivos adjuntos.";
+        contenedor.appendChild(mensaje);
+        return;
+    }
+
+    archivosActualesProfesor.forEach(function (archivo) {
+        const id = String(archivo.archivoId);
+        const marcado = archivosMarcadosParaEliminar.has(id);
+        const fila = document.createElement("div");
+        fila.className = marcado ? "archivo-actual-item archivo-marcado-eliminar" : "archivo-actual-item";
+
+        const info = document.createElement("div");
+        info.className = "informacion-archivo-adjunto";
+        const nombre = document.createElement("strong");
+        nombre.textContent = archivo.nombre || "Archivo";
+        const tamano = document.createElement("small");
+        tamano.textContent = formatearTamanoProfesor(archivo.tamano);
+        info.append(nombre, tamano);
+
+        const acciones = document.createElement("div");
+        acciones.className = "acciones-archivo-adjunto";
+
+        if (archivo.urlDescarga) {
+            const descargar = document.createElement("a");
+            descargar.className = "boton-descargar-adjunto";
+            descargar.href = archivo.urlDescarga;
+            descargar.textContent = "Descargar";
+            acciones.appendChild(descargar);
+        }
+
+        const retirar = document.createElement("button");
+        retirar.type = "button";
+        retirar.className = "boton-retirar-adjunto";
+        retirar.textContent = marcado ? "Conservar" : "Retirar";
+        retirar.addEventListener("click", function () {
+            if (marcado) archivosMarcadosParaEliminar.delete(id);
+            else archivosMarcadosParaEliminar.add(id);
+            renderizarArchivosActualesProfesor();
+        });
+        acciones.appendChild(retirar);
+        fila.append(info, acciones);
+        contenedor.appendChild(fila);
+    });
+}
+
+function renderizarArchivosNuevosProfesor() {
+    const input = document.getElementById("dialog_archivos_nuevos");
+    const contenedor = document.getElementById("dialog_lista_archivos_nuevos");
+    if (!input || !contenedor) return;
+    contenedor.replaceChildren();
+
+    Array.from(input.files || []).forEach(function (archivo) {
+        const item = document.createElement("p");
+        item.className = "archivo-seleccionado";
+        item.textContent = `${archivo.name} (${formatearTamanoProfesor(archivo.size)})`;
+        contenedor.appendChild(item);
+    });
+}
+
+function formatearTamanoProfesor(bytes) {
+    const numero = Number(bytes || 0);
+    if (!Number.isFinite(numero) || numero <= 0) return "Tamaño no disponible";
+    return numero < 1024 * 1024
+        ? `${(numero / 1024).toFixed(1)} KB`
+        : `${(numero / 1024 / 1024).toFixed(1)} MB`;
+}
+
+async function eliminarTareaActual() {
+    const dialogo = document.getElementById("dialogo");
+    const idTarea = dialogo?.dataset.currentTaskId;
+    const idProfesor = obtenerIdProfesorSesion();
+
+    if (!idTarea || !idProfesor) {
+        alert("No fue posible identificar la tarea o la sesión.");
+        return;
+    }
+
+    if (!window.confirm("¿Eliminar esta tarea, todas las entregas y sus archivos? Esta acción no se puede deshacer.")) {
+        return;
+    }
+
+    const boton = document.getElementById("botonEliminarTarea");
+    boton.disabled = true;
+    boton.textContent = "Eliminando...";
+
+    try {
+        const response = await fetch(
+            `/Escuelapp/DeleteTarea?id=${encodeURIComponent(idTarea)}` +
+            `&idUsuario=${encodeURIComponent(idProfesor)}`,
+            { method: "DELETE" }
+        );
+        const resultado = await response.json();
+        if (!response.ok || !resultado.success) {
+            throw new Error(resultado.message || "No fue posible eliminar la tarea.");
+        }
+
+        alert(resultado.message || "Tarea eliminada correctamente.");
+        cerrarModalTarea();
+        const idSalon = new URLSearchParams(window.location.search).get("id");
+        if (idSalon) await cargarTareas(idSalon);
+    } catch (error) {
+        console.error("Error al eliminar la tarea:", error);
+        alert(`No se pudo eliminar la tarea. ${error.message}`);
+    } finally {
+        boton.disabled = false;
+        boton.textContent = "Eliminar tarea";
     }
 }
 
@@ -930,6 +979,8 @@ function configurarCierreModal() {
         "close",
         function () {
             delete dialogo.dataset.currentTaskId;
+            archivosActualesProfesor = [];
+            archivosMarcadosParaEliminar.clear();
         }
     );
 }

@@ -42,6 +42,7 @@ function inicializarFormularioNuevaTarea() {
     idGrupoInput.value = idGrupo;
 
     configurarSelectorFecha();
+    configurarSelectorArchivos();
     cargarTemasExistentes(idGrupo);
 
     formulario.addEventListener(
@@ -230,54 +231,86 @@ async function cargarTemasExistentes(idGrupo) {
     }
 }
 
+function configurarSelectorArchivos() {
+    const input = document.getElementById("archivosTarea");
+    const lista = document.getElementById("listaArchivosTarea");
+
+    if (!input || !lista) return;
+
+    input.addEventListener("change", function () {
+        lista.replaceChildren();
+        const archivos = Array.from(input.files || []);
+
+        if (archivos.length > 5) {
+            alert("Solo puedes adjuntar hasta 5 archivos.");
+            input.value = "";
+            return;
+        }
+
+        const archivoGrande = archivos.find(
+            archivo => archivo.size > 25 * 1024 * 1024
+        );
+
+        if (archivoGrande) {
+            alert(`El archivo ${archivoGrande.name} supera los 25 MB.`);
+            input.value = "";
+            return;
+        }
+
+        archivos.forEach(function (archivo) {
+            const elemento = document.createElement("div");
+            elemento.className = "archivo-creacion-item";
+
+            const nombre = document.createElement("strong");
+            nombre.textContent = archivo.name;
+
+            const tamano = document.createElement("small");
+            tamano.textContent = formatearTamanoArchivo(archivo.size);
+
+            elemento.append(nombre, tamano);
+            lista.appendChild(elemento);
+        });
+    });
+}
+
 async function crearNuevaTarea(event) {
     event.preventDefault();
 
     const formulario = event.currentTarget;
+    const idGrupo = document.getElementById("idGrupo").value.trim();
+    const tema = normalizarTexto(document.getElementById("tema").value);
+    const nombre = normalizarTexto(document.getElementById("nombreTarea").value);
+    const descripcion = normalizarTexto(document.getElementById("descripcion").value);
+    const doctarea = document.getElementById("documentoReferencia").value.trim();
+    const fechavencimiento = document.getElementById("fechavencimiento").value;
+    const inputArchivos = document.getElementById("archivosTarea");
+    const archivos = Array.from(inputArchivos?.files || []);
+    const botonCrear = document.getElementById("buttsubmit");
 
-    const idGrupo = document.getElementById(
-        "idGrupo"
-    ).value.trim();
+    if (!idGrupo || !tema || !nombre || !descripcion || !fechavencimiento) {
+        alert("Completa el tema, nombre, descripción y fecha de vencimiento.");
+        return;
+    }
 
-    const tema = normalizarTexto(
-        document.getElementById("tema").value
-    );
+    if (archivos.length === 0) {
+        alert("Debes adjuntar al menos un archivo de referencia.");
+        inputArchivos?.focus();
+        return;
+    }
 
-    const nombre = normalizarTexto(
-        document.getElementById("nombreTarea").value
-    );
+    if (archivos.length > 5) {
+        alert("Solo puedes adjuntar hasta 5 archivos.");
+        return;
+    }
 
-    const descripcion = normalizarTexto(
-        document.getElementById("descripcion").value
-    );
+    if (archivos.some(archivo => archivo.size > 25 * 1024 * 1024)) {
+        alert("Cada archivo debe pesar como máximo 25 MB.");
+        return;
+    }
 
-    const doctarea = normalizarTexto(
-        document.getElementById(
-            "documentoReferencia"
-        ).value
-    );
-
-    const fechavencimiento =
-        document.getElementById(
-            "fechavencimiento"
-        ).value;
-
-    const botonCrear = document.getElementById(
-        "buttsubmit"
-    );
-
-    if (
-        !idGrupo ||
-        !tema ||
-        !nombre ||
-        !descripcion ||
-        !doctarea ||
-        !fechavencimiento
-    ) {
-        alert(
-            "Por favor, complete todos los campos."
-        );
-
+    if (doctarea && !esURLValida(doctarea)) {
+        alert("El enlace opcional debe ser una dirección URL válida.");
+        document.getElementById("documentoReferencia").focus();
         return;
     }
 
@@ -286,99 +319,50 @@ async function crearNuevaTarea(event) {
         return;
     }
 
-    if (!esURLValida(doctarea)) {
-        alert(
-            "El documento de referencia debe ser una dirección URL válida."
-        );
-
-        document.getElementById(
-            "documentoReferencia"
-        ).focus();
-
+    const fecha = new Date(fechavencimiento);
+    if (Number.isNaN(fecha.getTime()) || fecha.getTime() <= Date.now()) {
+        alert("La fecha de vencimiento debe ser posterior a la fecha y hora actuales.");
         return;
     }
 
-    const fechaVencimiento = new Date(
-        fechavencimiento
-    );
-
-    if (
-        Number.isNaN(fechaVencimiento.getTime())
-    ) {
-        alert(
-            "La fecha de vencimiento seleccionada no es válida."
-        );
-
-        return;
-    }
-
-    if (
-        fechaVencimiento.getTime() <= Date.now()
-    ) {
-        alert(
-            "La fecha de vencimiento debe ser posterior a la fecha y hora actuales."
-        );
-
-        abrirSelectorFecha(
-            document.getElementById(
-                "fechavencimiento"
-            )
-        );
-
-        return;
-    }
-
-    const datosTarea = {
-        tema,
-        nombre,
-        descripcion,
-        doctarea,
-        fechavencimiento
-    };
+    const datos = new FormData();
+    datos.append("tema", tema);
+    datos.append("nombre", nombre);
+    datos.append("descripcion", descripcion);
+    datos.append("doctarea", doctarea);
+    datos.append("fechavencimiento", fechavencimiento);
+    archivos.forEach(archivo => datos.append("archivosTarea", archivo, archivo.name));
 
     botonCrear.disabled = true;
-    botonCrear.value = "Creando tarea...";
+    botonCrear.value = "Subiendo y creando...";
 
     try {
         const response = await fetch(
             `/Escuelapp/NewTarea?id=${encodeURIComponent(idGrupo)}`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(datosTarea)
-            }
+            { method: "POST", body: datos }
         );
+        const resultado = await response.json();
 
-        const result = await response.json();
-
-        if (!response.ok || !result.success) {
-            throw new Error(
-                result.message ||
-                "No fue posible crear la tarea."
-            );
+        if (!response.ok || !resultado.success) {
+            throw new Error(resultado.message || "No fue posible crear la tarea.");
         }
 
-        alert(
-            result.message ||
-            "¡Tarea creada y asignada exitosamente!"
-        );
-
+        alert(resultado.message || "Tarea creada correctamente.");
         window.history.back();
     } catch (error) {
-        console.error(
-            "Error al crear la tarea:",
-            error
-        );
-
-        alert(
-            `No se pudo crear la tarea. ${error.message}`
-        );
-
+        console.error("Error al crear la tarea:", error);
+        alert(`No se pudo crear la tarea. ${error.message}`);
+    } finally {
         botonCrear.disabled = false;
         botonCrear.value = "Crear tarea";
     }
+}
+
+function formatearTamanoArchivo(bytes) {
+    const numero = Number(bytes || 0);
+    return numero < 1024 * 1024
+        ? `${(numero / 1024).toFixed(1)} KB`
+        : `${(numero / 1024 / 1024).toFixed(1)} MB`;
 }
 
 function normalizarTexto(valor) {

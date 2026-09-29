@@ -257,27 +257,41 @@
                         required
                     ></textarea>
                 </div>
-
                 <div class="task-attachment">
-                    <label
-                        class="etiqueta-campo-modal"
-                        for="dialog_task_reference"
-                    >
-                        Documento de referencia (URL)
+                    <label class="etiqueta-campo-modal" for="dialog_task_reference">
+                        Documento de referencia (URL opcional)
                     </label>
-
-                    <input
-                        class="attachment-box"
-                        type="url"
-                        id="dialog_task_reference"
-                        autocomplete="off"
-                        placeholder="https://docs.google.com/..."
-                        required
-                    >
+                    <input class="attachment-box" type="url" id="dialog_task_reference"
+                        autocomplete="off" placeholder="https://docs.google.com/...">
+                    <small class="texto-ayuda-modal">
+                        Opcional. La tarea debe conservar al menos un archivo adjunto.
+                    </small>
+                </div>
+                <div class="task-attachment">
+                    <h3>Archivos adjuntos actuales</h3>
+                    <div id="dialog_archivos_actuales" class="lista-archivos-actuales" aria-live="polite">
+                        <p class="texto-ayuda-modal">Sin archivos adjuntos.</p>
+                    </div>
+                </div>
+                <div class="task-attachment">
+                    <label class="etiqueta-campo-modal" for="dialog_archivos_nuevos">
+                        Añadir archivos
+                    </label>
+                    <input class="attachment-box campo-archivos-modal" type="file"
+                        id="dialog_archivos_nuevos" name="archivosTarea"
+                        accept=".doc,.docx,.xls,.xlsx,.csv,.ppt,.pptx,.pdf,.txt,.jpg,.jpeg,.png"
+                        multiple>
+                    <small class="texto-ayuda-modal">
+                        Máximo 5 archivos en total y 25 MB por archivo.
+                    </small>
+                    <div id="dialog_lista_archivos_nuevos" class="lista-archivos-seleccionados" aria-live="polite"></div>
                 </div>
             </div>
-
-            <div class="acciones-modal">
+            <div class="acciones-modal acciones-modal-profesor">
+                <button class="boton-eliminar-tarea" id="botonEliminarTarea"
+                    type="button" onclick="eliminarTareaActual()">
+                    Eliminar tarea
+                </button>
                 <button
                     class="boton-cancelar-modal"
                     type="button"

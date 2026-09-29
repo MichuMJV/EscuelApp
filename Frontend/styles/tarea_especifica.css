@@ -732,3 +732,333 @@ h1#dialog_task_title {
 .informacion-archivo-entregado { display: flex; flex-direction: column; min-width: 0; gap: 0.15rem; }
 .boton-descargar-entrega { flex: 0 0 auto; padding: 0.55rem 0.75rem; border: 1px solid #2878d0; border-radius: 8px; background: #edf6ff; color: #185795; font: 700 0.82rem Arial, sans-serif; text-decoration: none; }
 @media screen and (max-width: 520px) { .archivo-entregado-actual { align-items: stretch; flex-direction: column; } .boton-descargar-entrega { text-align: center; } }
+
+/* ARCHIVOS Y ELIMINACION EN MODAL DEL PROFESOR */
+.lista-archivos-actuales,
+.lista-archivos-seleccionados { display: flex; flex-direction: column; gap: 0.55rem; }
+.archivo-actual-item { display: flex; align-items: center; justify-content: space-between; padding: 0.7rem; gap: 0.8rem; border: 1px solid #d7e3ee; border-radius: 10px; background: #f8fbfe; }
+.archivo-marcado-eliminar { border-color: #efb5b5; background: #fff0f0; opacity: 0.72; }
+.informacion-archivo-adjunto { display: flex; flex-direction: column; min-width: 0; gap: 0.15rem; }
+.informacion-archivo-adjunto strong,
+.informacion-archivo-adjunto small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.acciones-archivo-adjunto { display: flex; flex: 0 0 auto; gap: 0.4rem; }
+.boton-descargar-adjunto,
+.boton-retirar-adjunto,
+.boton-eliminar-tarea { min-height: 38px; padding: 0.55rem 0.75rem; border-radius: 8px; font: 700 0.82rem Arial, sans-serif; cursor: pointer; text-decoration: none; }
+.boton-descargar-adjunto { border: 1px solid #2878d0; background: #edf6ff; color: #185795; }
+.boton-retirar-adjunto { border: 1px solid #c48718; background: #fff8e8; color: #7a5208; }
+.boton-eliminar-tarea { margin-right: auto; border: 1px solid #c73b3b; background: #c73b3b; color: #fff; }
+.boton-eliminar-tarea:hover { background: #9d2929; }
+.boton-eliminar-tarea:disabled { opacity: 0.65; cursor: wait; }
+.campo-archivos-modal { padding: 0.6rem; }
+.campo-archivos-modal::file-selector-button { margin-right: 0.75rem; padding: 0.55rem 0.8rem; border: 0; border-radius: 7px; background: #4e91ec; color: #fff; font-weight: 700; cursor: pointer; }
+@media screen and (max-width: 600px) { .archivo-actual-item, .acciones-archivo-adjunto { align-items: stretch; flex-direction: column; } .boton-eliminar-tarea { width: 100%; margin-right: 0; } }
+
+/* =========================================================
+   AJUSTE VISUAL FINAL DEL MODAL DEL PROFESOR
+   ========================================================= */
+
+/* Un poco más de espacio para nombres de archivo y acciones. */
+dialog.Modal {
+    width: min(94vw, 760px);
+    padding: 0;
+    overflow: hidden;
+}
+
+/* El contenido administra el desplazamiento para mantener las acciones visibles. */
+dialog.Modal > .content {
+    box-sizing: border-box;
+    max-height: 88vh;
+    padding: 2rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+}
+
+/* Evita que el botón de cierre se pierda detrás del contenido desplazable. */
+dialog.Modal > .close-button {
+    z-index: 5;
+    background-color: #eef2f6;
+    box-shadow: 0 2px 8px rgba(20, 50, 80, 0.14);
+}
+
+/* Secciones de archivos con mejor separación visual. */
+#dialog_archivos_actuales,
+#dialog_lista_archivos_nuevos {
+    width: 100%;
+}
+
+.archivo-actual-item {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    width: 100%;
+    padding: 0.8rem 0.9rem;
+    gap: 0.85rem;
+    border: 1px solid #cfdae5;
+    border-radius: 10px;
+    background-color: #f8fbfe;
+}
+
+.informacion-archivo-adjunto {
+    display: grid;
+    min-width: 0;
+    gap: 0.22rem;
+}
+
+.informacion-archivo-adjunto strong {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    color: #263f56;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.informacion-archivo-adjunto small {
+    display: block;
+    color: #6b7f91;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.76rem;
+    line-height: 1.3;
+}
+
+.acciones-archivo-adjunto {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.45rem;
+}
+
+.boton-descargar-adjunto,
+.boton-retirar-adjunto {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.boton-descargar-adjunto {
+    border: 1px solid #78aee5;
+    background-color: #eaf4ff;
+    color: #175a99;
+}
+
+.boton-descargar-adjunto:hover {
+    border-color: #2878d0;
+    background-color: #dceeff;
+}
+
+.boton-retirar-adjunto {
+    border: 1px solid #d2a452;
+    background-color: #fff7e7;
+    color: #76500c;
+}
+
+.boton-retirar-adjunto:hover {
+    border-color: #b77b0c;
+    background-color: #ffefcc;
+}
+
+.archivo-marcado-eliminar {
+    border-color: #e4a1a1;
+    background-color: #fff2f2;
+    opacity: 1;
+}
+
+.archivo-marcado-eliminar .informacion-archivo-adjunto strong {
+    color: #9d3434;
+    text-decoration: line-through;
+}
+
+/* Selector de archivos consistente con los demás campos. */
+.campo-archivos-modal {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    min-height: 50px;
+    padding: 0.45rem;
+    overflow: hidden;
+    border: 1px solid #bdc9d5;
+    border-radius: 9px;
+    background-color: #ffffff;
+    color: #455b6f;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.86rem;
+}
+
+.campo-archivos-modal::file-selector-button {
+    min-height: 38px;
+    margin-right: 0.75rem;
+    padding: 0.55rem 0.85rem;
+    border: 0;
+    border-radius: 7px;
+    background-color: #2878d0;
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.campo-archivos-modal::file-selector-button:hover {
+    background-color: #1f65b1;
+}
+
+.lista-archivos-seleccionados .archivo-seleccionado {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 0.65rem 0.75rem;
+    overflow-wrap: anywhere;
+    border: 1px solid #c8def5;
+    border-radius: 8px;
+    background-color: #edf5ff;
+    color: #365f88;
+}
+
+/* Barra de acciones más clara y estable al final del modal. */
+.acciones-modal-profesor {
+    position: sticky;
+    bottom: -2rem;
+    z-index: 4;
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    margin: 0 -2rem -2rem;
+    padding: 1rem 2rem;
+    gap: 0.75rem;
+    border-top: 1px solid #dce4ec;
+    background-color: rgba(255, 255, 255, 0.97);
+    box-shadow: 0 -8px 18px rgba(24, 54, 84, 0.08);
+    backdrop-filter: blur(6px);
+}
+
+.acciones-modal-profesor .boton-eliminar-tarea {
+    grid-column: 1;
+    min-height: 46px;
+    margin: 0;
+    padding: 0.75rem 1rem;
+    border: 1px solid #bf3434;
+    border-radius: 9px;
+    background-color: #c73b3b;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.acciones-modal-profesor .boton-cancelar-modal {
+    grid-column: 3;
+}
+
+.acciones-modal-profesor .task-submit {
+    grid-column: 4;
+}
+
+.acciones-modal-profesor .boton-eliminar-tarea:hover {
+    border-color: #982626;
+    background-color: #a92b2b;
+}
+
+.acciones-modal-profesor .boton-eliminar-tarea:focus-visible {
+    outline: 3px solid rgba(199, 59, 59, 0.28);
+    outline-offset: 2px;
+}
+
+/* Scrollbar discreta para navegadores basados en Chromium. */
+dialog.Modal > .content::-webkit-scrollbar {
+    width: 10px;
+}
+
+dialog.Modal > .content::-webkit-scrollbar-track {
+    background-color: #f3f6f9;
+}
+
+dialog.Modal > .content::-webkit-scrollbar-thumb {
+    border: 2px solid #f3f6f9;
+    border-radius: 999px;
+    background-color: #93a1af;
+}
+
+@media screen and (max-width: 768px) {
+    dialog.Modal > .content {
+        max-height: 92vh;
+        padding: 1.35rem;
+    }
+
+    .acciones-modal-profesor {
+        bottom: -1.35rem;
+        grid-template-columns: 1fr 1fr;
+        margin: 0 -1.35rem -1.35rem;
+        padding: 0.9rem 1.35rem;
+    }
+
+    .acciones-modal-profesor .boton-eliminar-tarea {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        width: 100%;
+    }
+
+    .acciones-modal-profesor .boton-cancelar-modal {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .acciones-modal-profesor .task-submit {
+        grid-column: 2;
+        grid-row: 1;
+    }
+}
+
+@media screen and (max-width: 560px) {
+    .archivo-actual-item {
+        grid-template-columns: 1fr;
+    }
+
+    .acciones-archivo-adjunto {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+    }
+
+    .boton-descargar-adjunto,
+    .boton-retirar-adjunto {
+        width: 100%;
+    }
+
+    .acciones-modal-profesor {
+        grid-template-columns: 1fr;
+    }
+
+    .acciones-modal-profesor .boton-cancelar-modal,
+    .acciones-modal-profesor .task-submit,
+    .acciones-modal-profesor .boton-eliminar-tarea {
+        grid-column: 1;
+        width: 100%;
+    }
+
+    .acciones-modal-profesor .boton-cancelar-modal {
+        grid-row: 1;
+    }
+
+    .acciones-modal-profesor .task-submit {
+        grid-row: 2;
+    }
+
+    .acciones-modal-profesor .boton-eliminar-tarea {
+        grid-row: 3;
+    }
+}

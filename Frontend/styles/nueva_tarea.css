@@ -1,0 +1,291 @@
+/*
+ * Estilos exclusivos de Nueva_tarea.html.
+ * HeadAndFoot.css conserva el encabezado y pie fijos de 12vh.
+ * No cargar defaultform.css ni tareas.css en esta pantalla.
+ */
+
+* {
+    box-sizing: border-box;
+}
+
+.pagina-nueva-tarea {
+    position: fixed;
+    top: 12vh;
+    right: 0;
+    bottom: 12vh;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: linear-gradient(180deg, #f7faff 0%, #eef5fc 100%);
+}
+
+.seccion-nueva-tarea {
+    width: 100%;
+    min-height: 100%;
+    padding: 36px 20px 48px;
+}
+
+#formu_father {
+    position: relative;
+    width: min(860px, 94vw);
+    margin: 0 auto;
+    padding: 30px 42px 38px;
+    border: 1px solid #d8e4ef;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 16px 38px rgba(27, 65, 102, 0.14);
+}
+
+#Fatherbutton {
+    position: absolute;
+    top: 24px;
+    left: 28px;
+}
+
+#sonbutton {
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid #c6d7e7;
+    border-radius: 50%;
+    background: #eff6fd url("../Assets/back_button.svg") center / cover no-repeat;
+    cursor: pointer;
+}
+
+#sonbutton:hover {
+    background-image: url("../Assets/back_button2.svg");
+}
+
+#titulo-form {
+    margin: 4px 0 30px;
+    padding: 0 60px;
+    color: #123f6c;
+    font: 700 30px/1.25 Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+
+#nuevaTareaForm {
+    display: flex;
+    flex-direction: column;
+    width: min(100%, 720px);
+    margin: 0 auto;
+    gap: 18px;
+}
+
+.campo-oculto {
+    display: none;
+}
+
+.campo-formulario {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+}
+
+.campo-formulario label {
+    color: #203d58;
+    font: 700 16px/1.35 Arial, Helvetica, sans-serif;
+}
+
+.inputtext {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 48px;
+    margin: 0;
+    padding: 12px 14px;
+    border: 1px solid #b8c9da;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #22394f;
+    font: 400 16px/1.4 Arial, Helvetica, sans-serif;
+    text-align: left;
+}
+
+.inputtext:focus {
+    border-color: #2476c9;
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(36, 118, 201, 0.15);
+}
+
+.campo-descripcion-tarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.ayuda-campo {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    color: #61788d;
+    font: 400 13px/1.45 Arial, Helvetica, sans-serif;
+}
+
+.bloque-archivos {
+    padding: 16px;
+    border: 1px dashed #86b3de;
+    border-radius: 12px;
+    background: #f5faff;
+}
+
+.campo-archivos-tarea {
+    min-height: 56px;
+    padding: 7px;
+    cursor: pointer;
+}
+
+.campo-archivos-tarea::file-selector-button {
+    min-height: 40px;
+    margin-right: 12px;
+    padding: 8px 14px;
+    border: 0;
+    border-radius: 7px;
+    background: #2878d0;
+    color: #ffffff;
+    font: 700 14px/1 Arial, Helvetica, sans-serif;
+    cursor: pointer;
+}
+
+.lista-archivos-seleccionados {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    gap: 8px;
+}
+
+.archivo-creacion-item {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 10px 12px;
+    gap: 3px;
+    border: 1px solid #c9dff3;
+    border-radius: 8px;
+    background: #edf6ff;
+}
+
+.archivo-creacion-item strong {
+    overflow: hidden;
+    color: #245780;
+    font: 700 13px/1.3 Arial, Helvetica, sans-serif;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.archivo-creacion-item small {
+    color: #6e8396;
+    font: 400 12px/1.3 Arial, Helvetica, sans-serif;
+}
+
+.contenedor-selector-fecha {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 52px;
+    width: 100%;
+    height: 50px;
+    overflow: hidden;
+    border: 1px solid #b8c9da;
+    border-radius: 9px;
+    background: #ffffff;
+}
+
+.contenedor-selector-fecha:focus-within {
+    border-color: #2476c9;
+    box-shadow: 0 0 0 3px rgba(36, 118, 201, 0.15);
+}
+
+.campo-fecha {
+    height: 48px;
+    min-height: 48px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.campo-fecha:focus {
+    box-shadow: none;
+}
+
+.boton-calendario {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 48px;
+    padding: 0;
+    border: 0;
+    border-left: 1px solid #d6e1ec;
+    background: #edf5ff;
+    cursor: pointer;
+}
+
+.acciones-nueva-tarea {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 4px;
+    gap: 10px;
+}
+
+#buttsubmit,
+.boton-cancelar-creacion {
+    min-width: 145px;
+    min-height: 46px;
+    padding: 11px 18px;
+    border-radius: 9px;
+    font: 700 15px/1.2 Arial, Helvetica, sans-serif;
+    cursor: pointer;
+}
+
+#buttsubmit {
+    border: 1px solid #087bf0;
+    background: #087bf0;
+    color: #ffffff;
+    box-shadow: 0 6px 14px rgba(8, 123, 240, 0.2);
+}
+
+.boton-cancelar-creacion {
+    border: 1px solid #b8c5d1;
+    background: #ffffff;
+    color: #405466;
+}
+
+#buttsubmit:disabled {
+    opacity: 0.65;
+    cursor: wait;
+}
+
+@media screen and (max-width: 760px) {
+    .seccion-nueva-tarea {
+        padding: 20px 10px 30px;
+    }
+
+    #formu_father {
+        width: 96vw;
+        padding: 22px 16px 26px;
+        border-radius: 14px;
+    }
+
+    #Fatherbutton {
+        position: static;
+        margin-bottom: 14px;
+    }
+
+    #titulo-form {
+        margin-bottom: 24px;
+        padding: 0;
+        font-size: 26px;
+    }
+
+    .lista-archivos-seleccionados {
+        grid-template-columns: 1fr;
+    }
+
+    .acciones-nueva-tarea {
+        flex-direction: column-reverse;
+    }
+
+    #buttsubmit,
+    .boton-cancelar-creacion {
+        width: 100%;
+    }
+}

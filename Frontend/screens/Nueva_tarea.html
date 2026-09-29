@@ -4,231 +4,98 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>EscuelaApp 🎓 | Nueva tarea</title>
 
     <link rel="stylesheet" href="../styles/HeadAndFoot.css">
-    <link rel="stylesheet" href="../styles/defaultform.css">
-    <link rel="stylesheet" href="../styles/tareas.css">
+    <link rel="stylesheet" href="../styles/nueva_tarea.css">
 </head>
-
 <body>
     <header>
         <div id="headerlogo">
-            <img
-                src="../Assets/luzh47ih_400x400.png"
-                alt="Logotipo de EscuelaApp"
-                class="logo_colegio"
-            >
-
+            <img src="../Assets/luzh47ih_400x400.png" alt="Logotipo de EscuelaApp" class="logo_colegio">
             <h1>EscuelaApp</h1>
         </div>
-
         <div>
             <h2 id="username"></h2>
         </div>
     </header>
 
-    <section>
-        <div id="formu_father">
-        <div id="Fatherbutton">
-        <button
-        type="button"
-        id="sonbutton"
-        title="Volver a la página anterior"
-        aria-label="Volver a la página anterior"
-        onclick="goBack()"
-        ></button>
-        </div>
-         
-        <h1 id="titulo-form">
-        Nueva tarea
-        </h1>
-         
-        <form
-        id="nuevaTareaForm"
-        enctype="multipart/form-data"
-        >
-        <span style="display: none;">
-        <label for="idGrupo">
-        ID del grupo
-        </label>
-         
-        <input
-        class="inputtext"
-        type="text"
-        name="idGrupo"
-        id="idGrupo"
-        readonly
-        >
-        </span>
-         
-        <span>
-        <label for="tema">
-        Tema
-        </label>
-         
-        <input
-        class="inputtext"
-        type="text"
-        name="tema"
-        id="tema"
-        list="listaTemas"
-        maxlength="80"
-        autocomplete="off"
-        placeholder="Ej: Fracciones"
-        required
-        >
-         
-        <datalist id="listaTemas"></datalist>
-        </span>
-         
-        <p class="ayuda-campo">
-        Puedes seleccionar un tema existente
-        o escribir uno nuevo.
-        </p>
-         
-        <span>
-        <label for="nombreTarea">
-        Nombre de la tarea
-        </label>
-         
-        <input
-        class="inputtext"
-        type="text"
-        name="nombreTarea"
-        id="nombreTarea"
-        maxlength="120"
-        autocomplete="off"
-        placeholder="Ej: Resumen del capítulo 5"
-        required
-        >
-        </span>
-         
-        <span>
-        <label for="descripcion">
-        Descripción
-        </label>
-         
-        <input
-        class="inputtext"
-        type="text"
-        name="descripcion"
-        id="descripcion"
-        maxlength="500"
-        autocomplete="off"
-        placeholder="Ej: Realizar un mapa conceptual de una página"
-        required
-        >
-        </span>
-        
-        <span>
-        <label for="documentoReferencia">
-        Documento de referencia (URL)
-        </label>
-         
-        <input
-        class="inputtext"
-        type="url"
-        name="documentoReferencia"
-        id="documentoReferencia"
-        autocomplete="off"
-        placeholder="https://docs.google.com/document/..."
-        >
-        </span>
-         
-        <p class="ayuda-campo">
-        El enlace es opcional si adjuntas al
-        menos un archivo.
-        </p>
-         
-        <span class="grupo-archivos-tarea">
-        <label for="archivosTarea">
-        Archivos de referencia
-        </label>
-         
-        <input
-        class="inputtext campo-archivos-tarea"
-        type="file"
-        name="archivosTarea"
-        id="archivosTarea"
-        accept=".doc,.docx,.xls,.xlsx,.csv,.ppt,.pptx,.pdf,.txt,.jpg,.jpeg,.png"
-        multiple
-        >
-        </span>
-         
-        <p class="ayuda-campo">
-        Puedes adjuntar hasta 5 archivos de
-        Word, Excel, CSV, PowerPoint, PDF,
-        texto o imagen. Cada archivo puede
-        pesar hasta 25 MB.
-        </p>
-         
-        <div
-        id="listaArchivosTarea"
-        class="lista-archivos-seleccionados"
-        aria-live="polite"
-        ></div>
-         
-        <span class="grupo-fecha">
-        <label for="fechavencimiento">
-        Fecha de vencimiento
-        </label>
-         
-        <div
-        class="contenedor-selector-fecha"
-        id="contenedorFechaVencimiento"
-        role="group"
-        aria-describedby="etiquetaAyudaFecha"
-        >
-        <input
-        class="inputtext campo-fecha"
-        type="datetime-local"
-        name="fechavencimiento"
-        id="fechavencimiento"
-        required
-        >
-         
-        <button
-        type="button"
-        id="abrirCalendario"
-        class="boton-calendario"
-        aria-label="Abrir selector de fecha y hora"
-        title="Seleccionar fecha y hora"
-        >
-        <span aria-hidden="true">
-        📅
-        </span>
-        </button>
-        </div>
-        </span>
-         
-        <p
-        class="ayuda-campo"
-        id="etiquetaAyudaFecha"
-        >
-        Pulsa el campo o el botón del calendario
-        para seleccionar la fecha y la hora.
-        </p>
-         
-        <input
-        type="submit"
-        id="buttsubmit"
-        value="Crear tarea"
-        >
-        </form>
-        </div>
+    <main class="pagina-nueva-tarea">
+        <section class="seccion-nueva-tarea">
+            <div id="formu_father">
+                <div id="Fatherbutton">
+                    <button type="button" id="sonbutton" title="Volver" aria-label="Volver" onclick="goBack()"></button>
+                </div>
+
+                <h1 id="titulo-form">Nueva tarea</h1>
+
+                <form id="nuevaTareaForm" enctype="multipart/form-data">
+                    <span class="campo-oculto">
+                        <label for="idGrupo">ID del grupo</label>
+                        <input type="text" name="idGrupo" id="idGrupo" readonly>
+                    </span>
+
+                    <div class="campo-formulario">
+                        <label for="tema">Tema</label>
+                        <input class="inputtext" type="text" name="tema" id="tema" list="listaTemas"
+                            maxlength="80" autocomplete="off" placeholder="Ej: Fracciones" required>
+                        <datalist id="listaTemas"></datalist>
+                        <p class="ayuda-campo">Puedes seleccionar un tema existente o escribir uno nuevo.</p>
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label for="nombreTarea">Nombre de la tarea</label>
+                        <input class="inputtext" type="text" name="nombreTarea" id="nombreTarea"
+                            maxlength="120" autocomplete="off" placeholder="Ej: Resumen del capítulo 5" required>
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label for="descripcion">Descripción</label>
+                        <textarea class="inputtext campo-descripcion-tarea" name="descripcion" id="descripcion"
+                            maxlength="500" rows="4" placeholder="Ej: Realizar un mapa conceptual de una página" required></textarea>
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label for="documentoReferencia">Documento de referencia (URL opcional)</label>
+                        <input class="inputtext" type="url" name="documentoReferencia" id="documentoReferencia"
+                            autocomplete="off" placeholder="https://docs.google.com/document/...">
+                        <p class="ayuda-campo">Opcional. El material principal debe adjuntarse como archivo.</p>
+                    </div>
+
+                    <div class="campo-formulario bloque-archivos">
+                        <label for="archivosTarea">Archivos de referencia *</label>
+                        <input class="inputtext campo-archivos-tarea" type="file" name="archivosTarea"
+                            id="archivosTarea" accept=".doc,.docx,.xls,.xlsx,.csv,.ppt,.pptx,.pdf,.txt,.jpg,.jpeg,.png" multiple>
+                        <p class="ayuda-campo">Adjunta entre 1 y 5 archivos. Máximo 25 MB por archivo.</p>
+                        <div id="listaArchivosTarea" class="lista-archivos-seleccionados" aria-live="polite"></div>
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label for="fechavencimiento">Fecha de vencimiento</label>
+                        <div class="contenedor-selector-fecha" id="contenedorFechaVencimiento" role="group"
+                            aria-describedby="etiquetaAyudaFecha">
+                            <input class="inputtext campo-fecha" type="datetime-local" name="fechavencimiento"
+                                id="fechavencimiento" required>
+                            <button type="button" id="abrirCalendario" class="boton-calendario"
+                                aria-label="Abrir selector de fecha y hora" title="Seleccionar fecha y hora">
+                                <span aria-hidden="true">📅</span>
+                            </button>
+                        </div>
+                        <p class="ayuda-campo" id="etiquetaAyudaFecha">Selecciona la fecha y la hora límite.</p>
+                    </div>
+
+                    <div class="acciones-nueva-tarea">
+                        <button type="button" class="boton-cancelar-creacion" onclick="goBack()">Cancelar</button>
+                        <input type="submit" id="buttsubmit" value="Crear tarea">
+                    </div>
+                </form>
+            </div>
         </section>
+    </main>
 
     <footer>
         <h2>CONTÁCTENOS</h2>
-
-        <h2>
-            Avenida Universidad Tecnológica de Panamá,
-            Vía Puente Centenario, Campus Metropolitano
-            Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.
-        </h2>
-
+        <h2>Avenida Universidad Tecnológica de Panamá, Vía Puente Centenario, Campus Metropolitano Dr. Víctor Levi Sasso, Edificio No. 3, tercer piso.</h2>
         <h2>Teléfono: (507) 317-2000</h2>
     </footer>
 
@@ -237,7 +104,6 @@
             window.history.back();
         }
     </script>
-
     <script src="../middleware/nuevatarea.js"></script>
     <script src="../middleware/pantallaprincipal.js"></script>
 </body>
